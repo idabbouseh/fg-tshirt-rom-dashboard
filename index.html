@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP Fieldglass · T-Shirt ROM Explorer (2026 Refresh Draft)</title>
+<style>
+:root{
+  --navy:#12232F; --navy-2:#1D2D3E; --ink:#223548; --muted:#5B738B;
+  --bg:#F5F6F7; --card:#FFFFFF; --line:#D9DEE3;
+  --blue:#0070F2; --blue-soft:#EAF3FF;
+  --gold:#F0AB00;
+  --s-col:#E76500; --s-soft:#FFF3E8;
+  --m-col:#0070F2; --m-soft:#EAF3FF;
+  --l-col:#188918; --l-soft:#EDF8ED;
+  --verify:#B3520A; --verify-bg:#FFF0E1; --upd:#046C7A; --upd-bg:#E2F5F7;
+  --radius:12px;
+  --shadow:0 1px 2px rgba(18,35,47,.06),0 4px 14px rgba(18,35,47,.08);
+  font-size:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-weight:600;letter-spacing:-.01em}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* ---------- header ---------- */
+header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:50;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.hdr-top{display:flex;align-items:center;gap:14px;padding:14px 0;flex-wrap:wrap}
+.sap-mark{background:var(--gold);color:var(--navy);font-weight:800;font-size:.8rem;padding:4px 9px;border-radius:4px;letter-spacing:.06em}
+.hdr-title{font-size:1.05rem;font-weight:600}
+.hdr-sub{font-size:.75rem;color:#9DB2C4}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.rev-toggle{display:flex;align-items:center;gap:8px;background:var(--navy-2);border:1px solid #33475A;color:#C6D3DE;font-size:.75rem;padding:6px 12px;border-radius:20px;transition:.2s}
+.rev-toggle .dot{width:9px;height:9px;border-radius:50%;background:#54718A;transition:.2s}
+body.review .rev-toggle{background:var(--verify-bg);color:var(--verify);border-color:var(--verify)}
+body.review .rev-toggle .dot{background:var(--verify)}
+nav{display:flex;gap:2px;overflow-x:auto;padding-bottom:0}
+nav button{background:none;border:none;color:#9DB2C4;padding:10px 16px;font-size:.85rem;border-bottom:3px solid transparent;white-space:nowrap}
+nav button:hover{color:#fff}
+nav button.active{color:#fff;border-bottom-color:var(--gold);font-weight:600}
+nav button:focus-visible,.rev-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* ---------- chips (review mode) ---------- */
+.chip{display:none;font-size:.66rem;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:6px;text-transform:uppercase}
+.chip.verify{background:var(--verify-bg);color:var(--verify);border:1px solid #EFC9A6}
+.chip.updated{background:var(--upd-bg);color:var(--upd);border:1px solid #A9DDE3}
+body.review .chip{display:inline-block}
+.rev-note{display:none;background:var(--verify-bg);border-left:3px solid var(--verify);color:#6E3B10;font-size:.78rem;padding:8px 12px;border-radius:0 8px 8px 0;margin-top:10px}
+.rev-note.upd{background:var(--upd-bg);border-left-color:var(--upd);color:#0A4C55}
+body.review .rev-note{display:block}
+
+/* ---------- sections ---------- */
+main section{display:none;padding:34px 0 70px;animation:fade .25s ease}
+main section.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.sec-title{font-size:1.7rem;color:var(--navy);margin-bottom:6px}
+.sec-lede{color:var(--muted);max-width:760px;margin-bottom:26px;font-size:.95rem}
+
+/* ---------- overview ---------- */
+.banner{background:linear-gradient(120deg,var(--navy) 0%,var(--navy-2) 70%);color:#fff;border-radius:var(--radius);padding:30px 32px;margin-bottom:26px;position:relative;overflow:hidden}
+.banner::after{content:"";position:absolute;right:-40px;top:-60px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(240,171,0,.25),transparent 70%)}
+.banner h1{font-size:1.9rem;margin-bottom:6px}
+.banner p{color:#B9C8D5;max-width:680px;font-size:.95rem}
+.banner .stamp{display:inline-block;margin-top:14px;font-size:.72rem;letter-spacing:.08em;background:rgba(240,171,0,.15);color:var(--gold);border:1px solid rgba(240,171,0,.5);padding:5px 12px;border-radius:20px;text-transform:uppercase;font-weight:700}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.rulecard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.rulecard h3{font-size:.95rem;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.rulecard .n{width:24px;height:24px;border-radius:50%;background:var(--blue-soft);color:var(--blue);font-size:.75rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.rulecard p{font-size:.83rem;color:var(--muted)}
+
+/* ---------- flip cards ---------- */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:18px 0 8px}
+.flip{perspective:1200px;min-height:250px;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;min-height:250px;transition:transform .55s cubic-bezier(.2,.7,.3,1);transform-style:preserve-3d}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column}
+.face.back{transform:rotateY(180deg);overflow:auto}
+.flip .face{transition:visibility 0s .28s}
+.flip.flipped .face.front{visibility:hidden}
+.flip:not(.flipped) .face.back{visibility:hidden}
+.face .size-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.badge{width:38px;height:38px;border-radius:9px;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.t-S .badge{background:var(--s-col)}.t-M .badge{background:var(--m-col)}.t-L .badge{background:var(--l-col)}
+.t-S .face{border-top:4px solid var(--s-col)}.t-M .face{border-top:4px solid var(--m-col)}.t-L .face{border-top:4px solid var(--l-col)}
+.size-name{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.price{font-size:1.5rem;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.price small{font-size:.8rem;color:var(--muted);font-weight:600}
+.cad{font-size:.8rem;color:var(--muted);margin-bottom:10px;font-variant-numeric:tabular-nums}
+.meta{display:flex;gap:14px;font-size:.78rem;color:var(--muted);margin-bottom:12px}
+.meta b{color:var(--ink);font-variant-numeric:tabular-nums}
+.phasebar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin-top:auto}
+.phasebar span{display:block;height:100%}
+.ph-prep{background:#8296A9}.ph-exp{background:#F0AB00}.ph-real{background:#0070F2}.ph-dep{background:#188918}.ph-run{background:#C6D3DE}
+.ph-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:.66rem;color:var(--muted);margin-top:7px}
+.ph-legend i{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:4px}
+.flip-hint{font-size:.68rem;color:var(--blue);margin-top:9px;font-weight:600;background:none;border:none;padding:0;cursor:pointer;font-family:inherit;text-align:left}
+.flip-hint:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+.face.back h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
+.face.back ul{list-style:none;font-size:.8rem}
+.face.back li{padding:4px 0 4px 18px;position:relative;border-bottom:1px dashed #EDF0F2}
+.face.back li:last-child{border:none}
+.face.back li::before{content:"✔";position:absolute;left:0;color:var(--l-col);font-size:.72rem}
+.face.back li.ex::before{content:"✕";color:#C0392B}
+.face.back li.val::before{content:"◆";color:var(--blue);font-size:.6rem;top:8px}
+
+/* ---------- module blocks / matrix ---------- */
+.mod{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:26px}
+.mod-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.mod-head h3{font-size:1.2rem;color:var(--navy)}
+.mod-head .tag{font-size:.7rem;background:var(--blue-soft);color:var(--blue);padding:3px 10px;border-radius:12px;font-weight:700}
+.mod-desc{font-size:.85rem;color:var(--muted);margin:6px 0 4px;max-width:820px}
+details.matrix{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+details.matrix summary{cursor:pointer;font-size:.82rem;font-weight:600;color:var(--blue);list-style:none;display:inline-flex;align-items:center;gap:6px}
+details.matrix summary::before{content:"▸";transition:.2s;font-size:.7rem}
+details.matrix[open] summary::before{transform:rotate(90deg)}
+table.mx{width:100%;border-collapse:collapse;margin-top:12px;font-size:.8rem}
+table.mx th,table.mx td{padding:7px 10px;border-bottom:1px solid #EDF0F2;text-align:center}
+table.mx th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+table.mx td:first-child,table.mx th:first-child{text-align:left}
+table.mx td:first-child{color:var(--ink)}
+.yes{color:var(--l-col);font-weight:700}.no{color:#C0392B;font-weight:700}.vv{color:var(--blue);font-weight:600;font-size:.76rem}
+th.cS{color:var(--s-col)}th.cM{color:var(--m-col)}th.cL{color:var(--l-col)}
+
+/* ---------- countries ---------- */
+.cty{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:14px}
+.cty .col{border:1px solid var(--line);border-radius:10px;padding:16px;background:#FBFCFD}
+.cty h4{font-size:.85rem;margin-bottom:4px}
+.cty .hrs{font-size:.72rem;color:var(--muted);margin-bottom:10px}
+.cty ul{list-style:none;font-size:.79rem;color:var(--ink);columns:1}
+.cty li{padding:2px 0}
+.cty .col.s{border-top:4px solid var(--s-col)}.cty .col.m{border-top:4px solid var(--m-col)}.cty .col.l{border-top:4px solid var(--l-col)}
+
+/* ---------- builder ---------- */
+.builder{display:grid;grid-template-columns:1.5fr 1fr;gap:22px;align-items:start}
+@media(max-width:880px){.builder{grid-template-columns:1fr}}
+.pick-group{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;margin-bottom:16px}
+.pick-group h3{font-size:.85rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px}
+.pick{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px dashed #EDF0F2;flex-wrap:wrap}
+.pick:last-child{border:none}
+.pick input[type=checkbox]{width:17px;height:17px;accent-color:var(--blue)}
+.pick label{font-size:.87rem;flex:1;min-width:180px}
+.pick select{font:inherit;font-size:.8rem;padding:5px 8px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+.pick .pp{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;min-width:120px;text-align:right}
+.totals{background:var(--navy);color:#fff;border-radius:var(--radius);padding:24px;position:sticky;top:120px}
+.totals h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:#9DB2C4;margin-bottom:14px}
+.tot-line{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid #2C3F51;font-size:.85rem;color:#C6D3DE}
+.tot-line b{font-size:1.25rem;color:#fff;font-variant-numeric:tabular-nums}
+.tot-line.big b{font-size:1.7rem;color:var(--gold)}
+.tot-note{font-size:.72rem;color:#8CA2B5;margin-top:14px;line-height:1.55}
+.tot-empty{font-size:.85rem;color:#8CA2B5;padding:18px 0}
+
+/* ---------- assumptions ---------- */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:880px){.two-col{grid-template-columns:1fr}}
+.list-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+.list-card h3{font-size:1rem;color:var(--navy);margin-bottom:12px}
+.list-card ul{list-style:none;font-size:.83rem}
+.list-card li{padding:6px 0 6px 20px;position:relative;color:var(--ink);border-bottom:1px dashed #EDF0F2}
+.list-card li:last-child{border:none}
+.list-card li::before{content:"—";position:absolute;left:0;color:var(--muted)}
+.list-card.excl li::before{content:"✕";color:#C0392B;font-size:.72rem;top:9px}
+
+/* ---------- findings ---------- */
+.find{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--verify);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.find.upd{border-left-color:var(--upd)}
+.find h4{font-size:.88rem;color:var(--navy);margin-bottom:3px}
+.find p{font-size:.8rem;color:var(--muted)}
+.find .where{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--verify)}
+.find.upd .where{color:var(--upd)}
+
+footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;color:var(--muted)}
+
+/* ---------- at a glance ---------- */
+.glance-t td{text-align:left}
+.glance-t .rng{font-variant-numeric:tabular-nums;white-space:nowrap}
+.linklike{background:none;border:none;color:var(--blue);font:inherit;font-size:.8rem;font-weight:600;padding:0;text-align:left;cursor:pointer}
+.linklike:hover{text-decoration:underline}
+.cta-row{margin-top:16px}
+.cta-btn{background:var(--gold);border:none;color:var(--navy);font-weight:700;font-size:.85rem;padding:10px 18px;border-radius:8px;box-shadow:var(--shadow);transition:.15s}
+.cta-btn:hover{filter:brightness(1.06)}
+
+/* ---------- add-to-builder on cards ---------- */
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:9px;gap:8px}
+.card-foot .flip-hint{margin-top:0}
+.addbtn{background:var(--blue-soft);color:#0053B8;border:1px solid #BBD8F8;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:14px;transition:.15s;white-space:nowrap}
+.addbtn:hover{background:var(--navy);border-color:var(--navy);color:#fff}
+.addbtn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* ---------- country lookup ---------- */
+.cty-find{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:12px 0 4px}
+.cty-find input{font:inherit;font-size:.85rem;padding:8px 12px;border:1px solid var(--line);border-radius:8px;flex:1;min-width:220px;max-width:320px}
+.cty-res{font-size:.8rem;color:var(--ink);flex:2;min-width:220px}
+.cty-res b{color:var(--blue)}
+.cty li.hit{background:var(--blue-soft);border-radius:5px;padding-left:6px;font-weight:600}
+
+/* ---------- builder v2 ---------- */
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+@media(max-width:620px){.meta-grid{grid-template-columns:1fr}}
+.meta-grid label{font-size:.68rem;font-weight:700;color:var(--muted);display:flex;flex-direction:column;gap:4px;text-transform:uppercase;letter-spacing:.05em}
+.meta-grid label.wide{grid-column:1/-1}
+.meta-grid input,.meta-grid select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:7px;color:var(--ink);font-weight:400;text-transform:none;letter-spacing:normal;background:#fff}
+.pick.na{opacity:.45}
+.land-note{grid-column:1/-1;font-size:.72rem;color:var(--muted);text-transform:none;letter-spacing:normal;font-weight:400}
+.land-note b{color:var(--verify)}
+.live-row{grid-column:1/-1;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.live-lbl{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.live-ck{font-size:.85rem;display:flex;gap:6px;align-items:center;text-transform:none;letter-spacing:normal;font-weight:400;color:var(--ink)}
+.live-ck input{width:15px;height:15px;accent-color:var(--blue)}
+.pick label .sub{display:block;font-size:.72rem;color:var(--muted);font-weight:400}
+.qty{display:flex;align-items:center;gap:4px}
+.qty input{width:52px;text-align:center;font:inherit;font-size:.85rem;padding:5px 4px;border:1px solid var(--line);border-radius:7px}
+.qbtn{width:26px;height:26px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:.95rem;line-height:1}
+.qbtn:hover{background:var(--blue-soft);color:var(--blue)}
+.tot-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.cur-toggle{display:flex;border:1px solid #33475A;border-radius:16px;overflow:hidden}
+.cur-toggle button{background:none;border:none;color:#9DB2C4;font-size:.72rem;font-weight:700;padding:5px 12px}
+.cur-toggle button.on{background:var(--gold);color:var(--navy)}
+.cont-row{display:flex;align-items:center;gap:8px;font-size:.72rem;color:#9DB2C4}
+.cont-row input[type=range]{width:90px;accent-color:var(--gold)}
+.cont-row b{color:#fff;min-width:34px;font-variant-numeric:tabular-nums}
+.warnbox .w{background:rgba(240,171,0,.13);border-left:3px solid var(--gold);color:#F5D488;font-size:.74rem;padding:7px 10px;border-radius:0 6px 6px 0;margin-bottom:6px}
+.gen-btn{width:100%;margin-top:16px;background:var(--gold);color:var(--navy);font-weight:800;font-size:.9rem;border:none;padding:12px;border-radius:9px;transition:.15s}
+.gen-btn:hover:not(:disabled){filter:brightness(1.06)}
+.gen-btn:disabled{opacity:.4;cursor:not-allowed}
+.reset-btn{width:100%;margin-top:8px;background:none;border:1px solid #33475A;color:#9DB2C4;font-size:.74rem;padding:7px;border-radius:8px}
+.reset-btn:hover{color:#fff;border-color:#54718A}
+
+/* ---------- shared utilities ---------- */
+.tbl-scroll{overflow-x:auto}
+.sr-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+
+/* ---------- generated ROM doc ---------- */
+#romOutput{margin-top:30px}
+.stale-note{background:var(--verify-bg);border-left:3px solid var(--verify);color:#6E3B10;font-size:.78rem;padding:8px 12px;border-radius:0 8px 8px 0;margin-bottom:10px}
+#romOutput.stale .rom-doc{opacity:.6}
+.rom-doc:focus{outline:none}
+.rom-actions{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+.print-btn{background:var(--navy);color:#fff;border:none;font-weight:700;font-size:.82rem;padding:10px 16px;border-radius:8px}
+.print-btn:hover{background:var(--navy-2)}
+.gen-stamp{font-size:.72rem;color:var(--muted)}
+.rom-doc{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:34px 38px}
+@media(max-width:640px){.rom-doc{padding:20px 18px}}
+.rd-head{display:flex;align-items:center;gap:14px;border-bottom:3px solid var(--navy);padding-bottom:14px;margin-bottom:14px}
+.rd-head h2{font-size:1.3rem;color:var(--navy)}
+.rd-sub{font-size:.74rem;color:var(--muted)}
+.rd-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0;padding:12px 14px;background:#FBFCFD;border:1px solid var(--line);border-radius:9px}
+.rd-meta span{display:block;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.rd-meta b{font-size:.86rem;color:var(--navy)}
+.rd-notes{font-size:.82rem;color:var(--ink);background:var(--blue-soft);border-left:3px solid var(--blue);padding:8px 12px;border-radius:0 8px 8px 0;margin-bottom:12px}
+.rom-doc h3{font-size:.82rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:24px 0 10px;border-bottom:1px solid var(--line);padding-bottom:5px}
+.rd-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.rd-sum .c{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:#FBFCFD}
+.rd-sum .c span{display:block;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.rd-sum .c b{font-size:1.15rem;color:var(--navy);font-variant-numeric:tabular-nums}
+.rd-sum .c.hi{background:var(--navy);border-color:var(--navy)}
+.rd-sum .c.hi span{color:#9DB2C4}.rd-sum .c.hi b{color:var(--gold)}
+.rd-table td,.rd-table th{text-align:right;font-variant-numeric:tabular-nums}
+.rd-table td:first-child,.rd-table th:first-child{text-align:left}
+.rd-table td:nth-child(2),.rd-table th:nth-child(2){text-align:left}
+.rd-table tr.tot td{font-weight:700;border-top:2px solid var(--navy);color:var(--navy)}
+.rd-table tr.cont td{color:var(--verify);font-weight:600}
+.tl-row{display:grid;grid-template-columns:minmax(150px,250px) 1fr 88px;gap:10px;align-items:center;margin-bottom:7px;font-size:.76rem}
+.tl-lane{display:inline-block;background:var(--navy);color:#fff;font-size:.6rem;font-weight:700;border-radius:4px;padding:1px 6px;margin-right:6px;vertical-align:1px}
+.tl-lane.int{background:var(--upd)}
+.tl-row.idle{opacity:.55}
+.idle-txt{color:var(--muted);font-style:italic;font-size:.72rem}
+@keyframes tlflash{from{background:var(--blue-soft)}to{background:transparent}}
+#ganttMod.flash{animation:tlflash .6s ease}
+.tl-name{color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-track{background:#EEF1F4;border-radius:5px;height:14px;position:relative}
+.tl-bar{display:flex;height:14px;border-radius:5px;overflow:hidden;min-width:14px}
+.tl-gl{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--gold);z-index:2;box-shadow:0 0 0 1px rgba(240,171,0,.25)}
+#tlTip{position:fixed;background:var(--navy);color:#fff;font-size:.74rem;line-height:1.4;padding:7px 11px;border-radius:7px;box-shadow:0 6px 20px rgba(0,0,0,.3);z-index:120;max-width:330px;pointer-events:none}
+.tl-wk{color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+.rd-fine{font-size:.72rem;color:var(--muted);margin-top:8px}
+.rd-comp{border:1px solid var(--line);border-radius:9px;padding:14px 16px;margin-bottom:12px;break-inside:avoid}
+.rd-comp-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.rd-comp-h h4{font-size:.92rem;color:var(--navy)}
+.rd-comp-h span{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.rd-scope ul{list-style:none;font-size:.79rem;margin-top:10px;columns:2;column-gap:26px}
+@media(max-width:700px){.rd-scope ul{columns:1}}
+.rd-scope li{padding:3px 0 3px 18px;position:relative;break-inside:avoid}
+.rd-scope li::before{content:"✔";position:absolute;left:0;color:var(--l-col);font-size:.7rem}
+.rd-scope li.ex::before{content:"✕";color:#C0392B}
+.rd-scope li.val::before{content:"◆";color:var(--blue);font-size:.58rem;top:7px}
+.rd-note{background:var(--verify-bg);border-left:3px solid var(--verify);color:#6E3B10;font-size:.74rem;padding:6px 10px;border-radius:0 6px 6px 0;margin-top:8px}
+.rd-warn{list-style:none;font-size:.8rem}
+.rd-warn li{background:var(--verify-bg);border-left:3px solid var(--gold);padding:8px 12px;border-radius:0 8px 8px 0;margin-bottom:8px;color:#6E3B10}
+.rd-2col{list-style:none;font-size:.76rem;columns:2;column-gap:30px}
+@media(max-width:700px){.rd-2col{columns:1}}
+.rd-2col li{padding:3px 0 3px 16px;position:relative;color:var(--ink);break-inside:avoid}
+.rd-2col li::before{content:"—";position:absolute;left:0;color:var(--muted)}
+.rd-2col.ex li::before{content:"✕";color:#C0392B;font-size:.68rem}
+.rd-foot{margin-top:24px;padding-top:12px;border-top:1px solid var(--line);font-size:.68rem;color:var(--muted)}
+
+/* ---------- staffing ---------- */
+.staff-note{font-size:.72rem;color:var(--muted);margin-top:10px}
+
+/* ---------- rate buildup ---------- */
+.rate-t td,.rate-t th{text-align:right;font-variant-numeric:tabular-nums}
+.rate-t td:first-child,.rate-t th:first-child{text-align:left}
+.rate-t input{width:64px;text-align:right;font:inherit;font-size:.8rem;padding:4px 6px;border:1px solid var(--line);border-radius:6px}
+.rate-t select{font:inherit;font-size:.8rem;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:#fff}
+.rate-t .rtot td{font-weight:700;border-top:2px solid var(--navy);color:var(--navy)}
+.rate-t tr.zeroed td{opacity:.45}
+
+/* ---------- scenarios ---------- */
+.scen-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:12px 16px;margin-bottom:18px}
+.scen-label{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.scen-bar select,.scen-bar input{font:inherit;font-size:.8rem;padding:6px 9px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+.scen-bar input{min-width:150px;flex:1;max-width:220px}
+.scen-btn{background:#fff;border:1px solid var(--line);color:var(--ink);font-size:.76rem;font-weight:600;padding:6px 12px;border-radius:7px;transition:.15s;white-space:nowrap}
+.scen-btn:hover{border-color:var(--navy);color:var(--navy)}
+.scen-btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.scen-btn.primary:hover{background:#005BC4;color:#fff}
+.scen-btn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.cmp-t td:first-child{font-weight:600}
+.cmp-t td.best{color:var(--l-col);font-weight:700}
+
+/* ---------- excel export ---------- */
+.xls-btn{width:100%;margin-top:8px;background:var(--navy-2);border:1px solid #33475A;color:#C6D3DE;font-size:.78rem;font-weight:700;padding:9px;border-radius:8px}
+.xls-btn:hover:not(:disabled){color:#fff;border-color:#54718A}
+.xls-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ---------- S/4HANA placeholder ---------- */
+.ph-mod{border-style:dashed;background:#FDFDFB}
+.ph-mod .tag.ph-tag{background:var(--verify-bg);color:var(--verify)}
+
+/* ---------- findings filters ---------- */
+.find-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.fchip{background:#fff;border:1px solid var(--line);color:var(--muted);font-size:.76rem;font-weight:600;padding:6px 13px;border-radius:16px;transition:.15s}
+.fchip:hover{border-color:var(--navy);color:var(--navy)}
+.fchip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.find-prog{margin-left:auto;font-size:.74rem;color:var(--muted)}
+.find{position:relative;padding-right:118px}
+.find .res{position:absolute;top:13px;right:16px;font-size:.7rem;color:var(--muted);display:flex;gap:5px;align-items:center;cursor:pointer;user-select:none}
+.find .res input{accent-color:var(--l-col)}
+.find.resolved{opacity:.45}
+.find.resolved h4{text-decoration:line-through}
+@media(max-width:560px){.find{padding-right:18px}.find .res{position:static;margin-bottom:6px}}
+
+/* ---------- toast ---------- */
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;font-size:.82rem;padding:11px 18px;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.28);display:flex;gap:12px;align-items:center;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90vw}
+#toast.show{opacity:1;transform:translateX(-50%);pointer-events:auto}
+#toast button{background:none;border:none;color:var(--gold);font-weight:700;font-size:.8rem;white-space:nowrap}
+
+/* ---------- print (isolation only once a ROM has been generated) ---------- */
+@media print{
+  body.has-rom{background:#fff}
+  body.has-rom header,body.has-rom footer,body.has-rom #toast,body.has-rom .builder,body.has-rom #builder .eyebrow,body.has-rom #builder .sec-title,body.has-rom #builder .sec-lede,body.has-rom .rom-actions{display:none!important}
+  body.has-rom main section{display:none!important}
+  body.has-rom main section#builder{display:block!important;padding:0}
+  body.has-rom .wrap{max-width:100%;padding:0}
+  body.has-rom #romOutput{margin:0}
+  body.has-rom .rom-doc{box-shadow:none;border:none;padding:0;border-radius:0;opacity:1}
+  .rd-comp,.rd-sum .c,.tl-row{break-inside:avoid}
+  .rd-sum .c.hi{background:#fff;border:2px solid var(--navy)}
+  .rd-sum .c.hi span{color:var(--muted)}.rd-sum .c.hi b{color:var(--navy)}
+  .phasebar span,.tl-bar span,.tl-track,.tl-lane,.tl-gl,.sap-mark,.badge,.ph-legend i,.rd-note,.rd-warn li,.rd-notes,.stale-note{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #tlTip{display:none!important}
+  .tl-track{border:1px solid var(--line)}
+}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="hdr-top">
+      <span class="sap-mark">SAP</span>
+      <div>
+        <div class="hdr-title">Fieldglass T-Shirt ROM Explorer</div>
+        <div class="hdr-sub">Contingent &amp; Services Procurement · 2026 refresh draft (v2.0 baseline: Mar 11, 2024) · INTERNAL</div>
+      </div>
+      <div class="hdr-right">
+        <button class="rev-toggle" id="revToggle" aria-pressed="false"><span class="dot"></span> Review mode</button>
+      </div>
+    </div>
+    <nav id="nav">
+      <button data-sec="overview" class="active">Overview</button>
+      <button data-sec="modules">Module T-Shirts</button>
+      <button data-sec="expansion">Expansion &amp; MSP</button>
+      <button data-sec="integrations">Integration T-Shirts</button>
+      <button data-sec="builder">ROM Builder</button>
+      <button data-sec="scope">Scope Building</button>
+      <button data-sec="assumptions">Assumptions &amp; Exclusions</button>
+      <button data-sec="findings">Review Findings</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= OVERVIEW ================= -->
+<section id="overview" class="active">
+  <div class="banner">
+    <h1>What T-shirt fits your customer?</h1>
+    <p>Rough Order of Magnitude estimates for SAP Fieldglass engagements — high-level, indicative and non-binding, assuming strict Fit-to-Standard and SAP Activate methodology. A scoping workshop is required before any binding proposal.</p>
+    <span class="stamp">Draft refresh · July 2026 · pending owner validation</span>
+    <div class="cta-row"><button class="cta-btn" data-goto="builder">Build a combined ROM →</button></div>
+  </div>
+
+  <div class="eyebrow">How to combine T-shirt ROMs</div>
+  <div class="grid3">
+    <div class="rulecard"><h3><span class="n">1</span> Start with the module</h3><p>For a net-new implementation, pick the T-shirt for each module in scope — Contingent, SOW, or Profile Worker (or the ERP Editions). Multiple modules? Add the estimates together.</p></div>
+    <div class="rulecard"><h3><span class="n">2</span> Add integrations</h3><p>If SAP-led integration services are in scope, add the specific integration T-shirts (Ariba B&amp;I, SuccessFactors) on top of the base module T-shirt.</p></div>
+    <div class="rulecard"><h3><span class="n">3</span> Add regions</h3><p>Base T-shirts assume one region. Additional simultaneous regions add Country Expansion T-shirts. Country Expansion, Integration and MSP Transfer T-shirts also work standalone for existing customers.</p></div>
+  </div>
+
+  <div class="rulecard" style="margin-top:16px">
+    <h3><span class="n">!</span> Delivery model note — partner-led ≠ Fieldglass-free</h3>
+    <p>Even where integration configuration is partner or client self-service (Small tier), specific activities remain SAP Fieldglass-performed regardless of delivery model: tenant endpoint configuration, Company Configuration changes, extrinsic/custom field enablement on integration payloads, Configuration Manager role provisioning, and the integration mapping specification. Set this expectation early in the sales cycle. <span class="chip updated">Added 2026</span></p>
+  </div>
+
+  <div class="mod" style="margin-top:26px">
+    <div class="mod-head"><h3>Portfolio at a glance</h3><span class="tag">All T-shirts</span></div>
+    <p class="mod-desc">Every package with its size range, price band and duration. Click a package name to jump to its detail, or use <b>+ ROM Builder</b> on any tier card to start combining.</p>
+    <div id="glanceArea"></div>
+  </div>
+
+  <div class="rev-note upd"><b>Review mode is on.</b> Teal chips mark content updated to current state (source-validated against help.sap.com, the Connector Library dated 2026-05-15, and SAP announcements through July 2026). Amber chips mark internal inconsistencies in the source deck that need the deck owner's call. Full register under <b>Review Findings</b>.</div>
+</section>
+
+<!-- ================= MODULES ================= -->
+<section id="modules">
+  <div class="eyebrow">Net-new implementations</div>
+  <h2 class="sec-title">Module T-Shirts</h2>
+  <p class="sec-lede">Click any card to flip it and see what differentiates the size. Estimates exclude travel &amp; expense; durations follow SAP Activate (Prepare → Explore → Realize → Deploy → Run).</p>
+  <div id="modArea"></div>
+</section>
+
+<!-- ================= EXPANSION ================= -->
+<section id="expansion">
+  <div class="eyebrow">Existing customers</div>
+  <h2 class="sec-title">Country Expansion &amp; MSP Transfer</h2>
+  <p class="sec-lede">Standalone T-shirts for rolling an existing global tenant into additional countries, or transferring an MSP program. Country sizing depends on average complexity per country.</p>
+  <div id="expArea"></div>
+
+  <div class="mod">
+    <div class="mod-head"><h3>Country package categories</h3><span class="tag">Complexity tiers</span></div>
+    <p class="mod-desc">Example country/labor-type placement per tier. Additional configuration can vary depending on the country in scope.</p>
+    <div class="cty-find"><input id="ctyFind" type="search" placeholder="Look up a country… e.g. Spain" aria-label="Country tier lookup"><div class="cty-res" id="ctyRes" aria-live="polite"></div></div>
+    <div class="rev-note">Source deck lists tier hours as 450 / 680 / 900 on the "Countries &amp; Package Categories" slide but 340 / 520 / 780 on the Country Expansion T-shirt slides (durations match). The T-shirt values are used here — confirm which set is current. Also fixed in this draft: duplicate "Mexico" entry, "Luxemborg" spelling, Türkiye naming; "Japan" appears only in the categories slide, not the Large T-shirt examples.</div>
+    <div class="cty">
+      <div class="col s"><h4>Small</h4><div class="hrs">340 hrs · G3 rates · 14 weeks <span class="chip verify">Verify hrs</span></div><ul><li>USA</li><li>Canada</li><li>United Kingdom — white collar</li><li>Ireland</li><li>Czech Republic</li><li>Netherlands — white collar</li><li>Switzerland</li><li>Sweden</li></ul></div>
+      <div class="col m"><h4>Medium</h4><div class="hrs">520 hrs · G3 rates · 18 weeks <span class="chip verify">Verify hrs</span></div><ul><li>Germany — white collar</li><li>United Kingdom — blue collar</li><li>Netherlands — blue collar</li><li>Poland</li><li>Austria</li><li>Belgium &amp; Luxembourg</li><li>Hungary</li><li>Portugal</li><li>Spain</li><li>Türkiye</li><li>Australia</li><li>India</li><li>Brazil · Mexico · Argentina</li><li>Colombia · Costa Rica · Chile</li></ul></div>
+      <div class="col l"><h4>Large</h4><div class="hrs">780 hrs · G3 rates · 22 weeks <span class="chip verify">Verify hrs</span></div><ul><li>Germany — blue collar</li><li>France</li><li>Italy</li><li>UAE</li><li>Japan <span class="chip verify">Confirm tier</span></li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INTEGRATIONS ================= -->
+<section id="integrations">
+  <div class="eyebrow">Productized integration services</div>
+  <h2 class="sec-title">Integration T-Shirts</h2>
+  <p class="sec-lede">SAP-led integration packages layered on a base module T-shirt, or sold standalone to existing customers. Ariba flows run through SAP Integration Suite, managed gateway for spend management and SAP Business Network; SuccessFactors flows run on SAP Integration Suite (BTP Cloud Integration) iFlows.</p>
+
+  <div class="rev-note upd"><b>Positioning notes (July 2026).</b> Next-gen SAP Ariba is GA on SAP BTP since March 2026 with quarterly releases through 2026–27 and a committed ≥60% back-port of agentic capabilities to current-gen; these T-shirts assume current-gen Ariba Buying &amp; Invoicing — capture the client's Ariba generation and migration timing as a scoping variable. Joule/AI capabilities (Ariba intake agent and Fieldglass gate-pass time capture GA June 2026; AI-assisted SOW deliverables since Q1 2026) do not reduce integration configuration, mapping, or Fieldglass-Services-specific scope — align Joule positioning with the account CSM/SAE before client use.</div>
+
+  <div id="intArea"></div>
+
+  <div class="mod ph-mod" id="mod-s4">
+    <div class="mod-head"><h3>Integration with S/4HANA (standalone)</h3><span class="tag ph-tag">Placeholder — pending definition</span></div>
+    <p class="mod-desc">Identified gap (see <b>Review Findings</b>): the deck offers standalone Ariba and SuccessFactors integration T-shirts, but ERP integrations exist only inside the ERP Edition bundles — an existing-FG customer adding the S/4HANA integration has no T-shirt today. Planned structure, parallel to the SuccessFactors T-shirt: master data via DRF/MDI as prerequisite, PR/PO/SES/invoice (or ERS) transactional chain, mandatory joint scoping workshop, and the Fieldglass-restricted activities called out (tenant endpoints, Company Configuration, extrinsic fields, mapping specification). Published specialist benchmarks suggest ~16–24 weeks standard, 9+ months for complex/global scopes.</p>
+    <p class="mod-desc"><b>Pricing, hours and tiering TBD with the T-shirt ROM owner — not yet available in the ROM Builder or the portfolio table.</b></p>
+  </div>
+</section>
+
+<!-- ================= BUILDER ================= -->
+<section id="builder">
+  <div class="eyebrow">Combine T-shirts</div>
+  <h2 class="sec-title">ROM Builder</h2>
+  <p class="sec-lede">Assemble an indicative combined estimate per the combination rules, then <b>generate</b> a detailed, print-ready ROM summary. Prices and hours are additive; the indicative duration is the longest single component (parallel assumption — the T-shirt standard for RFP-speed pricing). For a staffing-based staged timeline, use the <b>Scope Building</b> tab — combined timelines still require a scoping workshop.</p>
+  <div class="scen-bar" role="group" aria-label="Scenario management">
+    <span class="scen-label">Scenarios</span>
+    <select id="scenSel" aria-label="Saved scenarios"><option value="">— none saved —</option></select>
+    <button class="scen-btn" id="scenLoad">Load</button>
+    <button class="scen-btn" id="scenUpdate">Update</button>
+    <button class="scen-btn" id="scenDelete">Delete</button>
+    <input id="scenName" placeholder="New scenario name…" aria-label="New scenario name">
+    <button class="scen-btn primary" id="scenSave">Save current</button>
+    <button class="scen-btn" id="scenCmp" aria-pressed="false">Compare</button>
+  </div>
+  <div id="scenCompareArea" hidden></div>
+  <div class="builder">
+    <div>
+      <div class="pick-group">
+        <h3>Engagement details <span style="text-transform:none;font-weight:400;letter-spacing:normal">(flows into the generated ROM)</span></h3>
+        <div class="meta-grid">
+          <label>Customer / opportunity<input id="mCust" placeholder="e.g. Acme Corp — CW program"></label>
+          <label>Requested by<input id="mReqBy" placeholder="AE / CSM / requester"></label>
+          <label>Prepared by<input id="mPrep" placeholder="Name / role"></label>
+          <label>Customer type<select id="custType"><option value="">— not specified —</option><option value="new">Net-new customer</option><option value="existing">Existing customer</option></select></label>
+          <label>Date<input id="mDate" type="date"></label>
+          <label>Reference (optional)<input id="mRef" placeholder="Opportunity ID / CRM ref"></label>
+          <label class="wide">Notes (optional)<input id="mNotes" placeholder="Context, regions in scope, caveats…"></label>
+        </div>
+      </div>
+      <div class="pick-group" id="landPanel" hidden>
+        <h3>Existing landscape <span style="text-transform:none;font-weight:400;letter-spacing:normal">(flows into the ROM &amp; Excel · drives module greying &amp; complexity)</span></h3>
+        <div class="meta-grid">
+          <div class="live-row"><span class="live-lbl">Modules live today</span>
+            <label class="live-ck"><input type="checkbox" id="liveCont"> Contingent</label>
+            <label class="live-ck"><input type="checkbox" id="liveSow"> SOW</label>
+            <label class="live-ck"><input type="checkbox" id="livePw"> Profile Worker</label>
+            <span class="land-note" style="grid-column:auto;flex:1;min-width:200px">Live modules grey out in the picker; the others stay selectable as <b>module expansions</b> onto the existing tenant.</span>
+          </div>
+          <label>Current FG tenants<input id="landTen" type="number" min="1" max="20" value="1"></label>
+          <label>Consolidation approach<select id="landConsol"><option value="">— none / TBD —</option><option value="keep">Keep tenants separate</option><option value="merge">Merge into one existing tenant</option><option value="newt">Net-new consolidated tenant</option></select></label>
+          <label>Active integrations (total)<input id="landInts" type="number" min="0" max="900" placeholder="e.g. 120"></label>
+          <label>Custom connectors / scripts<input id="landCustomInts" type="number" min="0" max="300" placeholder="e.g. 20"></label>
+          <label>Countries in scope<input id="landCty" type="number" min="0" max="100" placeholder="e.g. 20"></label>
+          <label>Approx. active workers<input id="landWorkers" type="number" min="0" max="1000000" placeholder="e.g. 25000"></label>
+          <label>Process alignment across tenants<select id="landAlign"><option value="">— unknown —</option><option value="aligned">Aligned</option><option value="partial">Partially aligned</option><option value="divergent">Divergent</option></select></label>
+          <span class="land-note" id="consolMeter"></span>
+          <span class="land-note">Tenant consolidation has no T-shirt — always custom scoping with a per-tenant integration-inventory review. Delivered programs show integration count, custom connectors/scripts, country scope and worker volumes as the primary effort drivers.</span>
+        </div>
+      </div>
+      <div id="pickArea"></div>
+    </div>
+    <div class="totals" id="totBox">
+      <h3>Combined ROM (indicative)</h3>
+      <div class="tot-controls">
+        <div class="cur-toggle" role="group" aria-label="Display currency"><button data-cur="USD" class="on" aria-pressed="true">USD</button><button data-cur="CAD" aria-pressed="false">CAD</button></div>
+        <label class="cont-row">Contingency <input type="range" id="contR" min="0" max="30" step="5" value="0"><b id="contV">0%</b></label>
+      </div>
+      <div class="warnbox" id="warnBox"></div>
+      <div class="sr-live" id="srLive" aria-live="polite"></div>
+      <div id="totBody"><div class="tot-empty">Select components on the left to build an estimate.</div></div>
+      <button class="gen-btn" id="genBtn" disabled>Generate detailed ROM ↓</button>
+      <button class="xls-btn" id="xlsBtn" disabled>⬇ Export to Excel (.xls)</button>
+      <button class="reset-btn" id="resetBtn">Reset selections</button>
+      <p class="tot-note">Indicative &amp; non-binding · excludes T&amp;E · assumes Fit-to-Standard, single go-live, SAP-delivered resources. ROM validity 30 days. Ariba B&amp;I packages publish price/duration only (no hours), so they're excluded from the hour total.</p>
+    </div>
+  </div>
+  <div id="romOutput"></div>
+</section>
+
+<!-- ================= SCOPE BUILDING ================= -->
+<section id="scope">
+  <div class="eyebrow">Internal planning aid · not part of the T-shirt ROM</div>
+  <h2 class="sec-title">Scope Building</h2>
+  <p class="sec-lede">Model a realistic, staged delivery timeline for the components currently selected in the <b>ROM Builder</b>, driven by team size and real Fieldglass delivery dependencies: each Functional Consultant works one engagement at a time; integration workstreams start only once a requirements foundation exists (~mid-Explore of the lead module), their final build &amp; SIT depend on the FC-configured test environment, and everything aligns to a <b>joint go-live</b> — mirroring how delivered FG programs are planned. Hover any bar segment for details. T-shirts stay high-level for RFP pricing — treat this view as internal planning only.</p>
+  <div class="builder">
+    <div><div id="staffArea"></div><div id="rateArea"></div></div>
+    <div class="totals" id="schedBox">
+      <h3>Staged delivery (internal)</h3>
+      <div class="warnbox" id="staffWarnBox"></div>
+      <div class="sr-live" id="srLiveScope" aria-live="polite"></div>
+      <div id="schedBody"><div class="tot-empty">Select components in the ROM Builder to model a schedule.</div></div>
+      <p class="tot-note">Internal planning aid — the official T-shirt duration for RFP use remains the parallel figure in the ROM Builder. Rates intentionally omitted pending rate-card confirmation.</p>
+    </div>
+  </div>
+  <div class="mod" id="ganttMod" hidden>
+    <div class="mod-head"><h3>Staged timeline</h3><span class="tag">Lanes × engagements</span></div>
+    <div id="ganttArea"></div>
+    <div class="ph-legend" style="margin-top:10px"><span><i class="ph-prep"></i>Prepare</span><span><i class="ph-exp"></i>Explore</span><span><i class="ph-real"></i>Realize</span><span><i class="ph-dep"></i>Deploy</span><span><i class="ph-run"></i>Run</span></div>
+    <p class="rd-fine" id="ganttFine"></p>
+  </div>
+</section>
+
+<!-- ================= ASSUMPTIONS ================= -->
+<section id="assumptions">
+  <div class="eyebrow">Fine print</div>
+  <h2 class="sec-title">Assumptions &amp; Exclusions</h2>
+  <p class="sec-lede">Not all-inclusive; additional assumptions may be added at contracting. Detailed discovery is required for a binding proposal.</p>
+  <div class="two-col">
+    <div class="list-card">
+      <h3>Key general assumptions</h3>
+      <ul>
+        <li>Customer adopts standard SAP functionality and processes (Fit-to-Standard); changes lengthen duration and increase cost</li>
+        <li>ROM estimates only — detailed discovery required for binding proposals; ROM valid 30 days (PMBOK® ROM range)</li>
+        <li>Project language English; customer owns translations, end-user training and change management</li>
+        <li>Delivery aligned to one time zone; customer provides business &amp; IT SMEs and a Project Manager</li>
+        <li>Two system landscapes (Production + non-Production) available as required</li>
+        <li>WRICEFs estimated at high level, to be validated in detailed scoping; 2 SIT cycles + 1 UAT cycle in Realize</li>
+        <li>Customer owns data migration, starting balances and open transaction loads</li>
+        <li>Integrations adhere to SAP Fieldglass standard APIs; custom integration work out of scope</li>
+        <li>Integrations led by customer/partner — SAP-led integrations require a separate Services SOW; restricted activities (endpoints, Company Configuration, extrinsic fields, mapping spec) remain SAP Fieldglass-performed <span class="chip updated">Clarified 2026</span></li>
+        <li>Supplier collaboration model: licensee adapts processes to standard system behavior</li>
+        <li>One single go-live; no multi-phase rollouts; all T-shirts assume SAP-delivered resources</li>
+        <li>User provisioning via SAP Cloud Identity Services (IAS/IPS) is the recommended approach for SF-integrated landscapes <span class="chip updated">Added 2026</span></li>
+      </ul>
+    </div>
+    <div class="list-card excl">
+      <h3>Excluded — custom scoping required</h3>
+      <ul>
+        <li>DocuSign integration for worker contracts</li>
+        <li>Currency conversion integration with OANDA</li>
+        <li>Tax guidance</li>
+        <li>Multi-ERP support — supported by the Ariba/Business Network integration (child site system ID routing) but adds material backend-side effort per additional ERP; scope separately <span class="chip updated">Reworded 2026</span></li>
+        <li>Master data re-design · end-to-end process re-design</li>
+        <li>New integration points and integration re-design</li>
+        <li>As-is business process analysis · data cleansing</li>
+        <li>Training on existing customer configuration</li>
+        <li>Configuration/design in remote third-party systems; coordination of customer's third-party vendors</li>
+        <li>Modifications to standard source code; new functionality, extensions, co-innovation, custom development</li>
+        <li>Customer-specific authorization roles and security concepts</li>
+        <li>Interfaces to third-party/legacy systems not explicitly defined (standard BTP integrations expected; effort estimated separately)</li>
+        <li>Report creation/maintenance beyond the standard offering</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINDINGS ================= -->
+<section id="findings">
+  <div class="eyebrow">Deck review · July 2026</div>
+  <h2 class="sec-title">Review Findings Register</h2>
+  <p class="sec-lede">Source: "NEW _ SAPFG T-Shirt ROM_Updated.pptx" (v2.0, Mar 11 2024, 71 slides). Validated against the SAP Fieldglass Connector Library (2026-05-15), FG↔SF EC and FG↔Ariba Business Synopses on help.sap.com, and SAP announcements through July 2026. Amber = internal inconsistency needing the deck owner's call; teal = current-state update applied in this draft. Mark items resolved as you clear them with the deck owner — progress is saved in this browser.</p>
+  <div class="find-bar" id="findBar"></div>
+  <div id="findArea"></div>
+</section>
+
+</main>
+
+<div id="tlTip" role="tooltip" hidden></div>
+<div id="toast" role="status"></div>
+
+<footer><div class="wrap">Indicative, non-binding ROM content for internal SAP use. Interactive refresh draft generated July 2026 — pricing, hours and tiering pending validation by the T-shirt ROM owner before any customer-facing use. Estimates exclude travel &amp; expense.</div></footer>
+
+<script>
+/* =============== DATA =============== */
+const PH_NAMES=["Prep","Explore","Realize","Deploy","Run"];
+const D={
+ modules:[
+  {id:"cont",name:"Contingent Module",tag:"VMS core",desc:"External labor procurement end-to-end: job posting → candidates → work order → onboarding → time & expense → auto-invoice.",tiers:[
+    {s:"S",usd:250,cad:250,wk:26,hr:650,ph:[2,9,9,4,2],flags:[{t:"verify",txt:"Detail slide shows USD 215K / CAD 240K vs overview 250/250 — confirm"}],back:["Labor type: Professional Services","Leading practice processes & configuration","Dedicated PM & functional consultants; governance; FRD","Invoice integrations implemented",{x:1,t:"Master data, PO/SES integrations"},{x:1,t:"Complex rates, TITO/crew time, tenure compliance"}]},
+    {s:"M",usd:350,cad:400,wk:32,hr:1020,ph:[2,11,13,4,2],back:["Labor types: Light Industrial, Utilities, Oil & Gas, Healthcare","Complex rate structures (multi-shift differentials)","Time In/Out & integrated time sheets","Identity management & tenure compliance","Master data + invoice integrations implemented",{x:1,t:"PO / Service Entry Sheet integrations"}]},
+    {s:"L",usd:450,cad:500,wk:36,hr:1250,ph:[2,13,15,4,2],back:["Multiple labor types, distinct flows per type","Complex rates; TITO, crew & integrated time","Identity management & tenure compliance","Master data + invoice + PO/SES integrations implemented"]}],
+   mx:{rows:[["Consulting partner on project & program roadmap",1,1,1],["Leading practice processes & configuration",1,1,1],["Multiple/different process flows per labor type",0,0,1],["Complex rate structure (multi-shift rate differentials)",0,1,1],["Time In/Out, Crew Time, Integrated Time Sheets",0,1,1],["Identity Management & Tenure Compliance tracking",0,1,1],["Dedicated project & functional delivery consultants",1,1,1],["Project & program governance and maintenance",1,1,1],["Functional requirement documentation & process flows",1,1,1],["Design & configuration of the SAP Fieldglass solution",1,1,1],["Integration configuration (client/partner-led)",0,0,0],["Implementation of Master Data integrations",0,1,1],["Implementation of Invoice integrations",1,1,1],["Implementation of PO & Service Entry Sheet integrations",0,0,1]]}},
+  {id:"sow",name:"SOW Module",tag:"Services procurement",desc:"Statement-of-work lifecycle: SOW creation/bid → negotiation → milestones, deliverables, fees, T&E → auto-invoice.",tiers:[
+    {s:"S",usd:225,cad:250,wk:26,hr:650,ph:[2,9,9,4,2],back:["Labor type: Professional Services","Core delivery, governance, FRD, design & config","Invoice integrations implemented",{x:1,t:"SOW Bid & Master SOW"},{x:1,t:"Master data, PO/SES integrations"}]},
+    {s:"M",usd:325,cad:350,wk:30,hr:930,ph:[2,10,12,4,2],back:["Labor types: Light Industrial, Utilities, Oil & Gas","SOW Bid & Master SOW use cases","Master data + invoice integrations implemented",{x:1,t:"PO / Service Entry Sheet integrations"}]},
+    {s:"L",usd:475,cad:550,wk:36,hr:1400,ph:[2,13,15,4,2],back:["Multiple labor types","SOW Bid & Master SOW use cases","Master data + invoice + PO/SES integrations implemented"]}],
+   mx:{rows:[["Consulting partner on project & program roadmap",1,1,1],["Leading practice processes & configuration",1,1,1],["Labor types","Professional Services","LI / Utilities / O&G","Multiple"],["Use cases: SOW Bid, Master SOW",0,1,1],["Dedicated project & functional delivery consultants",1,1,1],["Project & program governance and maintenance",1,1,1],["Functional requirement documentation & process flows",1,1,1],["Design & configuration of the SAP Fieldglass solution",1,1,1],["Integration configuration (client/partner-led)",0,0,0],["Implementation of Master Data integrations",0,1,1],["Implementation of Invoice integrations",1,1,1],["Implementation of PO & Service Entry Sheet integrations",0,0,1]],note:"Source deck's SOW Medium detail slide lists 'Integration configuration' twice (once included, once excluded) — normalized here to the overview matrix; confirm intent."}},
+  {id:"pw",name:"Profile Worker Module",tag:"Worker profile mgmt",desc:"Non-transactional worker profile management: create/approve profile workers, onboarding and offboarding.",tiers:[
+    {s:"S",usd:90,cad:100,wk:15,hr:260,ph:[1,5,5,2,2],back:["Core delivery, governance, FRD, design & config",{x:1,t:"Master data integrations"},{x:1,t:"Worker data integrations"}]},
+    {s:"M",usd:225,cad:250,wk:26,hr:650,ph:[2,8,11,3,2],flags:[{t:"verify",txt:"Detail slide titled 'Small' with USD 255K; overview says Medium USD 225K — confirm"}],back:["Core delivery, governance, FRD, design & config","Master data integrations implemented","Worker data integrations implemented"]}],
+   mx:{rows:[["Consulting partner on project & program roadmap",1,1],["Leading practice processes & configuration",1,1],["Dedicated project & functional delivery consultants",1,1],["Project & program governance and maintenance",1,1],["Functional requirement documentation & process flows",1,1],["Design & configuration of the SAP Fieldglass solution",1,1],["Implementation of Master Data integrations",0,1],["Implementation of Worker Data integrations",0,1]],cols:2}},
+  {id:"cerp",name:"Contingent ERP Edition",tag:"ERP-bundled SKU",desc:"Contingent module with comprehensive SAP-led ERP integrations included (master data, invoice, HR/worker data; PO & SES at Medium).",tiers:[
+    {s:"S",usd:400,cad:450,wk:24,hr:1150,ph:[2,8,8,4,2],back:["Fieldglass-led integrations — comprehensive package","Master data + invoice integrations implemented","HR (worker/user data) integrations implemented",{x:1,t:"PO/SES, Plant Maintenance, Contract integrations"}]},
+    {s:"M",usd:500,cad:600,wk:36,hr:1500,ph:[2,16,12,4,2],back:["Everything in Small","PO & Service Entry Sheet integrations implemented",{x:1,t:"Plant Maintenance & Contract integrations"}]}],
+   mx:{rows:[["Consulting partner on project & program roadmap",1,1],["Leading practice processes & configuration",1,1],["Dedicated project & functional delivery consultants",1,1],["Project & program governance and maintenance",1,1],["Functional requirement documentation & process flows",1,1],["Design & configuration of the SAP Fieldglass solution",1,1],["Integrations configuration (SAP Fieldglass-led)",1,1],["Implementation of Master Data integrations",1,1],["Implementation of Invoice integrations",1,1],["Implementation of HR (worker/user data) integrations",1,1],["Implementation of PO & Service Entry Sheet integrations",0,1],["Implementation of Plant Maintenance integrations",0,0],["Implementation of Contract integrations",0,0]],cols:2,note:"'HR Mini' is legacy naming — the current Connector Library (2026-05-15) uses User Upload plus the worker/master-data connectors; wording modernized here."}},
+  {id:"serp",name:"SOW ERP Edition",tag:"ERP-bundled SKU",desc:"SOW module with comprehensive SAP-led ERP integrations; Large adds Plant Maintenance and Ariba Contract integrations.",tiers:[
+    {s:"S",usd:400,cad:450,wk:24,hr:1150,ph:[2,8,8,4,2],back:["Fieldglass-led integrations — comprehensive package","Master data + invoice + HR (worker/user) integrations",{x:1,t:"PO/SES, Plant Maintenance, Contract integrations"}]},
+    {s:"M",usd:500,cad:600,wk:36,hr:1480,ph:[2,16,12,4,2],back:["Everything in Small","PO & Service Entry Sheet integrations implemented",{x:1,t:"Plant Maintenance & Contract integrations"}]},
+    {s:"L",usd:600,cad:700,wk:46,hr:1780,ph:[2,22,15,4,3],flags:[{t:"verify",txt:"Detail slide phase row (13w Explore) sums to 37 wk vs stated 46 — overview phases (22w Explore) used here"}],back:["Everything in Medium","Plant Maintenance integrations implemented","Contract (Ariba Contracts → MSOW/CSOW/SOW) integrations implemented"]}],
+   mx:{rows:[["Consulting partner on project & program roadmap",1,1,1],["Leading practice processes & configuration",1,1,1],["Dedicated project & functional delivery consultants",1,1,1],["Project & program governance and maintenance",1,1,1],["Functional requirement documentation & process flows",1,1,1],["Design & configuration of the SAP Fieldglass solution",1,1,1],["Integrations configuration (SAP Fieldglass-led)",1,1,1],["Implementation of Master Data integrations",1,1,1],["Implementation of Invoice integrations",1,1,1],["Implementation of HR (worker/user data) integrations",1,1,1],["Implementation of PO & Service Entry Sheet integrations",0,1,1],["Implementation of Plant Maintenance integrations",0,0,1],["Implementation of Contract integrations",0,0,1]]}}
+ ],
+ expansion:[
+  {id:"ce",name:"Country Expansion",tag:"Existing tenant rollout",desc:"Roll an existing global tenant into additional countries: legally required local deviations from global design (80/20), localized config in test & production, incumbent worker/supplier migration.",tiers:[
+    {s:"S",usd:125,cad:150,wk:14,hr:340,ph:[2,4,4,2,2],back:["Leading practice processes & configuration","Integration configuration","+1 language (translations & custom text)","+5 custom fields · +1 corporate calendar","Approval groups for new currency · ≤3 invoice adjustments · ≤3 pay types",{x:1,t:"Dedicated consultants, governance, FRD, design"},{x:1,t:"Additional user roles, Rate Change Matrix"}]},
+    {s:"M",usd:175,cad:200,wk:18,hr:520,ph:[2,6,6,2,2],back:["Governance, FRD, design & configuration","Integration configuration","+1 language · +10 custom fields · +1 calendar","Currency approval groups · adjustments · pay types","+1 user role",{x:1,t:"Dedicated consultants, Rate Change Matrix"}]},
+    {s:"L",usd:275,cad:300,wk:22,hr:780,ph:[2,8,8,2,2],back:["Dedicated consultants; governance; FRD; design & config","Integration configuration","+1 language · +15 custom fields · +1 calendar","Currency approval groups · adjustments · pay types","+2 user roles · Rate Change Matrix (≤5 variables)"]}],
+   mx:{rows:[["Consulting partner on project & program roadmap",1,1,1],["Leading practice processes & configuration",1,1,1],["Dedicated project & functional delivery consultants",0,0,1],["Project & program governance and maintenance",0,1,1],["Functional requirement documentation & process flows",0,1,1],["Design & configuration of the SAP Fieldglass solution",0,1,1],["Integration configuration",1,1,1],["+1 language (incl. translations & custom text)",1,1,1],["Additional custom fields","5","10","15"],["+1 corporate calendar",1,1,1],["Approval groups for new currency",1,1,1],["Up to 3 additional invoice adjustments",1,1,1],["Up to 3 worker pay types",1,1,1],["Additional user role(s)",0,"1","2"],["Rate Change Matrix (up to 5 variables)",0,0,1]]}},
+  {id:"msp",name:"MSP Transfer Package",tag:"Program transition",desc:"Transition an existing Fieldglass program to a new MSP on the existing tenant — fit-gap, required design changes, and (Medium) invoice integration support plus detailed cutover planning.",tiers:[
+    {s:"S",usd:40,cad:50,wk:8,hr:120,ph:[1,2,1,2,2],back:["Fit-gap analysis led by SAP","Configuration of required design changes","Assumes: existing tenant · mature MSP · static workflow",{x:1,t:"Invoice integration support, cutover planning lead"}]},
+    {s:"M",usd:100,cad:125,wk:12,hr:300,ph:[1,4,3,2,2],back:["Fit-gap + required design changes","Invoice integration support w/ dedicated consultant","SAP leads detailed cutover planning","Assumes: existing tenant · mature or green MSP · minor workflow changes (rate card / JPT updates)"]}],
+   mx:{rows:[["Dedicated project & functional delivery consultants",1,1],["Project & program governance and maintenance",1,1],["Lead fit-gap analysis",1,1],["Configuration of required design changes",1,1],["Invoice integration support w/ dedicated consultant",0,1],["Lead detailed cutover planning activities",0,1],["Key assumptions","Existing tenant · mature MSP · static workflow","Existing tenant · mature/green MSP · minor workflow changes"]],cols:2}}
+ ],
+ integrations:[
+  {id:"ar1",name:"Ariba B&I — Convert Material PO to Service PO",tag:"Existing FG/Ariba",desc:"Reconfigure an existing FG↔Ariba B&I solution from material to services POs, including data-conversion consulting for existing material POs. Flows via SAP Integration Suite, managed gateway for spend management and SAP Business Network.",tiers:[
+    {s:"—",usd:200,cad:225,wk:10,hr:null,ph:[1,2,3,3,1],back:["Dedicated integration & functional consultants (FG + Ariba)","Reconfigure existing solution to support Services PO","Data-conversion consulting for existing material POs","Native functionality + custom fields/extrinsics — basic setup","Unit test + SIT use-case support · go-live warranty"]}],
+   mx:{rows:[["Consulting partner on project & the integrations",1],["Leading practices & industry standards for integrations",1],["Dedicated FG + Ariba integration & functional consultants",1],["Reconfigure existing solution to support Services PO",1],["Consult on data conversion for existing material POs",1],["Basic setup: native fields mapping/layout/ordering + custom fields/extrinsics",1],["Internal unit test + SIT use-case testing support",1],["Warranty support for go-live",1]],cols:1}},
+  {id:"ar2",name:"Ariba B&I — New Service/Material PO (standalone)",tag:"Existing FG/Ariba",desc:"Net-new PO integration for customers already live on both Fieldglass and Ariba. One Ariba realm ↔ one Fieldglass tenant; supports Contingent and SOW modules; multi-line PO not supported in Contingent.",tiers:[
+    {s:"—",usd:175,cad:200,wk:18,hr:null,ph:[2,7,5,2,2],back:["One Ariba realm to one Fieldglass tenant","Supports Contingent & SOW modules (multi-line PO not supported in Contingent)","Master data alignment Ariba ↔ Fieldglass","Supplier setup alignment: SAP Business Network ↔ Fieldglass","Basic setup incl. custom fields/extrinsics · SIT support · go-live warranty"]}],
+   mx:{rows:[["Consulting partner on project & the integrations",1],["Dedicated FG + Ariba integration & functional consultants",1],["Supports one Ariba realm to one Fieldglass tenant",1],["Supports Contingent & SOW modules in Fieldglass",1],["Multi-line PO not supported in Contingent module",1],["Basic setup: native fields + custom fields/extrinsics",1],["Master data alignment between Ariba and Fieldglass",1],["Supplier setup alignment: SAP Business Network ↔ Fieldglass",1],["Internal unit test + SIT support · go-live warranty",1]],cols:1,note:"'Ariba Network' updated to SAP Business Network (rebrand); transport is SAP Integration Suite, managed gateway (CIG successor)."}},
+  {id:"ar3",name:"Ariba B&I — PO integration in a new FG deployment",tag:"Net-new FG",desc:"Service/material PO integration delivered as part of a new Fieldglass deployment (add to the base module T-shirt).",tiers:[
+    {s:"—",usd:150,cad:175,wk:18,hr:null,ph:[2,7,5,2,2],back:["Dedicated FG + Ariba integration & functional consultants","Services PO enablement within the new deployment","Basic setup incl. custom fields/extrinsics","Unit test + SIT use-case support · go-live warranty"]}],
+   mx:{rows:[["Consulting partner on project & the integrations",1],["Leading practices & industry standards for integrations",1],["Dedicated FG + Ariba integration & functional consultants",1],["Configure solution to support Services PO",1],["Basic setup: native fields + custom fields/extrinsics",1],["Internal unit test + SIT use-case testing support",1],["Warranty support for go-live",1]],cols:1,note:"Source slide reuses 'Reconfigure existing solution / material PO data conversion' rows from the conversion package — normalized here for a net-new deployment; confirm intended scope rows with the owner."}},
+  {id:"sf",name:"Integration with SuccessFactors",tag:"FG ↔ SF Employee Central",desc:"Productized FG↔SF EC integration: master data replication EC→FG (prerequisite), Position Management → FG job posting, and worker data FG→EC via SAP Integration Suite iFlows + the SF Standard Worker Upload OData API. Worker export carries a source-system flag for correct SF licensing.",tiers:[
+    {s:"S",usd:100,cad:125,wk:17,hr:280,ph:[3,5,5,3,1],back:["Worker download connectors (FG→EC)","Worker types: select 2 of 3 (Contingent / Profile / SOW)","Connector enablement & handover to SAP Integration Suite (BTP): up to 2 files/destination connectors","Basic setup: native field mapping/layout/ordering + custom fields","Go-live support"]},
+    {s:"M",usd:175,cad:200,wk:22,hr:520,ph:[3,8,6,4,1],flags:[{t:"verify",txt:"Deck marks dedicated FG+SF consultants excluded at Medium (included at S and L) and shows '10+ files' here vs 'up to 5' at Large — both look swapped; corrected file counts shown, confirm both"}],back:["Position-to-Requisition, Worker Download & Master Data connectors","Worker types: up to 3","Connector enablement & handover to BTP: up to 5 files/destination connectors (e.g. 4 master data + 1 worker download)","Basic setup + custom fields · go-live support"]},
+    {s:"L",usd:275,cad:325,wk:26,hr:810,ph:[3,9,7,5,2],flags:[{t:"verify",txt:"Deck shows 'up to 5 files' at Large vs '10+' at Medium — inverted vs size logic; 10+ shown here, confirm"}],back:["Dedicated FG + SF integration & functional consultants","Position-to-Requisition + Worker Download connectors","Worker types: up to 3","Connector enablement & handover to BTP: 10+ files/destination connectors","Basic setup + custom fields · go-live support"]}],
+   mx:{rows:[["Consulting partner on project & the integrations",1,1,1],["Leading practices & industry standards for integrations",1,1,1],["Dedicated FG + SF integration & functional delivery consultants",1,0,1],["Position-to-Requisition & Worker Download connectors","Worker download only","P2R + Worker + Master Data","P2R + Worker Download"],["Applicable worker types (Contingent / Profile / SOW)","Select 2 of 3","Up to 3","Up to 3"],["Connector enablement & handover to SAP Integration Suite (BTP)","≤ 2 files","≤ 5 files (e.g. 4 MD + 1 worker)","10+ files"],["Basic setup: native field mapping/layout/ordering + custom fields (no custom features)",1,1,1],["Go-live support",1,1,1]],note:"Master data replication EC→FG is the prerequisite for the position and worker scenarios; an MDI-based master data path exists (financial master data via MDI comes from S/4HANA only for Cost Center/Legal Entity). IAS/IPS is the recommended user-provisioning approach."}}
+ ],
+ findings:[
+  {k:"verify",w:"Pricing · slides 4 vs 22",h:"Contingent Small price conflict",p:"Overview shows USD 250K / CAD 250K; the Small detail slide shows USD 215K / CAD 240K. Overview values used in this draft — confirm which is current."},
+  {k:"verify",w:"Slide 41",h:"Profile Worker Medium mislabeled",p:"Slide is titled 'Profile Worker – Small T-Shirt' but carries the Medium badge and USD 255K, vs USD 225K on the module overview. Title corrected to Medium; price needs the owner's call."},
+  {k:"verify",w:"Slides 13 / 61 / 62",h:"SF connector file counts appear swapped (M ↔ L)",p:"Published values: Small ≤2, Medium 10+, Large ≤5 (with the 5-file example of 4 master data + 1 worker download). Size logic and the example both point to Medium ≤5 and Large 10+. Corrected in this draft — confirm."},
+  {k:"verify",w:"Slides 13 / 61",h:"SF Medium excludes dedicated consultants",p:"'Dedicated Integration and Functional Delivery Consultants' is marked excluded at Medium while included at both Small and Large — almost certainly a copy error. Left as published in the matrix, flagged inline."},
+  {k:"verify",w:"Slides 8 vs 37",h:"SOW ERP Large phase row doesn't sum to 46 weeks",p:"Detail slide 37 shows Explore 13w (total 37w) against a stated 46-week duration; the overview shows Explore 22w which sums correctly. Overview phasing used here."},
+  {k:"verify",w:"Slides 9 vs 11/47-49",h:"Country tier hours conflict",p:"Categories slide: 450/680/900 hrs. Country Expansion T-shirts: 340/520/780 hrs (durations match at 14/18/22 wks). T-shirt values used — confirm which set reflects current G3 sizing."},
+  {k:"verify",w:"Slide 9",h:"Country list hygiene",p:"Mexico listed twice in Medium; 'Luxemborg' misspelled; Japan appears in Large on the categories slide but not in the Large T-shirt examples; Turkey should be Türkiye per current SAP style. All corrected in this draft."},
+  {k:"verify",w:"Slide 29",h:"SOW Medium lists 'Integration configuration' twice",p:"Once included and once excluded on the same slide. Normalized to the overview matrix — confirm intent."},
+  {k:"verify",w:"Slide 58",h:"New-deployment Ariba slide reuses conversion-package scope rows",p:"'Reconfigure existing solution' and 'material PO data conversion' rows don't fit a net-new FG deployment; likely copied from slide 54. Normalized here — confirm intended scope."},
+  {k:"upd",w:"Slide 56 + Ariba slides",h:"Ariba Network → SAP Business Network; CIG → managed gateway",p:"Supplier/network references updated to SAP Business Network, and the transport described as SAP Integration Suite, managed gateway for spend management and SAP Business Network — the current names throughout the FG↔Ariba Business Synopsis and B&I integration guide."},
+  {k:"upd",w:"Ariba section",h:"Next-gen SAP Ariba qualifier added",p:"Next-gen Ariba is GA on SAP BTP since March 2026 with quarterly releases into 2027 and a committed ≥60% agentic back-port to current-gen. The three Ariba T-shirts assume current-gen B&I — the client's Ariba generation and migration timing is now a scoping variable and is called out in this draft."},
+  {k:"upd",w:"ERP Edition slides",h:"'HR Mini' terminology retired",p:"'HR Mini (worker) integrations' doesn't exist in the current Connector Library (2026-05-15); the HR feed is the User Upload connector plus the worker/master-data connectors. Relabeled 'HR (worker/user data) integrations' with the legacy term noted."},
+  {k:"upd",w:"SF slides",h:"SF integration aligned to current 3-scenario model",p:"Current FG↔SF EC integration: (1) master data EC→FG as prerequisite, (2) Position Management → FG job posting, (3) worker FG→EC via Integration Suite iFlows + SF Standard Worker Upload OData API. Added: MDI-based master data option (S/4-only caveat for financial data), IAS/IPS as recommended user provisioning, and the worker source-system flag that resolves SF licensing double-count."},
+  {k:"upd",w:"Slide 45",h:"Multi-ERP exclusion reworded",p:"The Ariba/Business Network integration now supports multi-ERP routing via child site system IDs, so 'not supported' framing would be wrong; the exclusion stands as 'custom scoping required' because each additional backend roughly doubles backend-side effort while FG/CPI-side work is largely shared."},
+  {k:"upd",w:"Slide 3 + assumptions",h:"Partner-led ≠ Fieldglass-free footnote added",p:"Small tier's 'integration: partner or client self-service' now carries the restricted-activities note (tenant endpoints, Company Configuration, extrinsic fields, Configuration Manager provisioning, mapping spec ownership) per the S/4HANA Implementation Guide — prevents the 'just enable the connector' misread in sales cycles."},
+  {k:"upd",w:"Whole deck",h:"Joule / AI positioning note added (guardrailed)",p:"Deck predates Joule. Added a light-touch note: Ariba intake agent and FG gate-pass time capture GA June 2026, AI-assisted SOW deliverables since Q1 2026 — with the explicit caveat that AI tooling does not shrink integration configuration/mapping scope, and Joule activation path/wave timing is a separate conversation to align with the account team."},
+  {k:"upd",w:"Structural gap",h:"No standalone S/4HANA integration T-shirt",p:"The deck covers standalone Ariba and SF integration T-shirts, but ERP integrations exist only inside the ERP Edition bundles. Existing-FG customers adding the S/4HANA (22K lean services) integration have no T-shirt — recommend adding one parallel to the SF structure: master data via DRF/MDI (prerequisite) + PR/PO/SES/invoice or ERS transactional chain, mandatory joint scoping, and the FG-Services-restricted steps called out. Published specialist benchmarks put such scopes at ~16–24 weeks standard, 9+ months complex/global."},
+  {k:"upd",w:"Slides 2 / 19",h:"Freshness stamps & marketing claims",p:"Version stamp updated to a 2026 draft; slide 19 speaker notes still frame the backend story around SAP ECC (mainstream maintenance ends 2027 — message S/4HANA-first) and cite '100+ countries / 20+ languages / 150+ APIs' — re-pull current figures from sap.com before customer-facing use."}
+ ]
+};
+
+/* =============== RENDER HELPERS =============== */
+const PH_CLS=["ph-prep","ph-exp","ph-real","ph-dep","ph-run"];
+function money(n){return "$"+n+"K";}
+function phaseBar(ph,ctx){const tot=ph.reduce((a,b)=>a+b,0);let acc=0;return `<div class="phasebar">${ph.map((w,i)=>{const a=acc;acc+=w;return `<span class="${PH_CLS[i]}" style="width:${(w/tot*100).toFixed(1)}%" data-tip="${ctx?ctx+" · ":""}${PH_NAMES[i]} · ${w}w (wk ${a}–${acc} of engagement)"></span>`;}).join("")}</div><div class="ph-legend">${ph.map((w,i)=>`<span><i class="${PH_CLS[i]}"></i>${PH_NAMES[i]} ${w}w</span>`).join("")}</div>`;}
+function backList(items){return "<ul>"+items.map(it=>typeof it==="string"?`<li>${it}</li>`:`<li class="${it.x?'ex':'val'}">${it.t}</li>`).join("")+"</ul>";}
+function flags(f){return (f||[]).map(x=>`<span class="chip ${x.t}" title="${x.txt}">${x.t==='verify'?'Verify':'Updated'}</span>`).join("");}
+function flagNotes(f){return (f||[]).map(x=>`<div class="rev-note${x.t==='upd'?' upd':''}">${x.txt}</div>`).join("");}
+
+function tierCard(t,m,i){
+  const sz=t.s==="S"?"Small":t.s==="M"?"Medium":t.s==="L"?"Large":"Fixed scope";
+  const cls=t.s==="—"?"t-M":"t-"+t.s;
+  return `<div class="flip ${cls}">
+    <div class="flip-inner">
+      <div class="face front">
+        <div class="size-row"><span class="badge">${t.s==="—"?"●":t.s}</span><span class="size-name">${sz}${flags(t.flags)}</span></div>
+        <div class="price">${money(t.usd)} <small>USD</small></div>
+        <div class="cad">CAD ${t.cad}K</div>
+        <div class="meta"><span>Duration <b>${t.wk} wks</b></span><span>Hours <b>${t.hr??"n/p"}</b></span></div>
+        ${phaseBar(t.ph,m.name+" — "+sz)}
+        <div class="card-foot"><button class="addbtn" data-mod="${m.id}" data-tier="${i}" aria-label="Add ${m.name} ${sz} to ROM Builder">+ ROM Builder</button><button class="flip-hint" aria-label="Show ${m.name} ${sz} scope details">Flip for scope →</button></div>
+      </div>
+      <div class="face back"><h4>${sz} — scope highlights</h4>${backList(t.back)}<button class="flip-hint" aria-label="Back to ${m.name} ${sz} summary">← Back</button></div>
+    </div>
+  </div>`;
+}
+function matrixTable(mx,tierLetters){
+  const cols=mx.cols||tierLetters.length;
+  const heads=tierLetters.slice(0,cols);
+  const cell=v=>v===1?'<td><span class="yes">✔</span></td>':v===0?'<td><span class="no">✕</span></td>':`<td><span class="vv">${v}</span></td>`;
+  return `<details class="matrix"><summary>Full scope matrix</summary>
+    ${mx.note?`<div class="rev-note">${mx.note}</div>`:""}
+    <div class="tbl-scroll"><table class="mx"><thead><tr><th>Scope item</th>${heads.map(h=>`<th class="c${h}">${h==="—"?"Scope":h}</th>`).join("")}</tr></thead>
+    <tbody>${mx.rows.map(r=>`<tr><td>${r[0]}</td>${r.slice(1,cols+1).map(cell).join("")}</tr>`).join("")}</tbody></table></div></details>`;
+}
+function modBlock(m){
+  const letters=m.tiers.map(t=>t.s);
+  return `<div class="mod" id="mod-${m.id}">
+    <div class="mod-head"><h3>${m.name}</h3><span class="tag">${m.tag}</span></div>
+    <p class="mod-desc">${m.desc}</p>
+    ${m.tiers.map(t=>flagNotes(t.flags)).join("")}
+    <div class="tiers" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));max-width:${m.tiers.length===1?"420px":"none"}">${m.tiers.map((t,i)=>tierCard(t,m,i)).join("")}</div>
+    ${matrixTable(m.mx,letters)}
+  </div>`;
+}
+
+document.getElementById("modArea").innerHTML=D.modules.map(modBlock).join("");
+document.getElementById("expArea").innerHTML=D.expansion.map(modBlock).join("");
+document.getElementById("intArea").innerHTML=D.integrations.map(modBlock).join("");
+/* findings are rendered by renderFindings() below (filterable + resolvable) */
+
+/* =============== FLIP =============== */
+/* whole card is mouse-clickable; keyboard users flip via the .flip-hint buttons (clicks bubble up) */
+document.querySelectorAll(".flip").forEach(el=>{
+  el.addEventListener("click",()=>el.classList.toggle("flipped"));
+});
+
+/* =============== NAV =============== */
+const navBtns=document.querySelectorAll("nav button");
+function showSec(id){
+  navBtns.forEach(x=>x.classList.toggle("active",x.dataset.sec===id));
+  document.querySelectorAll("main section").forEach(s=>s.classList.toggle("active",s.id===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+navBtns.forEach(b=>b.addEventListener("click",()=>showSec(b.dataset.sec)));
+/* cross-tab jump links (glance table, banner CTA, toast) */
+document.addEventListener("click",e=>{
+  const go=e.target.closest("[data-goto]");if(!go)return;
+  showSec(go.dataset.goto);
+  if(go.id==="toastAct")hideToast();
+  if(go.dataset.mod){const el=document.getElementById("mod-"+go.dataset.mod);if(el)setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),250);}
+});
+
+/* =============== REVIEW TOGGLE =============== */
+const rt=document.getElementById("revToggle");
+rt.addEventListener("click",()=>{const on=document.body.classList.toggle("review");rt.setAttribute("aria-pressed",on);});
+
+/* =============== TOAST =============== */
+const toastEl=document.getElementById("toast");let toastT;
+function toast(msg,action){
+  toastEl.innerHTML=msg+(action?` <button id="toastAct" data-goto="${action.goto}">${action.label}</button>`:"");
+  toastEl.classList.add("show");clearTimeout(toastT);toastT=setTimeout(hideToast,4000);
+}
+function hideToast(){toastEl.classList.remove("show");}
+
+/* =============== HOVER TOOLTIPS (timeline & phase bars) =============== */
+const tlTip=document.getElementById("tlTip");
+document.addEventListener("mousemove",e=>{
+  const el=e.target&&e.target.closest?e.target.closest("[data-tip]"):null;
+  if(!el){if(!tlTip.hidden)tlTip.hidden=true;return;}
+  tlTip.textContent=el.dataset.tip;
+  tlTip.hidden=false;
+  const pad=14,r=tlTip.getBoundingClientRect();
+  let x=e.clientX+pad,y=e.clientY+pad;
+  if(x+r.width>innerWidth-8)x=Math.max(8,e.clientX-r.width-pad);
+  if(y+r.height>innerHeight-8)y=Math.max(8,e.clientY-r.height-pad);
+  tlTip.style.left=x+"px";tlTip.style.top=y+"px";
+});
+
+/* =============== BUILDER v2 =============== */
+const CE=D.expansion.find(m=>m.id==="ce");
+const ALL=[...D.modules,...D.expansion.filter(m=>m.id!=="ce"),...D.integrations];
+const SIZE_NAME={S:"Small",M:"Medium",L:"Large","—":"Fixed scope"};
+const IC_IDS=["ar1","ar2","ar3","sf"];
+const ROLES=[["de","Delivery Executive"],["pm","Project Manager"],["ic","Integration Consultant"],["sc","Solution Consultant"],["fc","Functional Consultant"]];
+const RATE_TIERS={T2:185,T3:235,T4:295,G2:75,G3:95,G4:120}; /* placeholder USD/hr from public GSA & market proxies — replace with the official rate card */
+const MIX_DEFAULT={de:7,pm:22,sc:9,fc:40,ic:22}; /* % of ROM hours, derived from the Verizon & IBM ROM role-hour grids */
+const state={cur:"USD",cont:0,staff:{de:1,pm:1,ic:1,sc:1,fc:1},stagger:"auto",custType:"",
+  mix:{...MIX_DEFAULT},parked:{},
+  rates:{de:{tier:"G3",rate:95},pm:{tier:"G3",rate:95},ic:{tier:"G3",rate:95},sc:{tier:"G3",rate:95},fc:{tier:"G3",rate:95}}};
+let LAST={items:[],usd:0,cad:0,hr:0,wkMax:0,n:0,ctyN:0,noHr:false,warns:[]};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtUSD=n=>"$"+Math.round(n).toLocaleString("en-US")+"K";
+const fmtCAD=n=>"C$"+Math.round(n).toLocaleString("en-US")+"K";
+const fmtCur=(u,c)=>state.cur==="USD"?fmtUSD(u):fmtCAD(c);
+
+const groups=[{h:"Base modules (net-new)",items:D.modules},{h:"Expansion & transfer (existing customers)",items:D.expansion},{h:"Integration packages (SAP-led)",items:D.integrations}];
+const pickArea=document.getElementById("pickArea");
+function optLabel(t){return `${t.s==="—"?"Fixed":SIZE_NAME[t.s]} — ${fmtCur(t.usd,t.cad)} · ${t.wk}w${t.hr?` · ${t.hr}h`:""}`;}
+function pickRow(m){
+  const opts=m.tiers.map((t,i)=>`<option value="${i}">${optLabel(t)}</option>`).join("");
+  return `<div class="pick"><input type="checkbox" id="ck-${m.id}" data-id="${m.id}"><label for="ck-${m.id}">${m.name}</label><select id="sz-${m.id}" data-id="${m.id}" aria-label="Size for ${m.name}">${opts}</select><span class="pp" id="pp-${m.id}"></span></div>`;
+}
+function ceRows(){
+  return CE.tiers.map(t=>`<div class="pick"><label for="ceq-${t.s}">Country Expansion — ${SIZE_NAME[t.s]} countries<span class="sub" id="ceSub-${t.s}"></span></label><span class="qty"><button type="button" class="qbtn" data-ce="${t.s}" data-d="-1" aria-label="Remove one ${SIZE_NAME[t.s]} country">−</button><input id="ceq-${t.s}" type="number" min="0" max="20" value="0" inputmode="numeric" aria-label="Number of ${SIZE_NAME[t.s]} countries"><button type="button" class="qbtn" data-ce="${t.s}" data-d="1" aria-label="Add one ${SIZE_NAME[t.s]} country">+</button></span><span class="pp" id="pp-ce${t.s}"></span></div>`).join("");
+}
+pickArea.innerHTML=groups.map(g=>`<div class="pick-group"><h3>${g.h}</h3>${g.items.map(m=>m.id==="ce"?ceRows():pickRow(m)).join("")}</div>`).join("");
+
+/* ---- staffing & stagger (Scope Building tab — internal planning aid) ---- */
+const staffArea=document.getElementById("staffArea");
+staffArea.innerHTML=`<div class="pick-group"><h3>Delivery team</h3>
+${ROLES.map(([id,label])=>`<div class="pick"><label for="st-${id}">${label}${id==="fc"?'<span class="sub">Drives module/expansion parallelism — each FC works one engagement at a time</span>':id==="ic"?'<span class="sub">Drives integration-package parallelism</span>':""}</label><span class="qty"><button type="button" class="qbtn" data-st="${id}" data-d="-1" aria-label="Remove one ${label}">−</button><input id="st-${id}" type="number" min="0" max="10" value="1" inputmode="numeric" aria-label="Number of ${label}s"><button type="button" class="qbtn" data-st="${id}" data-d="1" aria-label="Add one ${label}">+</button></span></div>`).join("")}
+<div class="pick"><label for="stagSel">Stagger between engagements<span class="sub">How the next engagement in a lane starts relative to the prior one</span></label><select id="stagSel" aria-label="Stagger mode"><option value="auto">Auto — next starts at prior's Deploy</option>${[0,10,20,25,30,40,50].map(v=>`<option value="${v}">${v}% overlap</option>`).join("")}</select></div>
+<p class="staff-note">DE / PM / SC counts are informational for now (they flow into scenarios and the Excel export); FC and Integration Consultant counts drive the staged schedule. Rates intentionally omitted pending rate-card confirmation.</p></div>`;
+/* mix reallocation: zeroing a role's count parks its mix % onto FC (or spreads it
+   proportionally if FC is also 0); restoring the count takes exactly that share back */
+function parkMix(id){
+  const amt=state.mix[id]||0;
+  const others=ROLES.map(([rid])=>rid).filter(rid=>rid!==id&&state.staff[rid]>0);
+  if(!amt||!others.length){state.parked[id]={};return;}
+  const rec={};
+  if(id!=="fc"&&state.staff.fc>0){
+    rec.fc=amt;state.mix.fc+=amt;
+  }else{
+    const tot=others.reduce((a,rid)=>a+(state.mix[rid]||0),0);
+    let rem=amt;
+    others.forEach((rid,i)=>{
+      const share=i===others.length-1?rem:(tot>0?Math.round(amt*(state.mix[rid]||0)/tot):Math.round(amt/others.length));
+      if(share>0){rec[rid]=(rec[rid]||0)+share;state.mix[rid]+=share;rem-=share;}
+    });
+  }
+  state.mix[id]=0;
+  state.parked[id]=rec;
+}
+function unparkMix(id){
+  const rec=state.parked[id];if(!rec)return;
+  let back=0;
+  Object.entries(rec).forEach(([rid,amt])=>{
+    const take=Math.min(amt,state.mix[rid]||0);
+    state.mix[rid]-=take;back+=take;
+  });
+  state.mix[id]=(state.mix[id]||0)+back;
+  delete state.parked[id];
+}
+function parkedNoteText(){
+  return Object.entries(state.parked).filter(([,rec])=>Object.keys(rec).length).map(([rid,rec])=>{
+    const rn=ROLES.find(([i])=>i===rid)[1];
+    const to=Object.entries(rec).map(([tid,amt])=>`${amt}% → ${ROLES.find(([i])=>i===tid)[1]}`).join(", ");
+    return `${rn}: ${to}`;
+  }).join("; ");
+}
+function updateRateRowStates(){
+  ROLES.forEach(([id])=>{
+    const off=state.staff[id]===0;
+    ["mx-","rt-","rr-"].forEach(p=>{const el=document.getElementById(p+id);if(el)el.disabled=off;});
+    const row=document.getElementById("rrow-"+id);if(row)row.classList.toggle("zeroed",off);
+  });
+}
+/* mix park/unpark compares against a committed baseline (not transient typed values):
+   'input' events give live schedule feedback without touching the mix; 'change'/steppers commit */
+let staffBaseline={de:1,pm:1,ic:1,sc:1,fc:1};
+function syncStaff(track){
+  ROLES.forEach(([id])=>{const el=document.getElementById("st-"+id);const v=Math.min(10,Math.max(0,Math.round(+el.value||0)));if(track)el.value=v;state.staff[id]=v;});
+  state.stagger=document.getElementById("stagSel").value;
+  if(track){
+    ROLES.forEach(([id])=>{
+      if(staffBaseline[id]>0&&state.staff[id]===0)parkMix(id);
+      else if(staffBaseline[id]===0&&state.staff[id]>0)unparkMix(id);
+    });
+    staffBaseline={...state.staff};
+    ROLES.forEach(([rid])=>{const el=document.getElementById("mx-"+rid);if(el)el.value=state.mix[rid]||0;});
+  }
+  updateRateRowStates();
+}
+staffArea.addEventListener("click",e=>{
+  const b=e.target.closest(".qbtn[data-st]");if(!b)return;
+  const inp=document.getElementById("st-"+b.dataset.st);
+  inp.value=Math.min(10,Math.max(0,(+inp.value||0)+(+b.dataset.d)));
+  syncStaff(true);recalc();saveState();
+});
+staffArea.addEventListener("change",()=>{syncStaff(true);recalc();saveState();});
+/* live feedback while typing counts — schedule updates immediately; mix parking waits for commit (blur/Enter) */
+staffArea.addEventListener("input",e=>{if(e.target.matches('input[type="number"]')){syncStaff(false);recalc();}});
+
+/* ---- indicative rates & cost buildup (Scope Building — internal, placeholder rates) ---- */
+const rateArea=document.getElementById("rateArea");
+rateArea.innerHTML=`<div class="pick-group"><h3>Indicative rates &amp; cost buildup <span style="text-transform:none;font-weight:400;letter-spacing:normal">(internal · placeholder rates)</span></h3>
+<div class="tbl-scroll"><table class="mx rate-t"><thead><tr><th>Role</th><th>Mix %</th><th>Hours</th><th>Tier</th><th>Rate $/hr</th><th>Cost</th></tr></thead><tbody>
+${ROLES.map(([id,label])=>`<tr id="rrow-${id}"><td>${label}</td><td><input id="mx-${id}" type="number" min="0" max="100" value="${state.mix[id]}" aria-label="${label} share of ROM hours"></td><td id="rh-${id}">—</td><td><select id="rt-${id}" aria-label="${label} rate tier">${Object.keys(RATE_TIERS).map(t=>`<option value="${t}">${t}</option>`).join("")}</select></td><td><input id="rr-${id}" type="number" min="0" max="1000" value="${state.rates[id].rate}" aria-label="${label} hourly rate"></td><td id="rc-${id}">—</td></tr>`).join("")}
+<tr class="rtot"><td>Total</td><td id="mxTot">—</td><td id="rhTot">—</td><td></td><td></td><td id="rcTot">—</td></tr>
+</tbody></table></div>
+<p class="staff-note" id="rateNote"></p></div>`;
+ROLES.forEach(([id])=>{document.getElementById("rt-"+id).value=state.rates[id].tier;});
+/* largest-remainder split so role hours always sum exactly to round(basis × mixSum/100) */
+function mixSplit(hrs){
+  const entries=ROLES.map(([id])=>{const mix=Math.max(0,Math.min(100,+document.getElementById("mx-"+id).value||0));return {id,mix,exact:hrs*mix/100};});
+  const mixSum=entries.reduce((a,e)=>a+e.mix,0);
+  const target=Math.round(hrs*mixSum/100);
+  const hs={};let acc=0;
+  entries.forEach(e=>{hs[e.id]=Math.floor(e.exact);acc+=hs[e.id];});
+  let rem=target-acc;
+  [...entries].sort((a,b)=>(b.exact-Math.floor(b.exact))-(a.exact-Math.floor(a.exact))).forEach(e=>{if(rem>0){hs[e.id]++;rem--;}});
+  return {hs,mixSum};
+}
+function updateRateCalc(){
+  const hrs=LAST.hr||0;
+  const {hs,mixSum}=mixSplit(hrs);
+  let costT=0,hrT=0;
+  ROLES.forEach(([id])=>{
+    const rate=Math.max(0,+document.getElementById("rr-"+id).value||0);
+    const h=hs[id],c0=h*rate;
+    hrT+=h;costT+=c0;
+    document.getElementById("rh-"+id).textContent=h?h.toLocaleString("en-US"):"—";
+    document.getElementById("rc-"+id).textContent=c0?"$"+c0.toLocaleString("en-US"):"—";
+  });
+  document.getElementById("mxTot").textContent=mixSum+"%";
+  document.getElementById("rhTot").textContent=hrT?hrT.toLocaleString("en-US"):"—";
+  document.getElementById("rcTot").textContent=costT?"$"+costT.toLocaleString("en-US"):"—";
+  const tp=LAST.usd*1000,delta=tp&&costT?Math.round((costT-tp)/tp*100):null;
+  const contTag=state.cont>0?" (excl. contingency)":"";
+  document.getElementById("rateNote").innerHTML=
+    (mixSum!==100?`⚠ Role mix sums to ${mixSum}% — adjust to 100%. `:"")+
+    (hrs?`Basis: ${hrs.toLocaleString("en-US")} ROM hours${contTag}${LAST.noHr?" — Ariba B&amp;I packages publish no hours and are excluded":""}. Indicative services cost ${costT?"$"+costT.toLocaleString("en-US"):"—"} vs ${state.cont>0?"base ":""}T-shirt price ${fmtUSD(LAST.usd)}${delta!=null?` (${delta>=0?"+":""}${delta}%)`:""}. `:LAST.items.length?"Selected packages publish no hours (Ariba B&amp;I) — no hour-based cost buildup applies. ":"Select components in the ROM Builder to build up cost. ")+
+    (parkedNoteText()?`Auto-reallocated from zero-count roles — ${parkedNoteText()} (restore the role's count to take its share back). `:"")+
+    `Mix defaults derived from the Verizon/IBM ROM role-hour grids; rates are public-market placeholders (all roles default G3 — "G3 unless determined otherwise by SAP sales") — replace when the official rate card is confirmed.`;
+  updateRateRowStates();
+}
+rateArea.addEventListener("change",e=>{
+  const t=e.target;
+  ROLES.forEach(([id])=>{
+    if(t.id==="rt-"+id){state.rates[id].tier=t.value;const inp=document.getElementById("rr-"+id);inp.value=RATE_TIERS[t.value];state.rates[id].rate=RATE_TIERS[t.value];}
+    if(t.id==="rr-"+id){state.rates[id].rate=Math.max(0,+t.value||0);t.value=state.rates[id].rate;}
+    if(t.id==="mx-"+id){state.mix[id]=Math.max(0,Math.min(100,Math.round(+t.value||0)));t.value=state.mix[id];}
+  });
+  updateRateCalc();saveState();
+});
+rateArea.addEventListener("input",e=>{if(e.target.matches("input"))updateRateCalc();});
+
+/* ---- customer type filter + existing landscape ---- */
+const CT_LABEL={new:"Net-new customer",existing:"Existing customer"};
+const LAND_IDS=["landTen","landConsol","landInts","landCustomInts","landCty","landWorkers","landAlign"];
+const LIVE_IDS=["liveCont","liveSow","livePw"];
+const LIVE_MAP={liveCont:"cont",liveSow:"sow",livePw:"pw"};
+const CONSOL_LABEL={keep:"keep tenants separate",merge:"merge into one existing tenant",newt:"net-new consolidated tenant"};
+const liveOn=id=>document.getElementById(id).checked;
+const liveModuleIds=()=>LIVE_IDS.filter(liveOn).map(id=>LIVE_MAP[id]);
+/* indicative complexity from the drivers evidenced in delivered consolidation ROMs */
+function consolComplexity(){
+  const v=id=>+document.getElementById(id).value||0;
+  let s=0;
+  const ints=v("landInts");if(ints>75)s+=2;else if(ints>=25)s+=1;
+  const ci=v("landCustomInts");if(ci>10)s+=2;else if(ci>=3)s+=1;
+  const ten=v("landTen");if(ten>=4)s+=2;else if(ten>=2)s+=1;
+  const cty=v("landCty");if(cty>10)s+=2;else if(cty>=4)s+=1;
+  const wk=v("landWorkers");if(wk>10000)s+=2;else if(wk>=1000)s+=1;
+  const al=document.getElementById("landAlign").value;if(al==="divergent")s+=2;else if(al==="partial")s+=1;
+  return s>=6?"High":s>=3?"Medium":"Low";
+}
+function updateConsolMeter(){
+  const el=document.getElementById("consolMeter");if(!el)return;
+  if(state.custType!=="existing"){el.textContent="";return;}
+  el.innerHTML=`Indicative consolidation/expansion complexity: <b>${consolComplexity()}</b>. Reference points from one delivered program (internal only, not pricing): merge into an existing tenant ≈ 1.6K hrs · net-new consolidated tenant ≈ 5.2K hrs · multi-tenant expansion ≈ 6.4K hrs.`;
+}
+function applyCustFilter(){
+  const ct=state.custType;
+  const naNew=["ar1","ar2","msp"];
+  const anyLive=LIVE_IDS.some(liveOn);
+  ALL.forEach(m=>{
+    const ck=document.getElementById("ck-"+m.id),sel=document.getElementById("sz-"+m.id);
+    let na=false,why="";
+    if(ct==="new"&&naNew.includes(m.id)){na=true;why="Aimed at existing customers — greyed for a net-new customer";}
+    else if(ct==="existing"){
+      if(m.id==="ar3"){na=true;why="Applies to a net-new FG deployment — for an existing tenant use the standalone Ariba package";}
+      else if(liveModuleIds().includes(m.id)){na=true;why="Marked live today — re-implementing a live module isn't a T-shirt scenario";}
+      else if((m.id==="cerp"||m.id==="serp")&&anyLive){na=true;why="ERP Editions bundle net-new tenant setup — with modules already live, use the module T-shirt + integration packages instead";}
+    }
+    const dim=na&&!ck.checked;
+    ck.disabled=dim;sel.disabled=dim;
+    const row=ck.closest(".pick");
+    row.classList.toggle("na",dim);
+    row.title=dim?why:"";
+  });
+  document.getElementById("landPanel").hidden=ct!=="existing";
+  updateConsolMeter();
+}
+document.getElementById("custType").addEventListener("change",()=>{
+  state.custType=document.getElementById("custType").value;
+  applyCustFilter();recalc();saveState();
+});
+[...LAND_IDS,...LIVE_IDS].forEach(id=>document.getElementById(id).addEventListener("change",()=>{recalc();saveState();}));
+
+/* ---- persistence ---- */
+const LS_KEY="fgROM26.builder",LS_FND="fgROM26.findings";
+const META_IDS=["mCust","mReqBy","mPrep","mDate","mRef","mNotes"];
+function buildState(){
+  const s={cur:state.cur,cont:state.cont,stagger:state.stagger,staff:{...state.staff},custType:state.custType,mix:{...state.mix},rates:JSON.parse(JSON.stringify(state.rates)),ck:{},sz:{},ce:{},meta:{},land:{}};
+  ALL.forEach(m=>{s.ck[m.id]=document.getElementById("ck-"+m.id).checked;s.sz[m.id]=+document.getElementById("sz-"+m.id).value;});
+  CE.tiers.forEach(t=>s.ce[t.s]=+document.getElementById("ceq-"+t.s).value||0);
+  META_IDS.forEach(id=>s.meta[id]=document.getElementById(id).value);
+  LAND_IDS.forEach(id=>s.land[id]=document.getElementById(id).value);
+  s.live={};LIVE_IDS.forEach(id=>s.live[id]=document.getElementById(id).checked);
+  s.parked=JSON.parse(JSON.stringify(state.parked));
+  return s;
+}
+function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(buildState()));}catch(e){/* private mode / storage blocked — selections just won't persist */}}
+function applyState(s){
+  if(!s)return;
+  state.cur=s.cur==="CAD"?"CAD":"USD";
+  state.cont=Math.min(30,Math.max(0,+s.cont||0));
+  ALL.forEach(m=>{
+    document.getElementById("ck-"+m.id).checked=!!(s.ck&&s.ck[m.id]);
+    const i=s.sz?+s.sz[m.id]:0;
+    document.getElementById("sz-"+m.id).value=(Number.isInteger(i)&&i>=0&&i<m.tiers.length)?i:0;
+  });
+  CE.tiers.forEach(t=>{document.getElementById("ceq-"+t.s).value=(s.ce&&s.ce[t.s])?Math.min(20,Math.max(0,+s.ce[t.s]||0)):0;});
+  if(s.meta)META_IDS.forEach(id=>{if(s.meta[id]!=null)document.getElementById(id).value=s.meta[id];});
+  ROLES.forEach(([id])=>{if(s.staff&&Number.isFinite(+s.staff[id]))document.getElementById("st-"+id).value=Math.min(10,Math.max(0,+s.staff[id]));});
+  const sg=document.getElementById("stagSel");
+  if(s.stagger!=null&&[...sg.options].some(o=>o.value===String(s.stagger)))sg.value=String(s.stagger);
+  state.custType=(s.custType==="new"||s.custType==="existing")?s.custType:"";
+  document.getElementById("custType").value=state.custType;
+  if(s.land)LAND_IDS.forEach(id=>{if(s.land[id]!=null)document.getElementById(id).value=s.land[id];});
+  else LAND_IDS.forEach(id=>{document.getElementById(id).value=id==="landTen"?"1":"";});
+  LIVE_IDS.forEach(id=>{document.getElementById(id).checked=!!(s.live&&s.live[id]);});
+  if(s.mix)ROLES.forEach(([id])=>{if(Number.isFinite(+s.mix[id])){state.mix[id]=Math.max(0,Math.min(100,+s.mix[id]));document.getElementById("mx-"+id).value=state.mix[id];}});
+  if(s.rates)ROLES.forEach(([id])=>{const r=s.rates[id];if(r){if(RATE_TIERS[r.tier]!=null){state.rates[id].tier=r.tier;document.getElementById("rt-"+id).value=r.tier;}if(Number.isFinite(+r.rate)){state.rates[id].rate=Math.max(0,+r.rate);document.getElementById("rr-"+id).value=state.rates[id].rate;}}});
+  state.parked=(s.parked&&typeof s.parked==="object")?JSON.parse(JSON.stringify(s.parked)):{};
+  applyCustFilter();
+  syncStaff();staffBaseline={...state.staff};syncCurBtns();
+  contR.value=state.cont;document.getElementById("contV").textContent=state.cont+"%";
+}
+function loadState(){try{const s=JSON.parse(localStorage.getItem(LS_KEY)||"null");if(s)applyState(s);}catch(e){}}
+
+/* ---- combination-rule validation ---- */
+function calcWarns(){
+  const on=id=>{const el=document.getElementById("ck-"+id);return !!el&&el.checked;};
+  const baseAny=D.modules.some(m=>on(m.id));
+  const w=[];
+  if(on("ar3")&&!baseAny)w.push("“Ariba B&I — PO integration in a new FG deployment” is priced to ride on a net-new module implementation. Add a base module T-shirt, or use the standalone Ariba package for existing customers.");
+  if((on("ar1")||on("ar2"))&&baseAny)w.push("The standalone Ariba B&I packages assume a customer already live on Fieldglass and Ariba. For a net-new deployment, use “PO integration in a new FG deployment” instead.");
+  if(on("cerp")&&on("cont"))w.push("Contingent ERP Edition already includes the Contingent module — selecting both double-counts scope.");
+  if(on("serp")&&on("sow"))w.push("SOW ERP Edition already includes the SOW module — selecting both double-counts scope.");
+  if(on("msp")&&baseAny)w.push("MSP Transfer assumes an existing tenant and a mature program; pairing it with a net-new module implementation is unusual — confirm sequencing in scoping.");
+  if(state.custType==="existing"){
+    liveModuleIds().forEach(mid=>{
+      if(on(mid))w.push(`${D.modules.find(m=>m.id===mid).name} is marked live today — re-implementing a live module isn't a T-shirt scenario; consider Country Expansion, integration packages, or consolidation scoping.`);
+    });
+    const expansion=D.modules.filter(m=>on(m.id)&&!liveModuleIds().includes(m.id)&&m.id!=="cerp"&&m.id!=="serp");
+    if(expansion.length&&LIVE_IDS.some(liveOn))w.push(`Module expansion onto the existing tenant (${expansion.map(m=>m.name).join(", ")}) — tenant setup/governance already exists, so scoping may trim the T-shirt; confirm with the deck owner.`);
+    if((on("cerp")||on("serp"))&&LIVE_IDS.some(liveOn))w.push("ERP Editions bundle net-new tenant setup — with modules already live, prefer module T-shirt + integration packages; confirm in scoping.");
+  }
+  if(state.custType==="new"&&(on("ar1")||on("ar2")||on("msp")))w.push("Customer type is Net-new, but existing-customer packages are selected (standalone Ariba B&I / MSP Transfer) — confirm intent.");
+  const lc=document.getElementById("landConsol");
+  if(state.custType==="existing"&&lc&&lc.value&&lc.value!=="keep")w.push(`Tenant consolidation (${CONSOL_LABEL[lc.value]}) has no T-shirt — custom scoping required, including an integration-inventory review across tenants.`);
+  const ceAny=CE.tiers.some(t=>+document.getElementById("ceq-"+t.s).value>0);
+  if(state.custType==="new"&&ceAny&&!baseAny)w.push("Country Expansion for a net-new customer only makes sense alongside a base module implementation — add a module T-shirt or mark the customer as Existing.");
+  return w;
+}
+
+/* ---- recalc ---- */
+function recalc(){
+  applyCustFilter(); /* re-evaluate greying on every state change (uncheck, reset, add-to-builder, qty) */
+  let usd=0,cad=0,hr=0,wkMax=0,n=0,noHr=false;const items=[];
+  ALL.forEach(m=>{
+    const ck=document.getElementById("ck-"+m.id),sel=document.getElementById("sz-"+m.id),pp=document.getElementById("pp-"+m.id);
+    [...sel.options].forEach((o,i)=>o.textContent=optLabel(m.tiers[i]));
+    const t=m.tiers[+sel.value];
+    pp.textContent=ck.checked?`${fmtCur(t.usd,t.cad)} · ${t.wk}w`:"";
+    if(ck.checked){
+      n++;usd+=t.usd;cad+=t.cad;wkMax=Math.max(wkMax,t.wk);
+      if(t.hr==null)noHr=true;else hr+=t.hr;
+      items.push({mid:m.id,name:m.name,tier:t.s==="—"?"Fixed scope":SIZE_NAME[t.s],usd:t.usd,cad:t.cad,hr:t.hr,wk:t.wk,ph:t.ph,back:t.back,flags:t.flags,qty:1});
+    }
+  });
+  let ctyN=0;
+  CE.tiers.forEach(t=>{
+    const inp=document.getElementById("ceq-"+t.s);
+    const q=Math.min(20,Math.max(0,Math.round(+inp.value||0)));
+    inp.value=q;
+    document.getElementById("ceSub-"+t.s).textContent=`${fmtCur(t.usd,t.cad)} · ${t.hr}h · ${t.wk}w per country`;
+    document.getElementById("pp-ce"+t.s).textContent=q>0?`${q} × ${fmtCur(t.usd,t.cad)} = ${fmtCur(q*t.usd,q*t.cad)}`:"";
+    if(q>0){
+      ctyN+=q;usd+=q*t.usd;cad+=q*t.cad;hr+=q*t.hr;wkMax=Math.max(wkMax,t.wk);
+      items.push({mid:"ce",size:SIZE_NAME[t.s],name:"Country Expansion",tier:`${SIZE_NAME[t.s]} × ${q}`,usd:q*t.usd,cad:q*t.cad,hr:q*t.hr,wk:t.wk,ph:t.ph,back:t.back,flags:t.flags,qty:q});
+    }
+  });
+  LAST={items,usd,cad,hr,wkMax,n:n+ctyN,ctyN,noHr,warns:calcWarns()};
+  LAST.sched=buildSchedule();
+  renderTotals();renderScope();updateRateCalc();
+  document.getElementById("warnBox").innerHTML=LAST.warns.map(w=>`<div class="w">⚠ ${w}</div>`).join("");
+  document.getElementById("genBtn").disabled=!items.length;
+  document.getElementById("xlsBtn").disabled=!items.length;
+  staleCheck();announce();renderCompare();
+}
+
+/* ---- staged scheduling (Scope Building — internal planning aid) ----
+   Dependency model mirrors delivered FG programs (ADP / Verizon plans):
+   integration prep can only start once a requirements foundation exists
+   (~mid-Explore of the lead module); final integration build & SIT depend on
+   the FC-configured test environment, so integrations are scheduled BACKWARD
+   from the joint go-live (program end minus Run/hypercare) rather than
+   independently. Standalone integrations (no base module) schedule forward. */
+function buildSchedule(){
+  const tasks=[];
+  LAST.items.forEach(it=>{
+    const laneType=IC_IDS.includes(it.mid)?"ic":"fc";
+    for(let k=0;k<it.qty;k++){
+      tasks.push({mid:it.mid,name:it.qty>1?`${it.name} — ${it.size} (${k+1}/${it.qty})`:`${it.name} — ${it.tier}`,wk:it.wk,ph:it.ph,laneType,hr:it.hr!=null?Math.round(it.hr/it.qty):null});
+    }
+  });
+  const fcN=Math.max(1,state.staff.fc),icN=Math.max(1,state.staff.ic);
+  const mk=(n,tag)=>Array.from({length:n},(_,i)=>({label:`${tag} ${i+1}`,nextStart:0,prevStart:null,end:0}));
+  const lanes={fc:mk(fcN,"FC"),ic:mk(icN,"INT")};
+  const sched=[];
+  const fwdOff=t=>state.stagger==="auto"?(t.ph[0]+t.ph[1]+t.ph[2]):Math.round(t.wk*(1-(+state.stagger)/100));
+  /* FC lanes — forward, longest first */
+  tasks.filter(t=>t.laneType==="fc").sort((a,b)=>b.wk-a.wk).forEach(t=>{
+    const lane=lanes.fc.reduce((a,b)=>b.nextStart<a.nextStart?b:a);
+    t.start=lane.nextStart;t.end=t.start+t.wk;t.lane=lane.label;
+    lane.nextStart=t.start+Math.max(1,fwdOff(t));
+    lane.end=Math.max(lane.end,t.end);
+    sched.push(t);
+  });
+  const fcTasks=sched.filter(t=>t.laneType==="fc");
+  /* anchor = earliest-starting base-module engagement (a longer CE/MSP may own wk 0) */
+  const modTasks=fcTasks.filter(t=>D.modules.some(m=>m.id===t.mid));
+  const anchor=modTasks.length?modTasks.reduce((a,b)=>b.start<a.start?b:a):null;
+  const goLiveFc=fcTasks.length?Math.max(...fcTasks.map(t=>t.end-t.ph[4])):0;
+  const foundation=anchor?anchor.start+anchor.ph[0]+Math.ceil(anchor.ph[1]/2):0;
+  let squeeze=0,icOver=false;
+  const icQueue=tasks.filter(t=>t.laneType==="ic").sort((a,b)=>b.wk-a.wk);
+  if(anchor&&icQueue.length){
+    /* anchored: align each integration's go-live (end − Run) to the FC go-live,
+       gated on the requirements foundation */
+    icQueue.forEach(t=>{
+      const lane=lanes.ic.reduce((a,b)=>((b.prevStart==null?Infinity:b.prevStart)>(a.prevStart==null?Infinity:a.prevStart))?b:a);
+      /* allowance mirrors the forward rule: the earlier engagement (t, being placed) may
+         overlap the later one by t's own Deploy+Run (auto) or t's own overlap % */
+      let end=lane.prevStart==null?goLiveFc+t.ph[4]:lane.prevStart+(state.stagger==="auto"?(t.ph[3]+t.ph[4]):Math.round(t.wk*(+state.stagger)/100));
+      let start=end-t.wk;
+      if(start<foundation){
+        const endBefore=end;
+        start=foundation;end=start+t.wk;
+        squeeze=Math.max(squeeze,(end-t.ph[4])-goLiveFc);
+        if(lane.prevStart!=null&&end>endBefore)icOver=true;
+      }
+      t.start=start;t.end=end;t.lane=lane.label;
+      lane.prevStart=start;
+      lane.end=Math.max(lane.end,end);
+      sched.push(t);
+    });
+  }else{
+    /* standalone integrations (existing customer, no net-new module) — forward */
+    icQueue.forEach(t=>{
+      const lane=lanes.ic.reduce((a,b)=>b.nextStart<a.nextStart?b:a);
+      t.start=lane.nextStart;t.end=t.start+t.wk;t.lane=lane.label;
+      lane.nextStart=t.start+Math.max(1,fwdOff(t));
+      lane.end=Math.max(lane.end,t.end);
+      sched.push(t);
+    });
+  }
+  sched.sort((a,b)=>a.lane===b.lane?a.start-b.start:a.lane.localeCompare(b.lane,undefined,{numeric:true}));
+  const totalWk=sched.length?Math.max(...sched.map(t=>t.end)):0;
+  let goLive=null;
+  if(fcTasks.length){
+    goLive=goLiveFc;
+    if(anchor)sched.filter(t=>t.laneType==="ic").forEach(t=>{goLive=Math.max(goLive,t.end-t.ph[4]);});
+  }
+  const staffWarns=[];
+  if(state.staff.fc===0&&tasks.some(t=>t.laneType==="fc"))staffWarns.push("No Functional Consultant assigned — the schedule assumes one FC lane. Add FC staffing for a realistic plan.");
+  if(state.staff.ic===0&&tasks.some(t=>t.laneType==="ic"))staffWarns.push("No Integration Consultant assigned — integration packages are scheduled on one assumed integration lane.");
+  if(squeeze>0)staffWarns.push(`Integration runway is tight: integration work can't start before the requirements foundation (wk ${foundation}), which pushes the joint go-live out by ~${squeeze} wk${squeeze>1?"s":""}. Consider more Integration Consultants or an earlier requirements track.`);
+  if(icOver)staffWarns.push(`With ${state.staff.ic||1} Integration Consultant${(state.staff.ic||1)>1?"s":""}, integration engagements overlap beyond the stagger allowance (the same resource is double-booked). Add Integration Consultants or plan staggered integration go-lives.`);
+  const laneList=[...lanes.fc.map(l=>({label:l.label,type:"fc"})),...lanes.ic.map(l=>({label:l.label,type:"ic"}))];
+  return {tasks:sched,totalWk,fcN,icN,staffWarns,goLive,anchored:!!anchor,foundation:anchor?foundation:null,lanes:laneList};
+}
+let srScopeT;
+function renderScope(){
+  const S=LAST.sched,body=document.getElementById("schedBody"),g=document.getElementById("ganttMod");
+  document.getElementById("staffWarnBox").innerHTML=S.staffWarns.map(w=>`<div class="w">⚠ ${w}</div>`).join("");
+  clearTimeout(srScopeT);
+  srScopeT=setTimeout(()=>{document.getElementById("srLiveScope").textContent=S.tasks.length?`Staged schedule updated: about ${S.totalWk} weeks on ${S.fcN} FC lane${S.fcN>1?"s":""} and ${S.icN} integration lane${S.icN>1?"s":""}${S.staffWarns.length?`, ${S.staffWarns.length} staffing warning${S.staffWarns.length>1?"s":""}`:""}.`:"No components selected for scheduling.";},700);
+  if(!S.tasks.length){
+    body.innerHTML='<div class="tot-empty">Select components in the ROM Builder to model a schedule.</div>';
+    g.hidden=true;return;
+  }
+  const delta=S.totalWk-LAST.wkMax;
+  const hasIc=S.tasks.some(t=>t.laneType==="ic");
+  body.innerHTML=`
+    <div class="tot-line big"><span>Staged duration</span><b>~${S.totalWk} wks</b></div>
+    ${S.goLive!=null?`<div class="tot-line"><span>${S.anchored&&hasIc?"Joint go-live (FCs + integrations)":"Final FC go-live"}</span><b>wk ${S.goLive}</b></div>`:""}
+    ${S.foundation!=null&&hasIc?`<div class="tot-line"><span>Integration start gate (req. foundation)</span><b>wk ${S.foundation}</b></div>`:""}
+    <div class="tot-line"><span>T-shirt duration (parallel, RFP standard)</span><b>~${LAST.wkMax} wks</b></div>
+    <div class="tot-line"><span>Schedule stretch vs parallel</span><b>${delta>0?"+"+delta+" wks":"none"}</b></div>
+    <div class="tot-line"><span>FC lanes</span><b>${S.fcN}</b></div>
+    <div class="tot-line"><span>Integration lanes</span><b>${S.icN}</b></div>
+    <div class="tot-line"><span>Engagements scheduled</span><b>${S.tasks.length}</b></div>`;
+  const totW=Math.max(1,S.totalWk);
+  const glMark=S.goLive!=null?`<span class="tl-gl" style="left:${(S.goLive/totW*100).toFixed(1)}%" data-tip="${S.anchored&&hasIc?"Joint go-live":"Final FC go-live"} — wk ${S.goLive}"></span>`:"";
+  const idleRows=S.lanes.filter(l=>!S.tasks.some(t=>t.lane===l.label)).map(l=>`<div class="tl-row idle"><span class="tl-name"><i class="tl-lane${l.type==="ic"?" int":""}">${l.label}</i><span class="idle-txt">idle — no engagement assigned</span></span><div class="tl-track"></div><span class="tl-wk">—</span></div>`).join("");
+  document.getElementById("ganttArea").innerHTML=S.tasks.map(t=>{
+    const wtot=t.ph.reduce((a,b)=>a+b,0);
+    let acc=0;
+    const segs=t.ph.map((w,i)=>{
+      const a=t.start+Math.round(acc/wtot*t.wk);acc+=w;
+      const b=t.start+Math.round(acc/wtot*t.wk);
+      return `<span class="${PH_CLS[i]}" style="width:${(w/wtot*100).toFixed(1)}%" data-tip="${t.name} · ${PH_NAMES[i]} · wk ${a}–${b}"></span>`;
+    }).join("");
+    return `<div class="tl-row"><span class="tl-name" title="${t.name}"><i class="tl-lane${t.laneType==="ic"?" int":""}">${t.lane}</i>${t.name}</span><div class="tl-track">${glMark}<div class="tl-bar" style="margin-left:${(t.start/totW*100).toFixed(1)}%;width:${(t.wk/totW*100).toFixed(1)}%" data-tip="${t.name} · ${t.lane} · wk ${t.start}–${t.end} (${t.wk} wks)">${segs}</div></div><span class="tl-wk">wk ${t.start}–${t.end}</span></div>`;
+  }).join("")+idleRows;
+  const multiPerLane=S.lanes.some(l=>S.tasks.filter(t=>t.lane===l.label).length>1);
+  document.getElementById("ganttFine").textContent=`Scheduled across ~${S.totalWk} weeks on ${S.fcN} FC lane${S.fcN>1?"s":""} (modules, expansion & MSP) and ${S.icN} integration lane${S.icN>1?"s":""} (Ariba/SF packages), longest engagements first — hover any segment for details. ${S.anchored&&hasIc?`Integration lanes are dependency-linked, mirroring delivered FG programs: integration prep starts only after the requirements foundation (wk ${S.foundation}, ~mid-Explore of the lead module), final build & SIT ride on the FC-configured test environment, and integration go-lives align to the joint go-live (gold line, wk ${S.goLive}). `:hasIc?"Integrations are scheduled standalone (no net-new module selected — existing-customer pattern). ":""}Stagger: ${state.stagger==="auto"?"phase-based — the next engagement in a lane kicks off as the prior enters Deploy":state.stagger+"% overlap between successive engagements in a lane"}.${!multiPerLane&&S.tasks.length?" Note: every lane currently holds a single engagement, so the stagger setting has no effect and extra lanes shorten nothing — stagger and lane count matter once a lane queues 2+ engagements.":""} Internal planning aid — a committed timeline requires a scoping workshop.`;
+  /* flash the card when the schedule actually changed, so updates are visible */
+  const sig=JSON.stringify(S.tasks.map(t=>[t.lane,t.start,t.end]).concat([[S.fcN,S.icN]]));
+  if(renderScope.lastSig!==undefined&&renderScope.lastSig!==sig){g.classList.remove("flash");void g.offsetWidth;g.classList.add("flash");}
+  renderScope.lastSig=sig;
+  g.hidden=false;
+}
+/* stale-doc tracking + debounced screen-reader summary */
+let genSig=null,srT;
+function sigOf(){return JSON.stringify([LAST.items.map(it=>[it.name,it.tier,it.usd,it.hr]),state.cont,META_IDS.map(id=>document.getElementById(id).value),state.custType,LAND_IDS.map(id=>document.getElementById(id).value),LIVE_IDS.map(liveOn)]);}
+function staleCheck(){
+  const ro=document.getElementById("romOutput"),note=ro.querySelector(".stale-note");
+  if(!note)return;
+  const stale=genSig!==sigOf();
+  note.hidden=!stale;ro.classList.toggle("stale",stale);
+}
+function announce(){
+  clearTimeout(srT);
+  srT=setTimeout(()=>{
+    const el=document.getElementById("srLive");
+    if(!LAST.items.length){el.textContent="No components selected.";return;}
+    el.textContent=`Estimate updated: ${fmtUSD(LAST.usd)} USD, ${LAST.hr.toLocaleString("en-US")} hours, about ${LAST.wkMax} weeks, ${LAST.n} components${LAST.warns.length?`, ${LAST.warns.length} scoping warning${LAST.warns.length>1?"s":""}`:""}.`;
+  },700);
+}
+function renderTotals(){
+  const box=document.getElementById("totBody");
+  if(!LAST.items.length){box.innerHTML='<div class="tot-empty">Select components on the left to build an estimate.</div>';return;}
+  const c=state.cont,other=state.cur==="USD"?"CAD":"USD";
+  const cu=LAST.usd*(1+c/100),cc=LAST.cad*(1+c/100);
+  const pu=c>0?cu:LAST.usd,pc=c>0?cc:LAST.cad;
+  let html=`<div class="tot-line big"><span>Estimated price (${state.cur}${c>0?`, incl. ${c}% cont.`:""})</span><b>${state.cur==="USD"?fmtUSD(pu):fmtCAD(pc)}</b></div>
+    <div class="tot-line"><span>Estimated price (${other}${c>0?`, incl. ${c}% cont.`:""})</span><b>${state.cur==="USD"?fmtCAD(pc):fmtUSD(pu)}</b></div>`;
+  if(c>0)html+=`<div class="tot-line"><span>Base price excl. contingency</span><b>${state.cur==="USD"?fmtUSD(LAST.usd):fmtCAD(LAST.cad)}</b></div>`;
+  html+=`<div class="tot-line"><span>Estimated hours${c>0?" (excl. cont.)":""}${LAST.noHr?" *":""}</span><b>${LAST.hr.toLocaleString("en-US")}</b></div>
+    <div class="tot-line"><span>Indicative duration (parallel workstreams)</span><b>~${LAST.wkMax} wks</b></div>
+    <div class="tot-line"><span>Components selected</span><b>${LAST.n}</b></div>`;
+  if(LAST.ctyN)html+=`<div class="tot-line"><span>Countries in scope</span><b>${LAST.ctyN}</b></div>`;
+  if(LAST.noHr)html+='<p class="tot-note">* Ariba B&amp;I packages publish no hour figure and are excluded from the hour total.</p>';
+  box.innerHTML=html;
+}
+
+/* ---- builder events ---- */
+pickArea.addEventListener("change",()=>{recalc();saveState();});
+pickArea.addEventListener("click",e=>{
+  const b=e.target.closest(".qbtn");if(!b)return;
+  const inp=document.getElementById("ceq-"+b.dataset.ce);
+  inp.value=Math.min(20,Math.max(0,(+inp.value||0)+(+b.dataset.d)));
+  recalc();saveState();
+});
+function syncCurBtns(){document.querySelectorAll(".cur-toggle button").forEach(x=>{const on=x.dataset.cur===state.cur;x.classList.toggle("on",on);x.setAttribute("aria-pressed",String(on));});}
+document.querySelectorAll(".cur-toggle button").forEach(b=>b.addEventListener("click",()=>{
+  state.cur=b.dataset.cur;syncCurBtns();recalc();saveState();
+}));
+const contR=document.getElementById("contR");
+contR.addEventListener("input",()=>{state.cont=+contR.value;document.getElementById("contV").textContent=state.cont+"%";recalc();saveState();});
+META_IDS.forEach(id=>document.getElementById(id).addEventListener("input",()=>{saveState();staleCheck();}));
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  ALL.forEach(m=>{document.getElementById("ck-"+m.id).checked=false;document.getElementById("sz-"+m.id).value=0;});
+  CE.tiers.forEach(t=>document.getElementById("ceq-"+t.s).value=0);
+  state.cont=0;contR.value=0;document.getElementById("contV").textContent="0%";
+  document.getElementById("romOutput").innerHTML="";
+  genSig=null;document.body.classList.remove("has-rom");
+  recalc();saveState();
+});
+
+/* =============== GENERATE DETAILED ROM =============== */
+function listFrom(sel){
+  return [...document.querySelectorAll(sel)].map(li=>{
+    const c=li.cloneNode(true);c.querySelectorAll(".chip").forEach(x=>x.remove());
+    return c.textContent.trim();
+  });
+}
+function landParts(){
+  if(state.custType!=="existing")return null;
+  const v=id=>+document.getElementById(id).value||0;
+  const live=liveModuleIds().map(mid=>D.modules.find(m=>m.id===mid).name.replace(" Module","")).join(", ");
+  const parts=[`${Math.max(1,v("landTen"))} tenant(s)`];
+  if(live)parts.push(`live today: ${live}`);
+  const lc=document.getElementById("landConsol").value;
+  if(lc)parts.push(`consolidation: ${CONSOL_LABEL[lc]}`);
+  if(v("landInts"))parts.push(`~${v("landInts")} active integrations${v("landCustomInts")?` (${v("landCustomInts")} custom)`:""}`);
+  if(v("landCty"))parts.push(`${v("landCty")} countries`);
+  if(v("landWorkers"))parts.push(`~${v("landWorkers").toLocaleString("en-US")} active workers`);
+  const al=document.getElementById("landAlign").value;
+  if(al)parts.push(`processes ${al==="aligned"?"aligned":al==="partial"?"partially aligned":"divergent"}`);
+  parts.push(`indicative complexity: ${consolComplexity()}`);
+  const expansion=D.modules.filter(m=>document.getElementById("ck-"+m.id).checked&&!liveModuleIds().includes(m.id)&&m.id!=="cerp"&&m.id!=="serp").map(m=>m.name).join(", ");
+  return {parts,lc,expansion,anyLive:LIVE_IDS.some(liveOn)};
+}
+function landDocBlock(){
+  const L=landParts();if(!L)return "";
+  return `<div class="rd-notes"><b>Existing landscape:</b> ${L.parts.join(" · ")}.${L.expansion&&L.anyLive?` <b>Module expansion in scope:</b> ${L.expansion} — onto the existing tenant.`:""}${L.lc&&L.lc!=="keep"?" Tenant consolidation requires custom scoping — no T-shirt applies.":""}</div>`;
+}
+function generate(){
+  if(!LAST.items.length)return;
+  const g=id=>document.getElementById(id).value.trim();
+  const meta={cust:g("mCust"),reqBy:g("mReqBy"),prep:g("mPrep"),date:g("mDate"),ref:g("mRef"),notes:g("mNotes")};
+  const dateStr=(meta.date?new Date(meta.date+"T00:00:00"):new Date()).toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
+  const c=state.cont;
+  const cu=Math.round(LAST.usd*(1+c/100)),cc=Math.round(LAST.cad*(1+c/100)),ch=Math.round(LAST.hr*(1+c/100));
+  const rows=LAST.items.map(it=>`<tr><td>${it.name}</td><td>${it.tier}</td><td>${fmtUSD(it.usd)}</td><td>${fmtCAD(it.cad)}</td><td>${it.hr!=null?it.hr.toLocaleString("en-US"):"n/p"}</td><td>${it.wk} wks</td></tr>`).join("");
+  let totRows=`<tr class="tot"><td>Combined total</td><td>${LAST.n} comp.</td><td>${fmtUSD(LAST.usd)}</td><td>${fmtCAD(LAST.cad)}</td><td>${LAST.hr.toLocaleString("en-US")}${LAST.noHr?" *":""}</td><td>~${LAST.wkMax} wks</td></tr>`;
+  if(c>0)totRows+=`<tr class="cont"><td>Incl. contingency</td><td>+${c}%</td><td>${fmtUSD(cu)}</td><td>${fmtCAD(cc)}</td><td>${ch.toLocaleString("en-US")}</td><td></td></tr>`;
+  const tl=LAST.items.map(it=>{
+    const wtot=it.ph.reduce((a,b)=>a+b,0);
+    let acc=0;
+    const segs=it.ph.map((w,i)=>{
+      const a=Math.round(acc/wtot*it.wk);acc+=w;
+      const b=Math.round(acc/wtot*it.wk);
+      return `<span class="${PH_CLS[i]}" style="width:${(w/wtot*100).toFixed(1)}%" data-tip="${it.name} · ${PH_NAMES[i]} · wk ${a}–${b}"></span>`;
+    }).join("");
+    return `<div class="tl-row"><span class="tl-name" title="${it.name} — ${it.tier}">${it.name}${it.qty>1?` ×${it.qty}`:""}</span><div class="tl-track"><div class="tl-bar" style="width:${(it.wk/LAST.wkMax*100).toFixed(1)}%" data-tip="${it.name} — ${it.tier} · ${it.wk} wks">${segs}</div></div><span class="tl-wk">${it.wk}w</span></div>`;
+  }).join("");
+  const comps=LAST.items.map(it=>`<div class="rd-comp"><div class="rd-comp-h"><h4>${it.name} — ${it.tier}</h4><span>${fmtUSD(it.usd)} / ${fmtCAD(it.cad)} · ${it.hr!=null?it.hr.toLocaleString("en-US")+" h":"hours n/p"} · ${it.wk} wks${it.qty>1?" per country":""}</span></div>${phaseBar(it.ph,it.name+" — "+it.tier)}<div class="rd-scope">${backList(it.back)}</div>${(it.flags||[]).map(f=>`<div class="rd-note"><b>Verify before customer use:</b> ${f.txt}</div>`).join("")}</div>`).join("");
+  const warns=LAST.warns.map(w=>`<li>${w}</li>`).join("");
+  const asm=listFrom("#assumptions .list-card:not(.excl) li").map(t=>`<li>${t}</li>`).join("");
+  const exc=listFrom("#assumptions .list-card.excl li").map(t=>`<li>${t}</li>`).join("");
+  const nFlags=LAST.items.reduce((a,it)=>a+((it.flags||[]).length),0);
+  document.getElementById("romOutput").innerHTML=`
+  <div class="stale-note" hidden>⚠ Selections or engagement details changed since this ROM was generated — click “Generate detailed ROM” again to refresh before printing.</div>
+  <div class="rom-actions"><button class="print-btn" id="printBtn">🖨 Print / Save as PDF</button><span class="gen-stamp">Generated ${new Date().toLocaleString()} · regenerate after changing selections</span></div>
+  <div class="rom-doc" tabindex="-1">
+    <div class="rd-head"><span class="sap-mark">SAP</span><div><h2>SAP Fieldglass — Combined ROM Estimate</h2><div class="rd-sub">Rough Order of Magnitude · Indicative &amp; non-binding · INTERNAL · Valid 30 days from date of issue</div></div></div>
+    <div class="rd-meta">
+      <div><span>Customer / opportunity</span><b>${esc(meta.cust)||"—"}</b></div>
+      <div><span>Requested by</span><b>${esc(meta.reqBy)||"—"}</b></div>
+      <div><span>Prepared by</span><b>${esc(meta.prep)||"—"}</b></div>
+      <div><span>Customer type</span><b>${CT_LABEL[state.custType]||"—"}</b></div>
+      <div><span>Date</span><b>${dateStr}</b></div>
+      <div><span>Reference</span><b>${esc(meta.ref)||"—"}</b></div>
+    </div>
+    ${meta.notes?`<div class="rd-notes">${esc(meta.notes)}</div>`:""}
+    ${landDocBlock()}
+    <h3>Executive summary</h3>
+    <div class="rd-sum">
+      <div class="c hi"><span>Price (USD)${c>0?` incl. ${c}% cont.`:""}</span><b>${fmtUSD(c>0?cu:LAST.usd)}</b></div>
+      <div class="c"><span>Price (CAD)${c>0?` incl. ${c}% cont.`:""}</span><b>${fmtCAD(c>0?cc:LAST.cad)}</b></div>
+      <div class="c"><span>Effort (hours)${c>0?` incl. ${c}% cont.`:""}${LAST.noHr?" *":""}</span><b>${(c>0?ch:LAST.hr).toLocaleString("en-US")}</b></div>
+      <div class="c"><span>Duration (parallel)</span><b>~${LAST.wkMax} wks</b></div>
+      <div class="c"><span>Components</span><b>${LAST.n}</b></div>
+    </div>
+    ${c>0?`<p class="rd-fine">Base estimate ${fmtUSD(LAST.usd)} / ${fmtCAD(LAST.cad)} / ${LAST.hr.toLocaleString("en-US")} h, uplifted by the ${c}% contingency allowance selected in the builder.</p>`:""}
+    <h3>Component breakdown</h3>
+    <div class="tbl-scroll"><table class="mx rd-table"><thead><tr><th>Component</th><th>Tier</th><th>USD</th><th>CAD</th><th>Hours</th><th>Duration</th></tr></thead><tbody>${rows}${totRows}</tbody></table></div>
+    ${LAST.noHr?'<p class="rd-fine">* Ariba B&amp;I packages publish price/duration only; their hours are not included in the total.</p>':""}
+    <h3>Indicative timeline (parallel workstreams)</h3>
+    <div class="tl">${tl}</div>
+    <p class="rd-fine">Bars show each component's published duration and SAP Activate phase mix (Prepare / Explore / Realize / Deploy / Run), drawn against the longest component (~${LAST.wkMax} weeks). Actual sequencing and dependencies require a scoping workshop.</p>
+    <h3>Component scope detail</h3>
+    ${comps}
+    ${warns?`<h3>Scoping watch-outs</h3><ul class="rd-warn">${warns}</ul>`:""}
+    <h3>Key assumptions</h3><ul class="rd-2col">${asm}</ul>
+    <h3>Exclusions — custom scoping required</h3><ul class="rd-2col ex">${exc}</ul>
+    <div class="rd-foot">This Rough Order of Magnitude estimate is indicative and non-binding, excludes travel &amp; expense, assumes strict Fit-to-Standard scope, a single go-live and SAP-delivered resources, and is valid for 30 days. A scoping workshop is required before any binding proposal.${nFlags?" Internal verification items are flagged above and must be resolved with the T-shirt ROM owner before customer-facing use.":""} Internal SAP use only.</div>
+  </div>`;
+  document.getElementById("printBtn").addEventListener("click",()=>window.print());
+  genSig=sigOf();
+  document.body.classList.add("has-rom");
+  const doc=document.querySelector("#romOutput .rom-doc");
+  doc.focus({preventScroll:true});
+  clearTimeout(srT);
+  document.getElementById("srLive").textContent="Detailed ROM generated below the builder.";
+  document.getElementById("romOutput").scrollIntoView({behavior:"smooth",block:"start"});
+}
+document.getElementById("genBtn").addEventListener("click",generate);
+
+/* =============== ADD-TO-BUILDER (tier cards) =============== */
+document.querySelectorAll(".addbtn").forEach(b=>{
+  b.addEventListener("click",e=>{
+    e.stopPropagation();
+    const m=[...D.modules,...D.expansion,...D.integrations].find(x=>x.id===b.dataset.mod);
+    const i=+b.dataset.tier,t=m.tiers[i];
+    if(m.id==="ce"){
+      const inp=document.getElementById("ceq-"+t.s);
+      inp.value=Math.min(20,(+inp.value||0)+1);
+    }else{
+      document.getElementById("ck-"+m.id).checked=true;
+      document.getElementById("sz-"+m.id).value=i;
+    }
+    recalc();saveState();
+    toast(`${m.name} — ${SIZE_NAME[t.s]||"Fixed scope"}${m.id==="ce"?" country":""} added to ROM Builder`,{label:"Open builder",goto:"builder"});
+  });
+});
+
+/* =============== PORTFOLIO AT A GLANCE =============== */
+(function(){
+  const rng=(arr,f)=>{const v=arr.map(f);const a=Math.min(...v),b=Math.max(...v);return a===b?String(a):a+"–"+b;};
+  const rngM=(arr)=>{const v=arr.map(t=>t.usd);const a=Math.min(...v),b=Math.max(...v);return a===b?fmtUSD(a):fmtUSD(a)+" – "+fmtUSD(b);};
+  const cats=[["modules","Net-new module",D.modules],["expansion","Existing customers",D.expansion],["integrations","Integration (SAP-led)",D.integrations]];
+  document.getElementById("glanceArea").innerHTML=`<div class="tbl-scroll"><table class="mx glance-t"><thead><tr><th>Package</th><th>Category</th><th>Sizes</th><th>Price (USD)</th><th>Duration</th></tr></thead><tbody>${
+    cats.flatMap(([sec,cat,list])=>list.map(m=>`<tr><td><button class="linklike" data-goto="${sec}" data-mod="${m.id}">${m.name}</button></td><td>${cat}</td><td>${m.tiers.map(t=>t.s==="—"?"Fixed":t.s).join(" · ")}</td><td class="rng">${rngM(m.tiers)}</td><td class="rng">${rng(m.tiers,t=>t.wk)} wks</td></tr>`)).join("")
+  }</tbody></table></div>`;
+})();
+
+/* =============== COUNTRY LOOKUP =============== */
+(function(){
+  const idx=[];
+  document.querySelectorAll("#expansion .cty .col").forEach(col=>{
+    const tier=col.querySelector("h4").textContent.trim();
+    col.querySelectorAll("li").forEach(li=>{
+      const c=li.cloneNode(true);c.querySelectorAll(".chip").forEach(x=>x.remove());
+      idx.push({name:c.textContent.trim(),tier,li});
+    });
+  });
+  const tierData={Small:CE.tiers[0],Medium:CE.tiers[1],Large:CE.tiers[2]};
+  const inp=document.getElementById("ctyFind"),res=document.getElementById("ctyRes");
+  inp.addEventListener("input",()=>{
+    const q=inp.value.trim().toLowerCase();
+    idx.forEach(x=>x.li.classList.remove("hit"));
+    if(q.length<2){res.textContent="";return;}
+    const hits=idx.filter(x=>x.name.toLowerCase().includes(q));
+    hits.forEach(x=>x.li.classList.add("hit"));
+    res.innerHTML=hits.length
+      ?hits.slice(0,4).map(x=>{const t=tierData[x.tier];return `<b>${esc(x.name)}</b> → ${x.tier} · ${t.hr} hrs · ${t.wk} wks`;}).join(" &nbsp;·&nbsp; ")+(hits.length>4?` &nbsp;(+${hits.length-4} more)`:"")
+      :"No match in the published examples — treat as custom scoping.";
+  });
+})();
+
+/* =============== FINDINGS (filters + resolve tracking) =============== */
+let findFilter="all",hideRes=false,resolved=new Set();
+try{resolved=new Set(JSON.parse(localStorage.getItem(LS_FND)||"[]"));}catch(e){}
+function renderFindings(focusSel){
+  const list=D.findings;
+  const counts={all:list.length,verify:list.filter(f=>f.k==="verify").length,upd:list.filter(f=>f.k==="upd").length};
+  document.getElementById("findBar").innerHTML=
+    [["all","All"],["verify","Verify"],["upd","Updated"]].map(([k,l])=>`<button class="fchip${findFilter===k?" on":""}" data-f="${k}" aria-pressed="${findFilter===k}">${l} (${counts[k]})</button>`).join("")+
+    `<button class="fchip${hideRes?" on":""}" data-f="hideres" aria-pressed="${hideRes}">Hide resolved</button><span class="find-prog">${resolved.size} of ${list.length} resolved</span>`;
+  document.getElementById("findArea").innerHTML=list.map((f,i)=>{
+    if(findFilter!=="all"&&f.k!==findFilter)return "";
+    if(hideRes&&resolved.has(i))return "";
+    return `<div class="find ${f.k==='upd'?'upd':''}${resolved.has(i)?" resolved":""}"><label class="res"><input type="checkbox" data-i="${i}" ${resolved.has(i)?"checked":""}> Resolved</label><div class="where">${f.k==='upd'?'Updated · ':'Verify · '}${f.w}</div><h4>${f.h}</h4><p>${f.p}</p></div>`;
+  }).join("")||'<p class="sec-lede">Nothing to show with the current filter.</p>';
+  if(focusSel){const el=document.querySelector(focusSel)||document.querySelector("#findBar .fchip");if(el)el.focus();}
+}
+document.getElementById("findBar").addEventListener("click",e=>{
+  const b=e.target.closest(".fchip");if(!b)return;
+  if(b.dataset.f==="hideres")hideRes=!hideRes;else findFilter=b.dataset.f;
+  renderFindings(`#findBar .fchip[data-f="${b.dataset.f}"]`);
+});
+document.getElementById("findArea").addEventListener("change",e=>{
+  const cb=e.target.closest("input[data-i]");if(!cb)return;
+  const i=+cb.dataset.i;
+  cb.checked?resolved.add(i):resolved.delete(i);
+  try{localStorage.setItem(LS_FND,JSON.stringify([...resolved]));}catch(e2){}
+  renderFindings(`#findArea input[data-i="${i}"]`);
+});
+renderFindings();
+
+/* =============== EXCEL EXPORT (SpreadsheetML — no external libraries) =============== */
+function xmlEsc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function xCell(v,st){if(v==null||v===""){return `<Cell${st?` ss:StyleID="${st}"`:""}/>`;}const num=typeof v==="number"&&isFinite(v);return `<Cell${st?` ss:StyleID="${st}"`:""}><Data ss:Type="${num?"Number":"String"}">${num?v:xmlEsc(v)}</Data></Cell>`;}
+function xRow(cells){return `<Row>${cells.map(c=>Array.isArray(c)?xCell(c[0],c[1]):xCell(c)).join("")}</Row>`;}
+function xSheet(name,rows,widths){return `<Worksheet ss:Name="${xmlEsc(name)}"><Table>${(widths||[]).map(w=>`<Column ss:Width="${w}"/>`).join("")}${rows.join("")}</Table></Worksheet>`;}
+function exportExcel(){
+  if(!LAST.items.length)return;
+  const g=id=>document.getElementById(id).value.trim();
+  const meta={cust:g("mCust"),reqBy:g("mReqBy"),prep:g("mPrep"),date:g("mDate"),ref:g("mRef"),notes:g("mNotes")};
+  const c=state.cont,S=LAST.sched;
+  const hasIcX=S.tasks.some(t=>t.laneType==="ic");
+  const glLabel=S.anchored&&hasIcX?"Joint go-live":"Final FC go-live";
+  const cu=Math.round(LAST.usd*(1+c/100)),cc=Math.round(LAST.cad*(1+c/100)),chh=Math.round(LAST.hr*(1+c/100));
+  const summary=[
+    xRow([["SAP Fieldglass — Combined ROM Estimate","h"]]),
+    xRow(["Indicative & non-binding · excludes T&E · valid 30 days · INTERNAL"]),
+    xRow([]),
+    xRow(["Customer / opportunity",meta.cust||"—"]),
+    xRow(["Requested by",meta.reqBy||"—"]),
+    xRow(["Prepared by",meta.prep||"—"]),
+    xRow(["Customer type",CT_LABEL[state.custType]||"—"]),
+    xRow(["Date",meta.date||"—"]),
+    xRow(["Reference",meta.ref||"—"]),
+    ...(meta.notes?[xRow(["Notes",meta.notes])]:[]),
+    ...(state.custType==="existing"?(()=>{const L=landParts();const v=id=>+document.getElementById(id).value||0;return [
+      xRow([]),
+      xRow([["Existing landscape","h"]]),
+      xRow(["FG tenants",Math.max(1,v("landTen"))]),
+      xRow(["Modules live today",liveModuleIds().map(mid=>D.modules.find(m=>m.id===mid).name).join(", ")||"—"]),
+      ...(L.expansion&&L.anyLive?[xRow(["Module expansion in scope (onto existing tenant)",L.expansion])]:[]),
+      ...(document.getElementById("landConsol").value?[xRow(["Consolidation approach",CONSOL_LABEL[document.getElementById("landConsol").value]+(document.getElementById("landConsol").value!=="keep"?" — custom scoping required (no T-shirt)":"")])]:[]),
+      ...(v("landInts")?[xRow(["Active integrations (total)",v("landInts")])]:[]),
+      ...(v("landCustomInts")?[xRow(["Custom connectors / scripts",v("landCustomInts")])]:[]),
+      ...(v("landCty")?[xRow(["Countries in scope",v("landCty")])]:[]),
+      ...(v("landWorkers")?[xRow(["Approx. active workers",[v("landWorkers"),"n0"]])]:[]),
+      ...(document.getElementById("landAlign").value?[xRow(["Process alignment across tenants",document.getElementById("landAlign").value])]:[]),
+      xRow(["Indicative consolidation/expansion complexity",consolComplexity()]),
+      xRow(["Reference points (INTERNAL, one delivered program — not pricing)","merge into existing ≈ 1.6K hrs · net-new consolidated tenant ≈ 5.2K hrs · multi-tenant expansion ≈ 6.4K hrs"])
+    ];})():[]),
+    xRow([]),
+    xRow([["Combined totals","h"]]),
+    xRow(["Price (USD)",[LAST.usd,"curK"]]),
+    xRow(["Price (CAD)",[LAST.cad,"cadK"]]),
+    xRow(["Contingency %",c]),
+    ...(c>0?[xRow(["Price incl. contingency (USD)",[cu,"curK"]]),xRow(["Price incl. contingency (CAD)",[cc,"cadK"]]),xRow(["Hours incl. contingency",[chh,"n0"]])]:[]),
+    xRow(["Estimated hours"+(LAST.noHr?" (Ariba pkgs publish no hours)":""),[LAST.hr,"n0"]]),
+    xRow(["Indicative duration — parallel (T-shirt standard), wks",LAST.wkMax]),
+    xRow(["Staged duration — INTERNAL (Scope Building), wks",S.totalWk]),
+    xRow(["Components",LAST.n]),
+    ...(LAST.ctyN?[xRow(["Countries in scope",LAST.ctyN])]:[]),
+    ...(LAST.warns.length?[xRow([]),xRow([["Scoping watch-outs","h"]]),...LAST.warns.map(w=>xRow([w]))]:[])
+  ];
+  const comp=[
+    xRow([["Component","h"],["Tier","h"],["USD","h"],["CAD","h"],["Hours","h"],["Duration (wks)","h"]]),
+    ...LAST.items.map(it=>xRow([it.name,it.tier,[it.usd,"curK"],[it.cad,"cadK"],it.hr!=null?[it.hr,"n0"]:"n/p",it.wk])),
+    xRow([["Combined total","t"],[LAST.n+" comp.","t"],[LAST.usd,"tK"],[LAST.cad,"tC"],[LAST.hr,"tn"],["parallel ~"+LAST.wkMax+" wks","t"]]),
+    ...(c>0?[xRow(["Incl. contingency","+"+c+"%",[cu,"curK"],[cc,"cadK"],[chh,"n0"],""])]:[]),
+    xRow([]),
+    xRow([["Scope detail (per selected component)","h"]]),
+    ...LAST.items.flatMap(it=>[
+      xRow([[it.name+" — "+it.tier,"b"]]),
+      ...it.back.map(x=>typeof x==="string"?xRow(["   ✔ "+x]):x.x?xRow(["   ✕ Excluded: "+x.t]):xRow(["   ◆ Scoping variable: "+x.t])),
+      ...(it.flags||[]).map(f=>xRow([["   ⚠ Verify before customer use: "+f.txt,"h"]]))
+    ])
+  ];
+  const tl=[
+    xRow([["INTERNAL planning aid — staged schedule from Scope Building; not part of the T-shirt ROM","h"]]),
+    xRow([["Engagement","h"],["Lane","h"],["Start (wk)","h"],["End (wk)","h"],["Duration (wks)","h"],["Phases P/E/R/D/R (wks)","h"]]),
+    ...S.tasks.map(t=>xRow([t.name,t.lane,t.start,t.end,t.wk,t.ph.join(" / ")])),
+    xRow([]),
+    xRow(["Stagger mode",state.stagger==="auto"?"Phase-based (next engagement starts at prior's Deploy)":state.stagger+"% overlap"]),
+    ...(S.goLive!=null?[xRow([glLabel+" (wk)",S.goLive])]:[]),
+    ...(S.foundation!=null&&hasIcX?[xRow(["Integration start gate — requirements foundation (wk)",S.foundation])]:[]),
+    ...S.staffWarns.map(w=>xRow([["⚠ "+w,"h"]]))
+  ];
+  /* Gantt sheet — one column per week, phase-colored cells (ADP/Verizon timeline style) */
+  const PH_XL=["pP","pE","pR","pD","pN"];
+  const ganttRows=[
+    xRow([["INTERNAL staged schedule (Scope Building) — colors = SAP Activate phases: Prepare (grey) / Explore (gold) / Realize (blue) / Deploy (green) / Run (light)","h"]]),
+    xRow([["Engagement","h"],["Lane","h"],...Array.from({length:S.totalWk},(_,w)=>[w+1,"wh"])])
+  ];
+  S.tasks.forEach(t=>{
+    const wtot=t.ph.reduce((a,b)=>a+b,0);
+    const bounds=[];let acc=0;
+    t.ph.forEach(w=>{acc+=w;bounds.push(t.start+Math.round(acc/wtot*t.wk));});
+    const cells=[t.name,t.lane];
+    for(let w=0;w<S.totalWk;w++){
+      if(w<t.start||w>=t.end){cells.push("");}
+      else{let pi=0;while(pi<4&&w>=bounds[pi])pi++;cells.push(["",PH_XL[pi]]);}
+    }
+    ganttRows.push(xRow(cells));
+  });
+  if(S.goLive!=null){
+    const glCells=[[glLabel,"gl"],""];
+    for(let w=0;w<S.totalWk;w++)glCells.push(w===S.goLive-1?["▲","gl"]:"");
+    ganttRows.push(xRow(glCells));
+  }
+  const st=[
+    xRow([["INTERNAL — staffing & indicative rate buildup from Scope Building; PLACEHOLDER rates (public GSA/market proxies, all roles default G3) pending the official rate card","h"]]),
+    xRow([["Role","h"],["Count","h"],["Mix %","h"],["Hours","h"],["Tier","h"],["Rate ($/hr)","h"],["Cost ($)","h"]]),
+    ...(()=>{const {hs,mixSum}=mixSplit(LAST.hr||0);
+      const rows=ROLES.map(([id,label])=>{const h=hs[id];const rate=state.rates[id].rate||0;return xRow([label,state.staff[id],(state.mix[id]||0)+"%",[h,"n0"],state.rates[id].tier,[rate,"cur0"],[h*rate,"cur0"]]);});
+      rows.push(xRow([["Total","t"],["","t"],[mixSum+"%","t"],[ROLES.reduce((a,[id])=>a+hs[id],0),"tn"],["","t"],["","t"],[ROLES.reduce((a,[id])=>a+hs[id]*(state.rates[id].rate||0),0),"tS"]]));
+      if(mixSum!==100)rows.push(xRow([["⚠ Role mix sums to "+mixSum+"% — adjust to 100% in Scope Building","h"]]));
+      if(parkedNoteText())rows.push(xRow([["Mix auto-reallocated from zero-count roles — "+parkedNoteText(),"h"]]));
+      return rows;})(),
+    xRow(["T-shirt price for comparison"+(c>0?" — base, excl. contingency":""),[LAST.usd,"curK"]]),
+    ...(S.staffWarns.length?[xRow([]),...S.staffWarns.map(w=>xRow([["⚠ "+w,"h"]]))]:[])
+  ];
+  const asm=[
+    xRow([["Key assumptions","h"]]),
+    ...listFrom("#assumptions .list-card:not(.excl) li").map(t=>xRow([t])),
+    xRow([]),
+    xRow([["Exclusions — custom scoping required","h"]]),
+    ...listFrom("#assumptions .list-card.excl li").map(t=>xRow([t]))
+  ];
+  /* Role × Week hour grid — emulates the delivered ROM format (roles down, weeks across, Hours/Days block on top) */
+  let grid=[];
+  {
+    const totW=S.totalWk;
+    const weekTot=Array(totW).fill(0);
+    S.tasks.forEach(t=>{if(t.hr){const p=t.hr/t.wk;for(let w=t.start;w<t.end&&w<totW;w++)weekTot[w]+=p;}});
+    const startD=meta.date?new Date(meta.date+"T00:00:00"):new Date();
+    const wkDate=w=>{const d=new Date(startD.getTime()+w*7*86400000);return (d.getMonth()+1)+"/"+d.getDate();};
+    const {hs:gh}=mixSplit(LAST.hr||0);
+    const hrT=ROLES.reduce((a,[id])=>a+gh[id],0);
+    grid=[
+      xRow([["INTERNAL — role × week hour grid from the staged schedule × role mix (delivered-ROM format). Week 1 starts at the engagement date. Ariba B&I packages publish no hours and are excluded.","h"]]),
+      xRow([]),
+      xRow([["","b"],["Hours","b"],["Days","b"]]),
+      xRow(["Total Effort",[hrT,"n0"],[Math.round(hrT/8*100)/100,"n1"]]),
+      xRow([]),
+      xRow([["Week","h"],...Array.from({length:totW},(_,w)=>[w+1,"wh"]),["Total","h"]]),
+      xRow([["w/c","wh"],...Array.from({length:totW},(_,w)=>[wkDate(w),"wh"]),""]),
+      ...ROLES.map(([id,label])=>{
+        const mix=(state.mix[id]||0)/100;
+        const cells=[label];let sum=0;
+        for(let w=0;w<totW;w++){const hv=Math.round(weekTot[w]*mix*10)/10;sum+=hv;cells.push(hv?[hv,"n1"]:"");}
+        cells.push([Math.round(sum*10)/10,"n1"]);
+        return xRow(cells);
+      }),
+      (()=>{const cells=[["Weekly total","t"]];let s=0;for(let w=0;w<totW;w++){const hv=Math.round(weekTot[w]*10)/10;s+=hv;cells.push(hv?[hv,"t1"]:["","t"]);}cells.push([Math.round(s*10)/10,"t1"]);return xRow(cells);})()
+    ];
+  }
+  /* Scenario comparison sheet (only when scenarios exist) */
+  const scenSheet=scenarios.length?(()=>{
+    const cols=[{name:"Current",m:currentMetrics()},...scenarios.map(s2=>({name:s2.name,m:s2.metrics||{}}))];
+    const rows=[
+      xRow([["Scenario comparison — metrics stamped at save/update time; staged duration is the INTERNAL Scope Building figure","h"]]),
+      xRow([["Metric","h"],...cols.map(cx=>[cx.name,"h"])]),
+      xRow(["Price (USD)",...cols.map(cx=>[cx.m.usd||0,"curK"])]),
+      xRow(["Contingency %",...cols.map(cx=>+(cx.m.cont||0))]),
+      xRow(["Price incl. cont (USD)",...cols.map(cx=>[Math.round((cx.m.usd||0)*(1+(cx.m.cont||0)/100)),"curK"])]),
+      xRow(["Price (CAD)",...cols.map(cx=>[cx.m.cad||0,"cadK"])]),
+      xRow(["Hours",...cols.map(cx=>[cx.m.hr||0,"n0"])]),
+      xRow(["T-shirt duration — parallel (wks)",...cols.map(cx=>cx.m.par!=null?cx.m.par:cx.m.wk||0)]),
+      xRow(["Staged duration — internal (wks)",...cols.map(cx=>cx.m.wk||0)]),
+      xRow(["Components",...cols.map(cx=>cx.m.n||0)]),
+      xRow(["Countries",...cols.map(cx=>cx.m.cty||0)]),
+      xRow(["FC / Integration staff",...cols.map(cx=>(cx.m.fc!=null?cx.m.fc:"—")+" / "+(cx.m.ic!=null?cx.m.ic:"—"))]),
+      xRow(["ROM warnings",...cols.map(cx=>cx.m.warns||0)])
+    ];
+    return xSheet("Scenarios",rows,[230,...cols.map(()=>110)]);
+  })():"";
+  const xml=`<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+<Styles><Style ss:ID="h"><Font ss:Bold="1" ss:Color="#12232F"/><Interior ss:Color="#EAF3FF" ss:Pattern="Solid"/></Style><Style ss:ID="b"><Font ss:Bold="1"/></Style><Style ss:ID="t"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders></Style><Style ss:ID="wh"><Font ss:Size="7" ss:Color="#5B738B"/></Style><Style ss:ID="curK"><NumberFormat ss:Format="&quot;$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="cadK"><NumberFormat ss:Format="&quot;C$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="cur0"><NumberFormat ss:Format="&quot;$&quot;#,##0"/></Style><Style ss:ID="n0"><NumberFormat ss:Format="#,##0"/></Style><Style ss:ID="n1"><NumberFormat ss:Format="#,##0.0"/></Style><Style ss:ID="tK"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="&quot;$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="tC"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="&quot;C$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="tn"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="#,##0"/></Style><Style ss:ID="tS"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="&quot;$&quot;#,##0"/></Style><Style ss:ID="t1"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="#,##0.0"/></Style><Style ss:ID="pP"><Interior ss:Color="#8296A9" ss:Pattern="Solid"/></Style><Style ss:ID="pE"><Interior ss:Color="#F0AB00" ss:Pattern="Solid"/></Style><Style ss:ID="pR"><Interior ss:Color="#0070F2" ss:Pattern="Solid"/></Style><Style ss:ID="pD"><Interior ss:Color="#188918" ss:Pattern="Solid"/></Style><Style ss:ID="pN"><Interior ss:Color="#C6D3DE" ss:Pattern="Solid"/></Style><Style ss:ID="gl"><Font ss:Bold="1" ss:Color="#B3520A"/><Interior ss:Color="#F0AB00" ss:Pattern="Solid"/></Style></Styles>
+${xSheet("Summary",summary,[300,240])}
+${xSheet("Components",comp,[250,120,80,80,80,120])}
+${xSheet("Gantt (internal)",ganttRows,[240,36,...Array.from({length:Math.max(1,S.totalWk)},()=>14)])}
+${xSheet("Role-Week Grid (internal)",grid,[150,...Array.from({length:Math.max(1,S.totalWk)},()=>34),60])}
+${xSheet("Timeline (internal)",tl,[280,70,80,80,105,150])}
+${xSheet("Staffing (internal)",st,[210,50,50,60,45,75,90])}
+${scenSheet}
+${xSheet("Assumptions",asm,[540])}
+</Workbook>`;
+  const blob=new Blob([xml],{type:"application/vnd.ms-excel"});
+  const a=document.createElement("a");
+  const fname=(meta.cust||"estimate").replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"_")||"estimate";
+  a.href=URL.createObjectURL(blob);
+  a.download=`FG_ROM_${fname}_${meta.date||"draft"}.xls`;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+  toast("Excel workbook downloaded — Excel may show a one-time format prompt; choose Yes to open.");
+}
+document.getElementById("xlsBtn").addEventListener("click",exportExcel);
+
+/* =============== SCENARIOS =============== */
+const LS_SCEN="fgROM26.scenarios";
+let scenarios=[];try{scenarios=JSON.parse(localStorage.getItem(LS_SCEN)||"[]")||[];}catch(e){}
+function saveScens(){try{localStorage.setItem(LS_SCEN,JSON.stringify(scenarios));}catch(e){}}
+function currentMetrics(){return {usd:LAST.usd,cad:LAST.cad,hr:LAST.hr,wk:LAST.sched.totalWk,par:LAST.wkMax,n:LAST.n,cty:LAST.ctyN,warns:LAST.warns.length,fc:state.staff.fc,ic:state.staff.ic,cont:state.cont};}
+function refreshScenSel(sel){
+  const el=document.getElementById("scenSel");
+  el.innerHTML='<option value="">'+(scenarios.length?"— select a scenario —":"— none saved —")+"</option>"+scenarios.map((s,i)=>`<option value="${i}">${esc(s.name)}</option>`).join("");
+  if(sel!=null)el.value=String(sel);
+}
+function selScen(){const v=document.getElementById("scenSel").value;if(v===""){toast("Select a saved scenario first");return null;}return +v;}
+document.getElementById("scenSave").addEventListener("click",()=>{
+  const nameEl=document.getElementById("scenName");
+  const name=nameEl.value.trim()||`Scenario ${scenarios.length+1}`;
+  scenarios.push({name,saved:new Date().toISOString(),state:buildState(),metrics:currentMetrics()});
+  saveScens();refreshScenSel(scenarios.length-1);nameEl.value="";
+  renderCompare();toast(`Scenario “${esc(name)}” saved`);
+});
+document.getElementById("scenLoad").addEventListener("click",()=>{
+  const i=selScen();if(i==null)return;
+  applyState(scenarios[i].state);recalc();saveState();
+  toast(`Scenario “${esc(scenarios[i].name)}” loaded`);
+});
+document.getElementById("scenUpdate").addEventListener("click",()=>{
+  const i=selScen();if(i==null)return;
+  scenarios[i]={...scenarios[i],saved:new Date().toISOString(),state:buildState(),metrics:currentMetrics()};
+  saveScens();renderCompare();toast(`Scenario “${esc(scenarios[i].name)}” updated to current selections`);
+});
+document.getElementById("scenDelete").addEventListener("click",()=>{
+  const i=selScen();if(i==null)return;
+  const nm=scenarios[i].name;
+  if(!confirm(`Delete scenario “${nm}”?`))return;
+  scenarios.splice(i,1);saveScens();refreshScenSel();renderCompare();toast(`Scenario “${esc(nm)}” deleted`);
+});
+document.getElementById("scenCmp").addEventListener("click",()=>{
+  const area=document.getElementById("scenCompareArea");
+  area.hidden=!area.hidden;
+  document.getElementById("scenCmp").setAttribute("aria-pressed",String(!area.hidden));
+  renderCompare();
+});
+function renderCompare(){
+  const area=document.getElementById("scenCompareArea");
+  if(area.hidden)return;
+  if(!scenarios.length){area.innerHTML='<div class="mod" style="margin-bottom:18px"><p class="mod-desc">No saved scenarios yet — make selections and click <b>Save current</b>.</p></div>';return;}
+  const cols=[{name:"Current (unsaved)",m:currentMetrics()},...scenarios.slice(-4).map(s=>({name:s.name,m:s.metrics}))];
+  const contOf=m=>+(m.cont||0);
+  const minUsd=Math.min(...cols.map(cx=>cx.m.usd*(1+contOf(cx.m)/100)));
+  const minWk=Math.min(...cols.map(cx=>cx.m.wk||0));
+  const rows=[
+    ["Price (USD)",m=>fmtUSD(m.usd)],
+    ["Contingency",m=>contOf(m)+"%"],
+    ["Price incl. cont (USD)",m=>fmtUSD(m.usd*(1+contOf(m)/100)),m=>m.usd*(1+contOf(m)/100)===minUsd],
+    ["Price (CAD)",m=>fmtCAD(m.cad)],
+    ["Hours",m=>(m.hr||0).toLocaleString("en-US")],
+    ["T-shirt duration (parallel)",m=>"~"+(m.par!=null?m.par:m.wk)+" wks"],
+    ["Staged duration (internal)",m=>"~"+(m.wk||0)+" wks",m=>(m.wk||0)===minWk],
+    ["Components",m=>m.n||0],
+    ["Countries",m=>m.cty||0],
+    ["FC / Integration staff",m=>(m.fc!=null?m.fc:"—")+" / "+(m.ic!=null?m.ic:"—")],
+    ["ROM warnings",m=>m.warns||0]
+  ];
+  area.innerHTML=`<div class="mod" style="margin-bottom:18px"><div class="mod-head"><h3>Scenario comparison</h3><span class="tag">${cols.length} shown</span></div>
+    <div class="tbl-scroll"><table class="mx cmp-t"><thead><tr><th>Metric</th>${cols.map(cx=>`<th>${esc(cx.name)}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map(([label,f,best])=>`<tr><td>${label}</td>${cols.map(cx=>`<td${best&&best(cx.m)?' class="best"':""}>${f(cx.m)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+    <p class="rd-fine">Metrics are stamped when a scenario is saved or updated — Load one to make it current. Lowest total price and shortest staged duration are highlighted. Shows up to the 4 most recent saved scenarios; the staged duration is the internal Scope Building figure, not the RFP number.</p></div>`;
+}
+
+/* =============== INIT =============== */
+const dNow=new Date();
+document.getElementById("mDate").value=`${dNow.getFullYear()}-${String(dNow.getMonth()+1).padStart(2,"0")}-${String(dNow.getDate()).padStart(2,"0")}`;
+loadState();
+syncCurBtns();
+contR.value=state.cont;document.getElementById("contV").textContent=state.cont+"%";
+syncStaff();
+staffBaseline={...state.staff};
+applyCustFilter();
+refreshScenSel();
+recalc();
+</script>
+</body>
+</html>
