@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAP Fieldglass · T-Shirt ROM Explorer (2026 Refresh Draft)</title>
+<title>SAP Fieldglass · T-Shirt ROM Explorer (2026 Refresh Draft) — v7</title>
 <style>
 :root{
   --navy:#12232F; --navy-2:#1D2D3E; --ink:#223548; --muted:#5B738B;
@@ -13,7 +13,7 @@
   --s-col:#E76500; --s-soft:#FFF3E8;
   --m-col:#0070F2; --m-soft:#EAF3FF;
   --l-col:#188918; --l-soft:#EDF8ED;
-  --verify:#B3520A; --verify-bg:#FFF0E1; --upd:#046C7A; --upd-bg:#E2F5F7;
+  --verify:#B3520A; --verify-bg:#FFF0E1; --upd:#046C7A; --upd-bg:#E2F5F7; --conf:#188918; --conf-bg:#EDF8ED; --note:#5B738B; --note-bg:#EEF1F4;
   --radius:12px;
   --shadow:0 1px 2px rgba(18,35,47,.06),0 4px 14px rgba(18,35,47,.08);
   font-size:16px;
@@ -45,9 +45,11 @@ nav button:focus-visible,.rev-toggle:focus-visible{outline:2px solid var(--gold)
 .chip{display:none;font-size:.66rem;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:6px;text-transform:uppercase}
 .chip.verify{background:var(--verify-bg);color:var(--verify);border:1px solid #EFC9A6}
 .chip.updated{background:var(--upd-bg);color:var(--upd);border:1px solid #A9DDE3}
+.chip.confirmed{background:var(--conf-bg);color:var(--conf);border:1px solid #B7DDB7}
 body.review .chip{display:inline-block}
 .rev-note{display:none;background:var(--verify-bg);border-left:3px solid var(--verify);color:#6E3B10;font-size:.78rem;padding:8px 12px;border-radius:0 8px 8px 0;margin-top:10px}
 .rev-note.upd{background:var(--upd-bg);border-left-color:var(--upd);color:#0A4C55}
+.rev-note.confirmed{background:var(--conf-bg);border-left-color:var(--conf);color:#0F4D0F}
 body.review .rev-note{display:block}
 
 /* ---------- sections ---------- */
@@ -169,6 +171,10 @@ th.cS{color:var(--s-col)}th.cM{color:var(--m-col)}th.cL{color:var(--l-col)}
 .find p{font-size:.8rem;color:var(--muted)}
 .find .where{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--verify)}
 .find.upd .where{color:var(--upd)}
+.find.confirmed{border-left-color:var(--conf)}
+.find.confirmed .where{color:var(--conf)}
+.find.note{border-left-color:var(--note)}
+.find.note .where{color:var(--note)}
 
 footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;color:var(--muted)}
 
@@ -297,6 +303,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
 
 /* ---------- staffing ---------- */
 .staff-note{font-size:.72rem;color:var(--muted);margin-top:10px}
+.staff-note.rate-proxy{background:var(--note-bg);border-left:3px solid var(--note);padding:8px 12px;border-radius:0 8px 8px 0;color:var(--ink)}
 
 /* ---------- rate buildup ---------- */
 .rate-t td,.rate-t th{text-align:right;font-variant-numeric:tabular-nums}
@@ -373,7 +380,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
       <span class="sap-mark">SAP</span>
       <div>
         <div class="hdr-title">Fieldglass T-Shirt ROM Explorer</div>
-        <div class="hdr-sub">Contingent &amp; Services Procurement · 2026 refresh draft (v2.0 baseline: Mar 11, 2024) · INTERNAL</div>
+        <div class="hdr-sub">Contingent &amp; Services Procurement · 2026 refresh draft (v2.0 baseline: Mar 11, 2024) · INTERNAL · v7 (Sep 2026)</div>
       </div>
       <div class="hdr-right">
         <button class="rev-toggle" id="revToggle" aria-pressed="false"><span class="dot"></span> Review mode</button>
@@ -412,7 +419,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
 
   <div class="rulecard" style="margin-top:16px">
     <h3><span class="n">!</span> Delivery model note — partner-led ≠ Fieldglass-free</h3>
-    <p>Even where integration configuration is partner or client self-service (Small tier), specific activities remain SAP Fieldglass-performed regardless of delivery model: tenant endpoint configuration, Company Configuration changes, extrinsic/custom field enablement on integration payloads, Configuration Manager role provisioning, and the integration mapping specification. Set this expectation early in the sales cycle. <span class="chip updated">Added 2026</span></p>
+    <p>Even where integration configuration is partner or client self-service (Small tier), specific activities remain SAP Fieldglass-performed regardless of delivery model: tenant endpoint configuration, Company Configuration changes, extrinsic/custom field enablement on integration payloads, and the integration mapping specification. Set this expectation early in the sales cycle. <span class="chip updated">Added 2026</span></p>
   </div>
 
   <div class="mod" style="margin-top:26px">
@@ -608,9 +615,9 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
 
 <!-- ================= FINDINGS ================= -->
 <section id="findings">
-  <div class="eyebrow">Deck review · July 2026</div>
+  <div class="eyebrow">Deck review · July 2026 · v7 update Sep 2026</div>
   <h2 class="sec-title">Review Findings Register</h2>
-  <p class="sec-lede">Source: "NEW _ SAPFG T-Shirt ROM_Updated.pptx" (v2.0, Mar 11 2024, 71 slides). Validated against the SAP Fieldglass Connector Library (2026-05-15), FG↔SF EC and FG↔Ariba Business Synopses on help.sap.com, and SAP announcements through July 2026. Amber = internal inconsistency needing the deck owner's call; teal = current-state update applied in this draft. Mark items resolved as you clear them with the deck owner — progress is saved in this browser.</p>
+  <p class="sec-lede">Source: "NEW _ SAPFG T-Shirt ROM_Updated.pptx" (v2.0, Mar 11 2024, 71 slides). Validated against the SAP Fieldglass Connector Library (2026-05-15), FG↔SF EC and FG↔Ariba Business Synopses on help.sap.com, and SAP announcements through July 2026. Amber = internal inconsistency needing the deck owner's call; teal = current-state update applied in this draft; green = settled against source documents (confirmed); grey = informational note. Mark items resolved as you clear them with the deck owner — progress is saved in this browser.</p>
   <div class="find-bar" id="findBar"></div>
   <div id="findArea"></div>
 </section>
@@ -672,17 +679,17 @@ const D={
   {id:"ar3",name:"Ariba B&I — PO integration in a new FG deployment",tag:"Net-new FG",desc:"Service/material PO integration delivered as part of a new Fieldglass deployment (add to the base module T-shirt).",tiers:[
     {s:"—",usd:150,cad:175,wk:18,hr:null,ph:[2,7,5,2,2],back:["Dedicated FG + Ariba integration & functional consultants","Services PO enablement within the new deployment","Basic setup incl. custom fields/extrinsics","Unit test + SIT use-case support · go-live warranty"]}],
    mx:{rows:[["Consulting partner on project & the integrations",1],["Leading practices & industry standards for integrations",1],["Dedicated FG + Ariba integration & functional consultants",1],["Configure solution to support Services PO",1],["Basic setup: native fields + custom fields/extrinsics",1],["Internal unit test + SIT use-case testing support",1],["Warranty support for go-live",1]],cols:1,note:"Source slide reuses 'Reconfigure existing solution / material PO data conversion' rows from the conversion package — normalized here for a net-new deployment; confirm intended scope rows with the owner."}},
-  {id:"sf",name:"Integration with SuccessFactors",tag:"FG ↔ SF Employee Central",desc:"Productized FG↔SF EC integration: master data replication EC→FG (prerequisite), Position Management → FG job posting, and worker data FG→EC via SAP Integration Suite iFlows + the SF Standard Worker Upload OData API. Worker export carries a source-system flag for correct SF licensing.",tiers:[
-    {s:"S",usd:100,cad:125,wk:17,hr:280,ph:[3,5,5,3,1],back:["Worker download connectors (FG→EC)","Worker types: select 2 of 3 (Contingent / Profile / SOW)","Connector enablement & handover to SAP Integration Suite (BTP): up to 2 files/destination connectors","Basic setup: native field mapping/layout/ordering + custom fields","Go-live support"]},
-    {s:"M",usd:175,cad:200,wk:22,hr:520,ph:[3,8,6,4,1],flags:[{t:"verify",txt:"Deck marks dedicated FG+SF consultants excluded at Medium (included at S and L) and shows '10+ files' here vs 'up to 5' at Large — both look swapped; corrected file counts shown, confirm both"}],back:["Position-to-Requisition, Worker Download & Master Data connectors","Worker types: up to 3","Connector enablement & handover to BTP: up to 5 files/destination connectors (e.g. 4 master data + 1 worker download)","Basic setup + custom fields · go-live support"]},
-    {s:"L",usd:275,cad:325,wk:26,hr:810,ph:[3,9,7,5,2],flags:[{t:"verify",txt:"Deck shows 'up to 5 files' at Large vs '10+' at Medium — inverted vs size logic; 10+ shown here, confirm"}],back:["Dedicated FG + SF integration & functional consultants","Position-to-Requisition + Worker Download connectors","Worker types: up to 3","Connector enablement & handover to BTP: 10+ files/destination connectors","Basic setup + custom fields · go-live support"]}],
-   mx:{rows:[["Consulting partner on project & the integrations",1,1,1],["Leading practices & industry standards for integrations",1,1,1],["Dedicated FG + SF integration & functional delivery consultants",1,0,1],["Position-to-Requisition & Worker Download connectors","Worker download only","P2R + Worker + Master Data","P2R + Worker Download"],["Applicable worker types (Contingent / Profile / SOW)","Select 2 of 3","Up to 3","Up to 3"],["Connector enablement & handover to SAP Integration Suite (BTP)","≤ 2 files","≤ 5 files (e.g. 4 MD + 1 worker)","10+ files"],["Basic setup: native field mapping/layout/ordering + custom fields (no custom features)",1,1,1],["Go-live support",1,1,1]],note:"Master data replication EC→FG is the prerequisite for the position and worker scenarios; an MDI-based master data path exists (financial master data via MDI comes from S/4HANA only for Cost Center/Legal Entity). IAS/IPS is the recommended user-provisioning approach."}}
+  {id:"sf",name:"Integration with SuccessFactors",tag:"FG ↔ SF Employee Central",desc:"Productized FG↔SF EC integration: master data replication EC→FG (prerequisite), Position Management → FG job posting, and worker data FG→EC via SAP Integration Suite iFlows + the SF Standard Worker Upload OData API. Worker export carries the SourceOfRecord = Fieldglass flag for correct SF licensing.",tiers:[
+    {s:"S",usd:100,cad:125,wk:17,hr:280,ph:[3,5,5,3,1],back:["Worker download connectors (FG→EC)","Worker types: select 2 of 3 (Contingent / Profile / SOW)","Handover to SAP Integration Suite (Cloud Integration): up to 2 files/destination connectors","Basic setup: native field mapping/layout/ordering + custom fields","Go-live support"]},
+    {s:"M",usd:175,cad:200,wk:22,hr:520,ph:[3,8,6,4,1],flags:[{t:"confirmed",txt:"Medium includes dedicated FG + SF integration & functional consultants (the deck's ✕ was a copy error) and covers up to 5 files/destination connectors — confirmed against the Oct-2023 TWM source workbooks; deck slides 61/62 corrected in the 30-Jul-2026 SF refresh v2."}],back:["Dedicated FG + SF integration & functional consultants","P2R with WD OR WD & Master Data connectors (one price, two flavors: 02A / 02B)","Worker types: up to 3","Handover to SAP Integration Suite (Cloud Integration): up to 5 files/destination connectors (example: 4 master data + 1 worker download)","Basic setup + custom fields · go-live support"]},
+    {s:"L",usd:275,cad:325,wk:26,hr:810,ph:[3,9,7,5,2],flags:[{t:"confirmed",txt:"Large = 10+ files/destination connectors (P2R, WD & Master Data) — confirmed against the Oct-2023 TWM source workbooks; deck slides 61/62 corrected in the 30-Jul-2026 SF refresh v2."}],back:["Dedicated FG + SF integration & functional consultants","P2R, WD & Master Data connectors","Worker types: up to 3","Handover to SAP Integration Suite (Cloud Integration): 10+ files/destination connectors","Basic setup + custom fields · go-live support"]}],
+   mx:{rows:[["Consulting partner on project & the integrations",1,1,1],["Leading practices & industry standards for integrations",1,1,1],["Dedicated FG + SF integration & functional delivery consultants",1,1,1],["Connector set (P2R = Position-to-Requisition · WD = Worker Download)","Worker download only","P2R with WD OR WD & Master Data (one price, two flavors: 02A / 02B)","P2R, WD & Master Data"],["Applicable worker types (Contingent / Profile / SOW)","Select 2 of 3","Up to 3","Up to 3"],["Handover to SAP Integration Suite (Cloud Integration)","Up to 2 files/destination connectors","Up to 5 files/destination connectors (example: 4 master data + 1 worker download)","10+ files/destination connectors"],["Basic setup: native field mapping/layout/ordering + custom fields (no custom features)",1,1,1],["Go-live support",1,1,1]],note:"Master data replication EC→FG is the prerequisite for the position and worker scenarios; an MDI-based master data path exists (financial master data via MDI comes from S/4HANA only for Cost Center/Legal Entity). IAS/IPS is the recommended user-provisioning approach. Tiers, consultant inclusion and connector sets re-confirmed against the Oct-2023 TWM source workbooks (SF refresh v2, 30-Jul-2026)."}}
  ],
  findings:[
   {k:"verify",w:"Pricing · slides 4 vs 22",h:"Contingent Small price conflict",p:"Overview shows USD 250K / CAD 250K; the Small detail slide shows USD 215K / CAD 240K. Overview values used in this draft — confirm which is current."},
   {k:"verify",w:"Slide 41",h:"Profile Worker Medium mislabeled",p:"Slide is titled 'Profile Worker – Small T-Shirt' but carries the Medium badge and USD 255K, vs USD 225K on the module overview. Title corrected to Medium; price needs the owner's call."},
-  {k:"verify",w:"Slides 13 / 61 / 62",h:"SF connector file counts appear swapped (M ↔ L)",p:"Published values: Small ≤2, Medium 10+, Large ≤5 (with the 5-file example of 4 master data + 1 worker download). Size logic and the example both point to Medium ≤5 and Large 10+. Corrected in this draft — confirm."},
-  {k:"verify",w:"Slides 13 / 61",h:"SF Medium excludes dedicated consultants",p:"'Dedicated Integration and Functional Delivery Consultants' is marked excluded at Medium while included at both Small and Large — almost certainly a copy error. Left as published in the matrix, flagged inline."},
+  {k:"confirmed",w:"Slides 13 / 61 / 62",h:"SF connector file counts confirmed (Medium up to 5 / Large 10+)",p:"Published deck values had Medium 10+ and Large ≤5 (with the 5-file example of 4 master data + 1 worker download). Confirmed against the Oct-2023 TWM source workbooks: Small up to 2, Medium up to 5 (example: 4 master data + 1 worker download), Large 10+ files/destination connectors; deck slides 61/62 corrected in the 30-Jul-2026 SF refresh v2."},
+  {k:"confirmed",w:"Slides 13 / 61",h:"SF Medium includes dedicated consultants (deck ✕ was a copy error)",p:"'Dedicated Integration and Functional Delivery Consultants' was marked excluded at Medium while included at Small and Large. Confirmed against the Oct-2023 TWM source workbooks that Medium includes them; the scope matrix and the Medium scope card now show it included, and deck slides 61/62 were corrected in the 30-Jul-2026 SF refresh v2."},
   {k:"verify",w:"Slides 8 vs 37",h:"SOW ERP Large phase row doesn't sum to 46 weeks",p:"Detail slide 37 shows Explore 13w (total 37w) against a stated 46-week duration; the overview shows Explore 22w which sums correctly. Overview phasing used here."},
   {k:"verify",w:"Slides 9 vs 11/47-49",h:"Country tier hours conflict",p:"Categories slide: 450/680/900 hrs. Country Expansion T-shirts: 340/520/780 hrs (durations match at 14/18/22 wks). T-shirt values used — confirm which set reflects current G3 sizing."},
   {k:"verify",w:"Slide 9",h:"Country list hygiene",p:"Mexico listed twice in Medium; 'Luxemborg' misspelled; Japan appears in Large on the categories slide but not in the Large T-shirt examples; Turkey should be Türkiye per current SAP style. All corrected in this draft."},
@@ -691,12 +698,22 @@ const D={
   {k:"upd",w:"Slide 56 + Ariba slides",h:"Ariba Network → SAP Business Network; CIG → managed gateway",p:"Supplier/network references updated to SAP Business Network, and the transport described as SAP Integration Suite, managed gateway for spend management and SAP Business Network — the current names throughout the FG↔Ariba Business Synopsis and B&I integration guide."},
   {k:"upd",w:"Ariba section",h:"Next-gen SAP Ariba qualifier added",p:"Next-gen Ariba is GA on SAP BTP since March 2026 with quarterly releases into 2027 and a committed ≥60% agentic back-port to current-gen. The three Ariba T-shirts assume current-gen B&I — the client's Ariba generation and migration timing is now a scoping variable and is called out in this draft."},
   {k:"upd",w:"ERP Edition slides",h:"'HR Mini' terminology retired",p:"'HR Mini (worker) integrations' doesn't exist in the current Connector Library (2026-05-15); the HR feed is the User Upload connector plus the worker/master-data connectors. Relabeled 'HR (worker/user data) integrations' with the legacy term noted."},
-  {k:"upd",w:"SF slides",h:"SF integration aligned to current 3-scenario model",p:"Current FG↔SF EC integration: (1) master data EC→FG as prerequisite, (2) Position Management → FG job posting, (3) worker FG→EC via Integration Suite iFlows + SF Standard Worker Upload OData API. Added: MDI-based master data option (S/4-only caveat for financial data), IAS/IPS as recommended user provisioning, and the worker source-system flag that resolves SF licensing double-count."},
+  {k:"upd",w:"SF slides",h:"SF integration aligned to current 3-scenario model",p:"Current FG↔SF EC integration: (1) master data EC→FG as prerequisite, (2) Position Management → FG job posting, (3) worker FG→EC via Integration Suite iFlows + SF Standard Worker Upload OData API. Added: MDI-based master data option (S/4-only caveat for financial data), IAS/IPS as recommended user provisioning, and the worker source-system flag that resolves SF licensing double-count. Re-validated 30-Jul-2026 (SF refresh v2) against the SAP EC–Fieldglass integration guide 1H 2605 (2026-07-15), the FG↔SF Business Synopsis (2025-10-13), the Connector Library (2026-05-15) and the Oct-2023 TWM source workbooks."},
   {k:"upd",w:"Slide 45",h:"Multi-ERP exclusion reworded",p:"The Ariba/Business Network integration now supports multi-ERP routing via child site system IDs, so 'not supported' framing would be wrong; the exclusion stands as 'custom scoping required' because each additional backend roughly doubles backend-side effort while FG/CPI-side work is largely shared."},
-  {k:"upd",w:"Slide 3 + assumptions",h:"Partner-led ≠ Fieldglass-free footnote added",p:"Small tier's 'integration: partner or client self-service' now carries the restricted-activities note (tenant endpoints, Company Configuration, extrinsic fields, Configuration Manager provisioning, mapping spec ownership) per the S/4HANA Implementation Guide — prevents the 'just enable the connector' misread in sales cycles."},
+  {k:"upd",w:"Slide 3 + assumptions",h:"Partner-led ≠ Fieldglass-free footnote added",p:"Small tier's 'integration: partner or client self-service' now carries the restricted-activities note (tenant endpoints, Company Configuration, extrinsic fields, mapping spec ownership) per the S/4HANA Implementation Guide — prevents the 'just enable the connector' misread in sales cycles."},
   {k:"upd",w:"Whole deck",h:"Joule / AI positioning note added (guardrailed)",p:"Deck predates Joule. Added a light-touch note: Ariba intake agent and FG gate-pass time capture GA June 2026, AI-assisted SOW deliverables since Q1 2026 — with the explicit caveat that AI tooling does not shrink integration configuration/mapping scope, and Joule activation path/wave timing is a separate conversation to align with the account team."},
   {k:"upd",w:"Structural gap",h:"No standalone S/4HANA integration T-shirt",p:"The deck covers standalone Ariba and SF integration T-shirts, but ERP integrations exist only inside the ERP Edition bundles. Existing-FG customers adding the S/4HANA (22K lean services) integration have no T-shirt — recommend adding one parallel to the SF structure: master data via DRF/MDI (prerequisite) + PR/PO/SES/invoice or ERS transactional chain, mandatory joint scoping, and the FG-Services-restricted steps called out. Published specialist benchmarks put such scopes at ~16–24 weeks standard, 9+ months complex/global."},
-  {k:"upd",w:"Slides 2 / 19",h:"Freshness stamps & marketing claims",p:"Version stamp updated to a 2026 draft; slide 19 speaker notes still frame the backend story around SAP ECC (mainstream maintenance ends 2027 — message S/4HANA-first) and cite '100+ countries / 20+ languages / 150+ APIs' — re-pull current figures from sap.com before customer-facing use."}
+  {k:"upd",w:"Slides 2 / 19",h:"Freshness stamps & marketing claims",p:"Version stamp updated to a 2026 draft; slide 19 speaker notes still frame the backend story around SAP ECC (mainstream maintenance ends 2027 — message S/4HANA-first) and cite '100+ countries / 20+ languages / 150+ APIs' — re-pull current figures from sap.com before customer-facing use."},
+  {k:"confirmed",w:"Overview · delivery model note",h:"Configuration Manager provisioning removed from FG-performed list",p:"Removed 2026-09 per Lauren Herm (2026-07-16): the integration resource no longer performs Configuration Manager role provisioning; the item came from older internal notes, not the deck."},
+  {k:"note",w:"SF · worker replication",h:"Two worker-replication paths: prepackaged Cloud Integration vs MDI (MDI recommended)",p:"Worker data FG→EC can run either through the prepackaged SAP Integration Suite (Cloud Integration) iFlows or through SAP Master Data Integration (MDI), which also carries No-Show since 1H 2025; MDI is the recommended path for new implementations. The path the client lands on changes the connector inventory and handover count, not the T-shirt price — capture it in scoping."},
+  {k:"note",w:"SF · master data",h:"Master data: MDI recommended, Integration Center → SFTP as the fallback",p:"Master data replication EC→FG (the prerequisite scenario) is MDI-recommended; where MDI is not available, the fallback is SuccessFactors Integration Center exports to SFTP picked up by the Fieldglass upload connectors. The fallback adds file-based connectors to the handover count — confirm the path before sizing."},
+  {k:"note",w:"SF · user provisioning",h:"IAS/IPS provisioning is the assumed user-provisioning path",p:"User provisioning between SuccessFactors and Fieldglass is assumed via SAP Cloud Identity Services — Identity Authentication (IAS) and Identity Provisioning (IPS). The T-shirts do not include IAS/IPS tenant setup; treat it as a client / BTP prerequisite and call it out in the assumptions."},
+  {k:"confirmed",w:"SF · licensing",h:"SourceOfRecord = FG licensing flag confirmed",p:"The worker upload to Employee Central carries SourceOfRecord = Fieldglass, which is what keeps Fieldglass-sourced external workers from being double-counted against SuccessFactors licensing. Confirmed in the SAP EC–Fieldglass integration guide 1H 2605 (2026-07-15); replaces the generic 'source-system flag' wording in the SF package description."},
+  {k:"confirmed",w:"SF · connections",h:"Basic Auth retirement 20-Nov-2026 (KBA 3156202)",p:"SuccessFactors retires Basic Authentication for API access on 20-Nov-2026 (KBA 3156202). Every FG↔SF connection in scope must be set up or migrated to X.509 client certificates or OAuth2 SAML Bearer assertion — include the per-connection auth setup in the integration workstream for any go-live after that date and for existing-customer transfers."},
+  {k:"confirmed",w:"SF · identity",h:"IAS mandatory from Nov-2026 (KBA 3097769)",p:"SAP Cloud Identity Services — Identity Authentication (IAS) becomes mandatory for SuccessFactors login in November 2026 (KBA 3097769). Reinforces the IAS/IPS provisioning assumption; clients still on native SF login need the IAS migration on their side before or alongside the Fieldglass integration."},
+  {k:"note",w:"SF · hours",h:"2026 hours re-baseline delivered, pricing pass pending",p:"Grid hours re-baselined 30-Jul-2026 for Bridget Kafes: S 255→275, M 457→492, L 700→752 (+7–8%); durations 17/22/26 wks unchanged. The builder still shows the published deck hours (280/520/810) until the deck owner's pricing pass lands; the difference is grid hours vs published package hours."},
+  {k:"note",w:"Scope Building · rates",h:"Placeholder rates vs the Oct-2023 SKU cost build",p:"The Scope Building rate panel uses public-market placeholder proxies. The Oct-2023 SKU cost build used list rates of $300/hr (G3 consultants) and $410/hr (G2 PM/DE), FLCR $153.75 / $213.75 — the official 2026 rate card is pending; treat every $ in that panel as illustrative. No recalibration applied in v7."},
+  {k:"note",w:"Version",h:"v7 — what changed",p:"2026-09-08 · (1) Configuration Manager role provisioning removed from the FG-performed activities list in the Overview delivery-model note and in the partner-led footnote finding (Lauren Herm, 2026-07-16). (2) SuccessFactors synced with the corrected deck (SF refresh v2, 30-Jul-2026): BTP-handover wording normalized to 'Handover to SAP Integration Suite (Cloud Integration)'; Medium = up to 5 files/destination connectors (example: 4 master data + 1 worker download) and includes dedicated FG + SF consultants, Large = 10+; connector-set labels un-transposed (Medium 'P2R with WD OR WD & Master Data — 02A / 02B', Large 'P2R, WD & Master Data'); the two SF verify items converted to confirmed; new entries on dual worker-replication paths, MDI with Integration Center → SFTP fallback, IAS/IPS, the SourceOfRecord flag, Basic Auth retirement (KBA 3156202) and IAS mandatory Nov-2026 (KBA 3097769); hours re-baseline noted, published hours and prices unchanged. (3) Scope Building rate panel carries the Oct-2023 SKU list-rate note — placeholder proxies, no recalibration."}
  ]
 };
 
@@ -705,8 +722,9 @@ const PH_CLS=["ph-prep","ph-exp","ph-real","ph-dep","ph-run"];
 function money(n){return "$"+n+"K";}
 function phaseBar(ph,ctx){const tot=ph.reduce((a,b)=>a+b,0);let acc=0;return `<div class="phasebar">${ph.map((w,i)=>{const a=acc;acc+=w;return `<span class="${PH_CLS[i]}" style="width:${(w/tot*100).toFixed(1)}%" data-tip="${ctx?ctx+" · ":""}${PH_NAMES[i]} · ${w}w (wk ${a}–${acc} of engagement)"></span>`;}).join("")}</div><div class="ph-legend">${ph.map((w,i)=>`<span><i class="${PH_CLS[i]}"></i>${PH_NAMES[i]} ${w}w</span>`).join("")}</div>`;}
 function backList(items){return "<ul>"+items.map(it=>typeof it==="string"?`<li>${it}</li>`:`<li class="${it.x?'ex':'val'}">${it.t}</li>`).join("")+"</ul>";}
-function flags(f){return (f||[]).map(x=>`<span class="chip ${x.t}" title="${x.txt}">${x.t==='verify'?'Verify':'Updated'}</span>`).join("");}
-function flagNotes(f){return (f||[]).map(x=>`<div class="rev-note${x.t==='upd'?' upd':''}">${x.txt}</div>`).join("");}
+const FLAG_LABEL={verify:"Verify",upd:"Updated",confirmed:"Confirmed"};
+function flags(f){return (f||[]).map(x=>`<span class="chip ${x.t==='upd'?'updated':x.t}" title="${x.txt}">${FLAG_LABEL[x.t]||x.t}</span>`).join("");}
+function flagNotes(f){return (f||[]).map(x=>`<div class="rev-note${x.t!=='verify'?' '+x.t:''}">${x.t==='confirmed'?'<b>Confirmed.</b> ':''}${x.txt}</div>`).join("");}
 
 function tierCard(t,m,i){
   const sz=t.s==="S"?"Small":t.s==="M"?"Medium":t.s==="L"?"Large":"Fixed scope";
@@ -910,6 +928,7 @@ rateArea.innerHTML=`<div class="pick-group"><h3>Indicative rates &amp; cost buil
 ${ROLES.map(([id,label])=>`<tr id="rrow-${id}"><td>${label}</td><td><input id="mx-${id}" type="number" min="0" max="100" value="${state.mix[id]}" aria-label="${label} share of ROM hours"></td><td id="rh-${id}">—</td><td><select id="rt-${id}" aria-label="${label} rate tier">${Object.keys(RATE_TIERS).map(t=>`<option value="${t}">${t}</option>`).join("")}</select></td><td><input id="rr-${id}" type="number" min="0" max="1000" value="${state.rates[id].rate}" aria-label="${label} hourly rate"></td><td id="rc-${id}">—</td></tr>`).join("")}
 <tr class="rtot"><td>Total</td><td id="mxTot">—</td><td id="rhTot">—</td><td></td><td></td><td id="rcTot">—</td></tr>
 </tbody></table></div>
+<p class="staff-note rate-proxy" id="rateProxyNote"><b>Placeholder proxies.</b> The Oct-2023 SKU cost build used list rates of $300/hr (G3 consultants) and $410/hr (G2 PM/DE), FLCR $153.75 / $213.75 — the official 2026 rate card is pending; treat every $ in this panel as illustrative.</p>
 <p class="staff-note" id="rateNote"></p></div>`;
 ROLES.forEach(([id])=>{document.getElementById("rt-"+id).value=state.rates[id].tier;});
 /* largest-remainder split so role hours always sum exactly to round(basis × mixSum/100) */
@@ -1343,11 +1362,11 @@ function generate(){
     }).join("");
     return `<div class="tl-row"><span class="tl-name" title="${it.name} — ${it.tier}">${it.name}${it.qty>1?` ×${it.qty}`:""}</span><div class="tl-track"><div class="tl-bar" style="width:${(it.wk/LAST.wkMax*100).toFixed(1)}%" data-tip="${it.name} — ${it.tier} · ${it.wk} wks">${segs}</div></div><span class="tl-wk">${it.wk}w</span></div>`;
   }).join("");
-  const comps=LAST.items.map(it=>`<div class="rd-comp"><div class="rd-comp-h"><h4>${it.name} — ${it.tier}</h4><span>${fmtUSD(it.usd)} / ${fmtCAD(it.cad)} · ${it.hr!=null?it.hr.toLocaleString("en-US")+" h":"hours n/p"} · ${it.wk} wks${it.qty>1?" per country":""}</span></div>${phaseBar(it.ph,it.name+" — "+it.tier)}<div class="rd-scope">${backList(it.back)}</div>${(it.flags||[]).map(f=>`<div class="rd-note"><b>Verify before customer use:</b> ${f.txt}</div>`).join("")}</div>`).join("");
+  const comps=LAST.items.map(it=>`<div class="rd-comp"><div class="rd-comp-h"><h4>${it.name} — ${it.tier}</h4><span>${fmtUSD(it.usd)} / ${fmtCAD(it.cad)} · ${it.hr!=null?it.hr.toLocaleString("en-US")+" h":"hours n/p"} · ${it.wk} wks${it.qty>1?" per country":""}</span></div>${phaseBar(it.ph,it.name+" — "+it.tier)}<div class="rd-scope">${backList(it.back)}</div>${(it.flags||[]).filter(f=>f.t==='verify').map(f=>`<div class="rd-note"><b>Verify before customer use:</b> ${f.txt}</div>`).join("")}</div>`).join("");
   const warns=LAST.warns.map(w=>`<li>${w}</li>`).join("");
   const asm=listFrom("#assumptions .list-card:not(.excl) li").map(t=>`<li>${t}</li>`).join("");
   const exc=listFrom("#assumptions .list-card.excl li").map(t=>`<li>${t}</li>`).join("");
-  const nFlags=LAST.items.reduce((a,it)=>a+((it.flags||[]).length),0);
+  const nFlags=LAST.items.reduce((a,it)=>a+((it.flags||[]).filter(f=>f.t==='verify').length),0);
   document.getElementById("romOutput").innerHTML=`
   <div class="stale-note" hidden>⚠ Selections or engagement details changed since this ROM was generated — click “Generate detailed ROM” again to refresh before printing.</div>
   <div class="rom-actions"><button class="print-btn" id="printBtn">🖨 Print / Save as PDF</button><span class="gen-stamp">Generated ${new Date().toLocaleString()} · regenerate after changing selections</span></div>
@@ -1449,18 +1468,19 @@ document.querySelectorAll(".addbtn").forEach(b=>{
 })();
 
 /* =============== FINDINGS (filters + resolve tracking) =============== */
+const FIND_KINDS=[["verify","Verify"],["upd","Updated"],["confirmed","Confirmed"],["note","Note"]],FIND_LABEL=Object.fromEntries(FIND_KINDS);
 let findFilter="all",hideRes=false,resolved=new Set();
 try{resolved=new Set(JSON.parse(localStorage.getItem(LS_FND)||"[]"));}catch(e){}
 function renderFindings(focusSel){
   const list=D.findings;
-  const counts={all:list.length,verify:list.filter(f=>f.k==="verify").length,upd:list.filter(f=>f.k==="upd").length};
+  const counts={all:list.length};FIND_KINDS.forEach(([k])=>counts[k]=list.filter(f=>f.k===k).length);
   document.getElementById("findBar").innerHTML=
-    [["all","All"],["verify","Verify"],["upd","Updated"]].map(([k,l])=>`<button class="fchip${findFilter===k?" on":""}" data-f="${k}" aria-pressed="${findFilter===k}">${l} (${counts[k]})</button>`).join("")+
+    [["all","All"],...FIND_KINDS].map(([k,l])=>`<button class="fchip${findFilter===k?" on":""}" data-f="${k}" aria-pressed="${findFilter===k}">${l} (${counts[k]})</button>`).join("")+
     `<button class="fchip${hideRes?" on":""}" data-f="hideres" aria-pressed="${hideRes}">Hide resolved</button><span class="find-prog">${resolved.size} of ${list.length} resolved</span>`;
   document.getElementById("findArea").innerHTML=list.map((f,i)=>{
     if(findFilter!=="all"&&f.k!==findFilter)return "";
     if(hideRes&&resolved.has(i))return "";
-    return `<div class="find ${f.k==='upd'?'upd':''}${resolved.has(i)?" resolved":""}"><label class="res"><input type="checkbox" data-i="${i}" ${resolved.has(i)?"checked":""}> Resolved</label><div class="where">${f.k==='upd'?'Updated · ':'Verify · '}${f.w}</div><h4>${f.h}</h4><p>${f.p}</p></div>`;
+    return `<div class="find ${f.k}${resolved.has(i)?" resolved":""}"><label class="res"><input type="checkbox" data-i="${i}" ${resolved.has(i)?"checked":""}> Resolved</label><div class="where">${FIND_LABEL[f.k]||f.k} · ${f.w}</div><h4>${f.h}</h4><p>${f.p}</p></div>`;
   }).join("")||'<p class="sec-lede">Nothing to show with the current filter.</p>';
   if(focusSel){const el=document.querySelector(focusSel)||document.querySelector("#findBar .fchip");if(el)el.focus();}
 }
@@ -1540,7 +1560,7 @@ function exportExcel(){
     ...LAST.items.flatMap(it=>[
       xRow([[it.name+" — "+it.tier,"b"]]),
       ...it.back.map(x=>typeof x==="string"?xRow(["   ✔ "+x]):x.x?xRow(["   ✕ Excluded: "+x.t]):xRow(["   ◆ Scoping variable: "+x.t])),
-      ...(it.flags||[]).map(f=>xRow([["   ⚠ Verify before customer use: "+f.txt,"h"]]))
+      ...(it.flags||[]).filter(f=>f.t==='verify').map(f=>xRow([["   ⚠ Verify before customer use: "+f.txt,"h"]]))
     ])
   ];
   const tl=[
