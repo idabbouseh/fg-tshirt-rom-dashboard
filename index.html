@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAP Fieldglass · T-Shirt ROM Explorer (2026 Refresh Draft) — v8</title>
+<title>SAP Fieldglass · T-Shirt ROM Explorer (2026 Refresh Draft) — v9</title>
 <style>
 :root{
   --navy:#12232F; --navy-2:#1D2D3E; --ink:#223548; --muted:#5B738B;
@@ -467,7 +467,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
       <span class="sap-mark">SAP</span>
       <div>
         <div class="hdr-title">Fieldglass T-Shirt ROM Explorer</div>
-        <div class="hdr-sub">Contingent &amp; Services Procurement · 2026 refresh draft (v2.0 baseline: Mar 11, 2024) · INTERNAL · v8 (Sep 2026)</div>
+        <div class="hdr-sub">Contingent &amp; Services Procurement · 2026 refresh draft (v2.0 baseline: Mar 11, 2024) · INTERNAL · v9 (Sep 2026)</div>
       </div>
       <div class="hdr-right">
         <button class="rev-toggle" id="revToggle" aria-pressed="false"><span class="dot"></span> Review mode</button>
@@ -656,7 +656,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
 <section id="scope">
   <div class="eyebrow">Internal planning aid · not part of the T-shirt ROM</div>
   <h2 class="sec-title">Scope Building</h2>
-  <p class="sec-lede">Model a realistic, staged delivery timeline for the components currently selected in the <b>ROM Builder</b>, driven by team size and real Fieldglass delivery dependencies: each Functional Consultant works one engagement at a time; integration workstreams start only once a requirements foundation exists (~mid-Explore of the lead module), their final build &amp; SIT depend on the FC-configured test environment, and everything aligns to a <b>joint go-live</b> — mirroring how delivered FG programs are planned. Hover any bar segment for details. T-shirts stay high-level for RFP pricing — treat this view as internal planning only.</p>
+  <p class="sec-lede">Model a realistic, staged delivery timeline for the components currently selected in the <b>ROM Builder</b>, driven by team size and real Fieldglass delivery dependencies: each Functional Consultant works one engagement at a time; integration workstreams start only once a requirements foundation exists (~mid-Explore of the lead module), their final build &amp; SIT depend on the FC-configured test environment, and everything aligns to a <b>joint go-live</b> — mirroring how delivered FG programs are planned. Hover any bar segment for details. T-shirts stay high-level for RFP pricing — treat this view as internal planning only. Rates in this tab are on the 2023 SKU basis · 2026 rate card pending — internal only, never part of the T-shirt ROM.</p>
   <div class="builder">
     <div><div id="staffArea"></div><div id="rateArea"></div></div>
     <div class="totals" id="schedBox">
@@ -664,7 +664,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
       <div class="warnbox" id="staffWarnBox"></div>
       <div class="sr-live" id="srLiveScope" aria-live="polite"></div>
       <div id="schedBody"><div class="tot-empty">Select components in the ROM Builder to model a schedule.</div></div>
-      <p class="tot-note">Internal planning aid — the official T-shirt duration for RFP use remains the parallel figure in the ROM Builder. Rates intentionally omitted pending rate-card confirmation.</p>
+      <p class="tot-note">Internal planning aid — the official T-shirt duration for RFP use remains the parallel figure in the ROM Builder. No rates in this box or in any ROM output — the indicative rate panel (2023 SKU basis · 2026 rate card pending) stays internal.</p>
     </div>
   </div>
   <div class="mod" id="ganttMod" hidden>
@@ -721,7 +721,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
 
 <!-- ================= FINDINGS ================= -->
 <section id="findings">
-  <div class="eyebrow">Deck review · July 2026 · v7 update Sep 2026 · v8 draft refresh Sep 2026</div>
+  <div class="eyebrow">Deck review · July 2026 · v7 update Sep 2026 · v8 draft refresh Sep 2026 · v9 update Sep 2026</div>
   <h2 class="sec-title">Review Findings Register</h2>
   <p class="sec-lede">Source: "NEW _ SAPFG T-Shirt ROM_Updated.pptx" (v2.0 baseline Mar 11 2024; canonical SharePoint copy in Fieldglass Avengers last modified 12-Aug-2026, 71 slides, re-checked 2026-09-09). Validated against the SAP Fieldglass Connector Library (2026-05-15), FG↔SF EC and FG↔Ariba Business Synopses on help.sap.com, and SAP announcements through July 2026. Amber = internal inconsistency needing the deck owner's call; teal = current-state update applied in this draft; green = settled against source documents (confirmed); grey = informational note. Mark items resolved as you clear them with the deck owner — progress is saved in this browser.</p>
   <div class="find-bar" id="findBar"></div>
@@ -818,7 +818,8 @@ const D={
   {k:"confirmed",w:"SF · connections",h:"Basic Auth retirement 20-Nov-2026 (KBA 3156202)",p:"SuccessFactors retires Basic Authentication for API access on 20-Nov-2026 (KBA 3156202). Every FG↔SF connection in scope must be set up or migrated to X.509 client certificates or OAuth2 SAML Bearer assertion — include the per-connection auth setup in the integration workstream for any go-live after that date and for existing-customer transfers."},
   {k:"confirmed",w:"SF · identity",h:"IAS mandatory from Nov-2026 (KBA 3097769)",p:"SAP Cloud Identity Services — Identity Authentication (IAS) becomes mandatory for SuccessFactors login in November 2026 (KBA 3097769). Reinforces the IAS/IPS provisioning assumption; clients still on native SF login need the IAS migration on their side before or alongside the Fieldglass integration."},
   {k:"note",w:"SF · hours",h:"2026 hours re-baseline delivered, pricing pass pending",p:"Grid hours re-baselined 30-Jul-2026 for Bridget Kafes: S 255→275, M 457→492, L 700→752 (+7–8%); durations 17/22/26 wks unchanged. The builder still shows the published deck hours (280/520/810) until the deck owner's pricing pass lands; the difference is grid hours vs published package hours."},
-  {k:"note",w:"Scope Building · rates",h:"Placeholder rates vs the Oct-2023 SKU cost build",p:"The Scope Building rate panel uses public-market placeholder proxies. The Oct-2023 SKU cost build used list rates of $300/hr (G3 consultants) and $410/hr (G2 PM/DE), FLCR $153.75 / $213.75 — the official 2026 rate card is pending; treat every $ in that panel as illustrative. No recalibration applied in v7."},
+  {k:"note",w:"Scope Building · rates",h:"v7 proxy rates — superseded by the v9 defaults (2023 SKU basis)",p:"Superseded 2026-09-09. v7 and v8 shipped the Scope Building rate panel on public-market proxies (all roles G3 $95/hr). From v9 the defaults are the Oct-2023 SKU cost build itself: G3 consultants $300/hr (integration, solution, functional), G2 PM / Delivery Executive $410/hr, fully loaded cost rates $153.75 / $213.75; T2 / T3 / T4 / G4 remain public proxies and are labelled as such. The official 2026 rate card is still pending — every $ in that panel stays indicative and internal (2023 SKU basis · 2026 rate card pending), and no rate reaches the ROM totals, the one-pager or the Excel Summary. See 'v9 — what changed'."},
+  {k:"note",w:"Version",h:"v9 — what changed",p:"2026-09-09 · (1) Scope Building rate defaults now follow the Oct-2023 SKU cost build (2023 SKU basis · 2026 rate card pending): G3 = $300/hr for the Integration, Solution and Functional Consultants, G2 = $410/hr for the Project Manager and Delivery Executive — PM / DE default to G2 instead of G3; T2 / T3 / T4 / G4 stay in the tier dropdown as labelled public proxies; the panel note quotes the fully loaded cost rates $153.75 / $213.75. (2) Saved-state migration: builder state and scenarios now carry ratesV 2; v7/v8-shaped state (G3 $95 proxies, no ratesV) opens on the new defaults instead of resurrecting the old rates — scenarios saved by v7 and v8 still open, and the project-status chip compares against the migrated state. (3) Bridget's split unchanged: no rates in the ROM totals, the one-pager or the Excel Summary — rates live only in Scope Building and the Excel 'Staffing (internal)' sheet, all marked internal. (4) Decision (Abe, 2026-09-09): the live public site is this INTERNAL build with Scope Building included — no customer-safe swap."},
   {k:"note",w:"Version",h:"v8 — what changed",p:"2026-09-09 · (A) Project scenario: the Scenarios bar became a 'Project scenario' card at the top of the ROM Builder — project / opportunity name first (same field, still drives the generated ROM and the Excel filename), a status chip (Unsaved draft · Saved as … · Changed since save) and Open · Save · Save as… · Delete · Compare; one project = one scenario, and scenarios saved by v7 still open. (B) Indicative schedule: 'Adjust schedule' in the Combined ROM card — presets Parallel / Two waves / Sequential, per-component start-week steppers (Custom) and an override total with a required reason; the T-shirt standard (parallel) stays visible everywhere and the adjusted figure appears only when it differs, flowing into the one-pager (second duration tile, offset timeline bars), the Excel Summary (adjusted wks + basis), scenario metrics and the compare table; Scope Building is unchanged. (C) Countries by name: typeahead over the deck's country table (slide 9 — Mexico de-duplicated, Luxembourg spelled correctly, Japan kept under Large) plus ~60 other countries that default to Medium with a confirm-size flag; picked countries roll up into the Small / Medium / Large counts (steppers lock while picks exist), ⓘ example-country popovers per size, and the countries are listed in the one-pager, the Excel Summary and the scoping warnings. (D) Content refresh from the canonical deck (SharePoint, modified 12-Aug-2026): ERP Edition hours (Contingent S 1200 / M 1650; SOW S 1200 / M 1650 / L 2150), 'Worker integrations' wording with Integrations configuration and Worker excluded at Small, slide-3 'Workers' tier wording as a new Overview strip, the slide-1 economies-of-scale sentence, SOW Medium duplicate row resolved, SF slides 13 / 60–62 still pre-refresh (dashboard ahead of the deck), the slide 9 vs 11 country-hours verify item and the working-file notes. (E) 2026-09-09 later: removing the last picked country restores the manual Small / Medium / Large counts (snapshot taken when the first chip is added, kept with the saved scenario) — a Germany detour in the demo returns Acme to $800K."},
   {k:"upd",w:"Slides 7 / 8 / 32–37",h:"ERP Edition hours raised in the 12-Aug-2026 deck",p:"Contingent ERP Edition: Small 1150 → 1200 h, Medium 1500 → 1650 h. SOW ERP Edition: Small 1150 → 1200 h, Medium 1480 → 1650 h, Large 1780 → 2150 h. Prices (400/450 · 500/600 · 600/700 K), durations (24 / 36 / 46 wks) and phase mixes unchanged. Scope matrix per the pptx cells: Small = Master Data + Invoice integrations only (Integrations configuration and Worker integrations excluded); Medium adds Integrations configuration, Worker and PO & SES; SOW ERP Large includes every row incl. Plant Maintenance and Contract integrations. Applied to const D in v8 (deck 12-Aug-2026, slides 7, 8, 32, 33, 35, 36, 37)."},
   {k:"note",w:"Slides 13 / 60–62",h:"SF refresh v2 not yet merged into the canonical deck",p:"SF refresh v2 (30-Jul-2026) not yet merged into the canonical deck as of 12-Aug-2026 — slides 13 and 60–62 still carry the pre-refresh text ('Success Factors', 'Transfer to BTP', Medium 10+ / Large up-to-5 swap, Medium consultants ✕). The dashboard is ahead of the deck and keeps the corrected SF content; owner merge pending (Reeshema Downey / Bridget Kafes)."},
@@ -932,11 +933,14 @@ const ALL=[...D.modules,...D.expansion.filter(m=>m.id!=="ce"),...D.integrations]
 const SIZE_NAME={S:"Small",M:"Medium",L:"Large","—":"Fixed scope"};
 const IC_IDS=["ar1","ar2","ar3","sf"];
 const ROLES=[["de","Delivery Executive"],["pm","Project Manager"],["ic","Integration Consultant"],["sc","Solution Consultant"],["fc","Functional Consultant"]];
-const RATE_TIERS={T2:185,T3:235,T4:295,G2:75,G3:95,G4:120}; /* placeholder USD/hr from public GSA & market proxies — replace with the official rate card */
+const RATE_TIERS={T2:185,T3:235,T4:295,G2:410,G3:300,G4:120}; /* USD/hr — G3 / G2 = Oct-2023 SKU list rates (2023 SKU basis · 2026 rate card pending); T2 / T3 / T4 / G4 = public GSA & market proxies */
+const RATE_PROXY=new Set(["T2","T3","T4","G4"]); /* tiers labelled "(proxy)" in the tier dropdown */
+const RATES_DEFAULT=()=>({de:{tier:"G2",rate:410},pm:{tier:"G2",rate:410},ic:{tier:"G3",rate:300},sc:{tier:"G3",rate:300},fc:{tier:"G3",rate:300}}); /* v9 defaults: PM / DE G2, consultants G3 */
+const RATES_V=2; /* saved-state rates version — states without ratesV===RATES_V keep the defaults (v7/v8 carried G3 $95 proxies) */
 const MIX_DEFAULT={de:7,pm:22,sc:9,fc:40,ic:22}; /* % of ROM hours, derived from the Verizon & IBM ROM role-hour grids */
 const state={cur:"USD",cont:0,staff:{de:1,pm:1,ic:1,sc:1,fc:1},stagger:"auto",custType:"",
   mix:{...MIX_DEFAULT},parked:{},cty:[],sched:{preset:"parallel",starts:{},override:null,reason:""},
-  rates:{de:{tier:"G3",rate:95},pm:{tier:"G3",rate:95},ic:{tier:"G3",rate:95},sc:{tier:"G3",rate:95},fc:{tier:"G3",rate:95}}};
+  rates:RATES_DEFAULT()};
 let LAST={items:[],usd:0,cad:0,hr:0,wkMax:0,n:0,ctyN:0,noHr:false,warns:[]};
 const SIG_FILL=[]; /* v8: fillers that normalise v7-shaped saved states (missing keys) before comparison — registered by the countries and schedule blocks */
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -1081,7 +1085,7 @@ const staffArea=document.getElementById("staffArea");
 staffArea.innerHTML=`<div class="pick-group"><h3>Delivery team</h3>
 ${ROLES.map(([id,label])=>`<div class="pick"><label for="st-${id}">${label}${id==="fc"?'<span class="sub">Drives module/expansion parallelism — each FC works one engagement at a time</span>':id==="ic"?'<span class="sub">Drives integration-package parallelism</span>':""}</label><span class="qty"><button type="button" class="qbtn" data-st="${id}" data-d="-1" aria-label="Remove one ${label}">−</button><input id="st-${id}" type="number" min="0" max="10" value="1" inputmode="numeric" aria-label="Number of ${label}s"><button type="button" class="qbtn" data-st="${id}" data-d="1" aria-label="Add one ${label}">+</button></span></div>`).join("")}
 <div class="pick"><label for="stagSel">Stagger between engagements<span class="sub">How the next engagement in a lane starts relative to the prior one</span></label><select id="stagSel" aria-label="Stagger mode"><option value="auto">Auto — next starts at prior's Deploy</option>${[0,10,20,25,30,40,50].map(v=>`<option value="${v}">${v}% overlap</option>`).join("")}</select></div>
-<p class="staff-note">DE / PM / SC counts are informational for now (they flow into scenarios and the Excel export); FC and Integration Consultant counts drive the staged schedule. Rates intentionally omitted pending rate-card confirmation.</p></div>`;
+<p class="staff-note">DE / PM / SC counts are informational for now (they flow into scenarios and the Excel export); FC and Integration Consultant counts drive the staged schedule. Rates live in the indicative rate panel below (2023 SKU basis · 2026 rate card pending) — internal only.</p></div>`;
 /* mix reallocation: zeroing a role's count parks its mix % onto FC (or spreads it
    proportionally if FC is also 0); restoring the count takes exactly that share back */
 function parkMix(id){
@@ -1152,16 +1156,18 @@ staffArea.addEventListener("change",()=>{syncStaff(true);recalc();saveState();})
 /* live feedback while typing counts — schedule updates immediately; mix parking waits for commit (blur/Enter) */
 staffArea.addEventListener("input",e=>{if(e.target.matches('input[type="number"]')){syncStaff(false);recalc();}});
 
-/* ---- indicative rates & cost buildup (Scope Building — internal, placeholder rates) ---- */
+/* ---- indicative rates & cost buildup (Scope Building — internal · 2023 SKU basis · 2026 rate card pending) ---- */
 const rateArea=document.getElementById("rateArea");
-rateArea.innerHTML=`<div class="pick-group"><h3>Indicative rates &amp; cost buildup <span style="text-transform:none;font-weight:400;letter-spacing:normal">(internal · placeholder rates)</span></h3>
+rateArea.innerHTML=`<div class="pick-group"><h3>Indicative rates &amp; cost buildup <span style="text-transform:none;font-weight:400;letter-spacing:normal">(internal · 2023 SKU basis · 2026 rate card pending)</span></h3>
 <div class="tbl-scroll"><table class="mx rate-t"><thead><tr><th>Role</th><th>Mix %</th><th>Hours</th><th>Tier</th><th>Rate $/hr</th><th>Cost</th></tr></thead><tbody>
-${ROLES.map(([id,label])=>`<tr id="rrow-${id}"><td>${label}</td><td><input id="mx-${id}" type="number" min="0" max="100" value="${state.mix[id]}" aria-label="${label} share of ROM hours"></td><td id="rh-${id}">—</td><td><select id="rt-${id}" aria-label="${label} rate tier">${Object.keys(RATE_TIERS).map(t=>`<option value="${t}">${t}</option>`).join("")}</select></td><td><input id="rr-${id}" type="number" min="0" max="1000" value="${state.rates[id].rate}" aria-label="${label} hourly rate"></td><td id="rc-${id}">—</td></tr>`).join("")}
+${ROLES.map(([id,label])=>`<tr id="rrow-${id}"><td>${label}</td><td><input id="mx-${id}" type="number" min="0" max="100" value="${state.mix[id]}" aria-label="${label} share of ROM hours"></td><td id="rh-${id}">—</td><td><select id="rt-${id}" aria-label="${label} rate tier">${Object.keys(RATE_TIERS).map(t=>`<option value="${t}">${t}${RATE_PROXY.has(t)?" (proxy)":""}</option>`).join("")}</select></td><td><input id="rr-${id}" type="number" min="0" max="1000" value="${state.rates[id].rate}" aria-label="${label} hourly rate"></td><td id="rc-${id}">—</td></tr>`).join("")}
 <tr class="rtot"><td>Total</td><td id="mxTot">—</td><td id="rhTot">—</td><td></td><td></td><td id="rcTot">—</td></tr>
 </tbody></table></div>
-<p class="staff-note rate-proxy" id="rateProxyNote"><b>Placeholder proxies.</b> The Oct-2023 SKU cost build used list rates of $300/hr (G3 consultants) and $410/hr (G2 PM/DE), FLCR $153.75 / $213.75 — the official 2026 rate card is pending; treat every $ in this panel as illustrative.</p>
+<p class="staff-note rate-proxy" id="rateProxyNote"><b>Defaults are the Oct-2023 SKU cost build:</b> G3 consultants $300/hr (integration, solution, functional), G2 PM/Delivery Executive $410/hr; fully loaded cost rates $153.75 / $213.75. T2/T3/T4/G4 are public proxies. The 2026 rate card is pending — every $ in this panel is indicative and internal.</p>
 <p class="staff-note" id="rateNote"></p></div>`;
 ROLES.forEach(([id])=>{document.getElementById("rt-"+id).value=state.rates[id].tier;});
+/* v9: write a rates object into state and the rt- / rr- fields (used by applyState for the 2023 SKU defaults) */
+function setRates(r){ROLES.forEach(([id])=>{const v=r&&r[id];if(!v)return;state.rates[id].tier=v.tier;state.rates[id].rate=v.rate;const t=document.getElementById("rt-"+id),n=document.getElementById("rr-"+id);if(t)t.value=v.tier;if(n)n.value=v.rate;});}
 /* largest-remainder split so role hours always sum exactly to round(basis × mixSum/100) */
 function mixSplit(hrs){
   const entries=ROLES.map(([id])=>{const mix=Math.max(0,Math.min(100,+document.getElementById("mx-"+id).value||0));return {id,mix,exact:hrs*mix/100};});
@@ -1193,7 +1199,7 @@ function updateRateCalc(){
     (mixSum!==100?`⚠ Role mix sums to ${mixSum}% — adjust to 100%. `:"")+
     (hrs?`Basis: ${hrs.toLocaleString("en-US")} ROM hours${contTag}${LAST.noHr?" — Ariba B&amp;I packages publish no hours and are excluded":""}. Indicative services cost ${costT?"$"+costT.toLocaleString("en-US"):"—"} vs ${state.cont>0?"base ":""}T-shirt price ${fmtUSD(LAST.usd)}${delta!=null?` (${delta>=0?"+":""}${delta}%)`:""}. `:LAST.items.length?"Selected packages publish no hours (Ariba B&amp;I) — no hour-based cost buildup applies. ":"Select components in the ROM Builder to build up cost. ")+
     (parkedNoteText()?`Auto-reallocated from zero-count roles — ${parkedNoteText()} (restore the role's count to take its share back). `:"")+
-    `Mix defaults derived from the Verizon/IBM ROM role-hour grids; rates are public-market placeholders (all roles default G3 — "G3 unless determined otherwise by SAP sales") — replace when the official rate card is confirmed.`;
+    `Mix defaults derived from the Verizon/IBM ROM role-hour grids; rates on the 2023 SKU basis · 2026 rate card pending (consultants default G3 — "G3 unless determined otherwise by SAP sales"; PM / DE default G2) — replace when the 2026 rate card is confirmed.`;
   updateRateRowStates();
 }
 rateArea.addEventListener("change",e=>{
@@ -1274,6 +1280,7 @@ function buildState(){
   s.cty=state.cty.map(c=>({key:c.key,name:c.name,lt:c.lt,s:c.s,deck:!!c.deck}));
   s.ctyManual=CTY_MANUAL?{...CTY_MANUAL}:null;
   s.sched={preset:state.sched.preset,starts:{...state.sched.starts},override:state.sched.override,reason:state.sched.reason};
+  s.ratesV=RATES_V; /* v9: rates carry a version so v7/v8-shaped states (G3 $95 proxies) never resurrect the old rates */
   s.proj={open:openScenName(),sig:openSig};
   return s;
 }
@@ -1298,7 +1305,8 @@ function applyState(s){
   else LAND_IDS.forEach(id=>{document.getElementById(id).value=id==="landTen"?"1":"";});
   LIVE_IDS.forEach(id=>{document.getElementById(id).checked=!!(s.live&&s.live[id]);});
   if(s.mix)ROLES.forEach(([id])=>{if(Number.isFinite(+s.mix[id])){state.mix[id]=Math.max(0,Math.min(100,+s.mix[id]));document.getElementById("mx-"+id).value=state.mix[id];}});
-  if(s.rates)ROLES.forEach(([id])=>{const r=s.rates[id];if(r){if(RATE_TIERS[r.tier]!=null){state.rates[id].tier=r.tier;document.getElementById("rt-"+id).value=r.tier;}if(Number.isFinite(+r.rate)){state.rates[id].rate=Math.max(0,+r.rate);document.getElementById("rr-"+id).value=state.rates[id].rate;}}});
+  setRates(RATES_DEFAULT()); /* v9: always start from the 2023 SKU defaults; v7/v8 states (no ratesV) keep them */
+  if(s.ratesV===RATES_V&&s.rates)ROLES.forEach(([id])=>{const r=s.rates[id];if(r){if(RATE_TIERS[r.tier]!=null){state.rates[id].tier=r.tier;document.getElementById("rt-"+id).value=r.tier;}if(Number.isFinite(+r.rate)){state.rates[id].rate=Math.max(0,+r.rate);document.getElementById("rr-"+id).value=state.rates[id].rate;}}});
   state.parked=(s.parked&&typeof s.parked==="object")?JSON.parse(JSON.stringify(s.parked)):{};
   state.cty=Array.isArray(s.cty)?s.cty.filter(c=>c&&c.key&&["S","M","L"].includes(c.s)).map(c=>{const ix=ctyByKey(String(c.key));return {key:String(c.key),name:String(c.name||(ix?ix.name:c.key)),lt:String(c.lt||(ix?ix.lt:"")),s:c.s,deck:ix?ix.deck:!!c.deck};}):[];
   CTY_MANUAL=(s.ctyManual&&typeof s.ctyManual==="object")?{S:+s.ctyManual.S||0,M:+s.ctyManual.M||0,L:+s.ctyManual.L||0}:null;
@@ -1309,7 +1317,8 @@ function applyState(s){
   syncStaff();staffBaseline={...state.staff};syncCurBtns();
   contR.value=state.cont;document.getElementById("contV").textContent=state.cont+"%";
 }
-function loadState(){try{const s=JSON.parse(localStorage.getItem(LS_KEY)||"null");if(s){applyState(s);restoreOpenScen(s.proj);}}catch(e){}}
+/* v9: a v7/v8 signature was computed with the old rates and no ratesV — drop it so the status chip compares against the (normalised) saved scenario */
+function loadState(){try{const s=JSON.parse(localStorage.getItem(LS_KEY)||"null");if(s){applyState(s);restoreOpenScen(s.ratesV===RATES_V?s.proj:(s.proj?{open:s.proj.open}:null));}}catch(e){}}
 
 /* ---- combination-rule validation ---- */
 function calcWarns(){
@@ -1631,6 +1640,7 @@ schedPanelEl.addEventListener("change",e=>{
   if(t.matches("input[data-sp]")||t.id==="spOv"||t.id==="spWhy"){SP_PATCH_ONLY=true;try{recalc();}finally{SP_PATCH_ONLY=false;}saveState();if(!SP_QUEUED){SP_QUEUED=true;setTimeout(()=>{SP_QUEUED=false;SP_FORCE_FULL=true;try{renderSchedPanel();}finally{SP_FORCE_FULL=false;}},0);}}
 });
 SIG_FILL.push(c=>{if(!c.sched)c.sched=schedDefault();});
+SIG_FILL.push(c=>{if(c.ratesV!==RATES_V){c.rates=RATES_DEFAULT();c.ratesV=RATES_V;}}); /* v9: v7/v8-shaped states compare on the migrated defaults */
 pickArea.addEventListener("click",e=>{
   const b=e.target.closest(".qbtn");if(!b)return;
   const inp=document.getElementById("ceq-"+b.dataset.ce);
@@ -1944,7 +1954,7 @@ function exportExcel(){
     ganttRows.push(xRow(glCells));
   }
   const st=[
-    xRow([["INTERNAL — staffing & indicative rate buildup from Scope Building; PLACEHOLDER rates (public GSA/market proxies, all roles default G3) pending the official rate card","h"]]),
+    xRow([["INTERNAL — staffing & indicative rate buildup from Scope Building; rates on the 2023 SKU basis · 2026 rate card pending (Oct-2023 SKU cost build: G3 $300/hr consultants, G2 $410/hr PM/DE; T2/T3/T4/G4 public proxies)","h"]]),
     xRow([["Role","h"],["Count","h"],["Mix %","h"],["Hours","h"],["Tier","h"],["Rate ($/hr)","h"],["Cost ($)","h"]]),
     ...(()=>{const {hs,mixSum}=mixSplit(LAST.hr||0);
       const rows=ROLES.map(([id,label])=>{const h=hs[id];const rate=state.rates[id].rate||0;return xRow([label,state.staff[id],(state.mix[id]||0)+"%",[h,"n0"],state.rates[id].tier,[rate,"cur0"],[h*rate,"cur0"]]);});
