@@ -976,6 +976,7 @@ const CTY_INDEX=(()=>{
 })();
 function _ctyMatch(h,q){const n=x=>String(x).toLowerCase().replace(/[–—-]/g," ").replace(/\s+/g," ").trim();const hh=n(h);return n(q).split(" ").filter(Boolean).every(t=>hh.includes(t));}
 const ctyByKey=k=>CTY_INDEX.find(x=>x.key===k);
+let CTY_MANUAL=null; /* manual S/M/L counts snapshot taken when the first country chip is added; restored when the last chip is removed */
 function renderCtyChips(){
   const box=document.getElementById("ctyChips");if(!box)return;
   box.innerHTML=state.cty.map((c,i)=>`<span class="cchip${c.deck?"":" flag"}" data-i="${i}"><b>${esc(c.key)}</b><select class="cchip-s" data-i="${i}" aria-label="Size for ${esc(c.key)}">${["S","M","L"].map(s=>`<option value="${s}"${s===c.s?" selected":""}>${s}</option>`).join("")}</select>${c.deck?"":`<span class="cchip-flag" title="Not in the deck's country table (slide 9) — confirm size with the FG solutioning lead">⚠ confirm size</span>`}<button type="button" class="cchip-x" data-i="${i}" aria-label="Remove ${esc(c.key)}">×</button></span>`).join("");
@@ -1015,6 +1016,7 @@ function ctySearch(){
 function ctyPick(key){
   const c=ctyByKey(key);if(!c)return;
   if(state.cty.some(x=>x.key===key)){toast(`${esc(c.key)} is already in scope`);return;}
+  if(!state.cty.length){CTY_MANUAL={};CE.tiers.forEach(t=>{CTY_MANUAL[t.s]=+document.getElementById("ceq-"+t.s).value||0;});}
   state.cty=[...state.cty,{key:c.key,name:c.name,lt:c.lt,s:c.s,deck:c.deck}];
   ctyAdd.value="";ctyHits=[];ctyActive=-1;ctyRender();
   renderCtyChips();recalc();saveState();
@@ -1040,7 +1042,8 @@ document.getElementById("ctyChips").addEventListener("click",e=>{
   const b=e.target.closest(".cchip-x");if(!b)return;
   const i=+b.dataset.i,nm=state.cty[i]?state.cty[i].key:"";
   state.cty=state.cty.filter((c,k)=>k!==i);
-  renderCtyChips();recalc();saveState();toast(`${esc(nm)} removed`);
+  const restored=!state.cty.length;if(restored){CE.tiers.forEach(t=>{document.getElementById("ceq-"+t.s).value=(CTY_MANUAL&&CTY_MANUAL[t.s])||0;});CTY_MANUAL=null;}
+  renderCtyChips();recalc();saveState();toast(`${esc(nm)} removed${restored?" — country counts restored to the manual values":""}`);
 });
 /* ⓘ popover — one at a time, Esc / outside click closes, focus returns to the button */
 const ctyPop=document.getElementById("ctyPop");let ctyPopBtn=null;
@@ -1269,6 +1272,7 @@ function buildState(){
   s.live={};LIVE_IDS.forEach(id=>s.live[id]=document.getElementById(id).checked);
   s.parked=JSON.parse(JSON.stringify(state.parked));
   s.cty=state.cty.map(c=>({key:c.key,name:c.name,lt:c.lt,s:c.s,deck:!!c.deck}));
+  s.ctyManual=CTY_MANUAL?{...CTY_MANUAL}:null;
   s.sched={preset:state.sched.preset,starts:{...state.sched.starts},override:state.sched.override,reason:state.sched.reason};
   s.proj={open:openScenName(),sig:openSig};
   return s;
@@ -1297,6 +1301,7 @@ function applyState(s){
   if(s.rates)ROLES.forEach(([id])=>{const r=s.rates[id];if(r){if(RATE_TIERS[r.tier]!=null){state.rates[id].tier=r.tier;document.getElementById("rt-"+id).value=r.tier;}if(Number.isFinite(+r.rate)){state.rates[id].rate=Math.max(0,+r.rate);document.getElementById("rr-"+id).value=state.rates[id].rate;}}});
   state.parked=(s.parked&&typeof s.parked==="object")?JSON.parse(JSON.stringify(s.parked)):{};
   state.cty=Array.isArray(s.cty)?s.cty.filter(c=>c&&c.key&&["S","M","L"].includes(c.s)).map(c=>{const ix=ctyByKey(String(c.key));return {key:String(c.key),name:String(c.name||(ix?ix.name:c.key)),lt:String(c.lt||(ix?ix.lt:"")),s:c.s,deck:ix?ix.deck:!!c.deck};}):[];
+  CTY_MANUAL=(s.ctyManual&&typeof s.ctyManual==="object")?{S:+s.ctyManual.S||0,M:+s.ctyManual.M||0,L:+s.ctyManual.L||0}:null;
   renderCtyChips();
   {const q=(s.sched&&typeof s.sched==="object")?s.sched:{};const st={};if(q.starts&&typeof q.starts==="object")Object.entries(q.starts).forEach(([k,v])=>{if(Number.isFinite(+v))st[k]=Math.min(SCHED_MAX_START,Math.max(0,Math.round(+v)));});
    state.sched={preset:SCHED_PRESETS[q.preset]?q.preset:"parallel",starts:st,override:(q.override!=null&&Number.isFinite(+q.override)&&+q.override>=1)?Math.round(+q.override):null,reason:typeof q.reason==="string"?q.reason:""};}
@@ -1642,7 +1647,7 @@ META_IDS.forEach(id=>document.getElementById(id).addEventListener("input",()=>{s
 document.getElementById("mCust").addEventListener("keydown",e=>{if(e.key==="Enter")e.preventDefault();});
 document.getElementById("resetBtn").addEventListener("click",()=>{
   ALL.forEach(m=>{document.getElementById("ck-"+m.id).checked=false;document.getElementById("sz-"+m.id).value=0;});
-  state.cty=[];renderCtyChips();state.sched=schedDefault();
+  state.cty=[];CTY_MANUAL=null;renderCtyChips();state.sched=schedDefault();
   CE.tiers.forEach(t=>document.getElementById("ceq-"+t.s).value=0);
   state.cont=0;contR.value=0;document.getElementById("contV").textContent="0%";
   document.getElementById("romOutput").innerHTML="";
