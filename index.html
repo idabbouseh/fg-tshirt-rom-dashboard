@@ -1574,7 +1574,7 @@ function computeAdj(){
   const basis=override!=null?`Override ${override} wks — ${reason}`:preset==="custom"?"Custom start weeks":preset==="parallel"?"Parallel (T-shirt standard)":SCHED_PRESETS[preset]+" preset";
   return {preset,starts,comps,computed,adjusted,override,ovRaw,reasonOk,reason,basis,differs:comps.length>0&&adjusted!==LAST.wkMax,total:Math.max(adjusted,computed,1)};
 }
-let SP_PATCH_ONLY=false,SP_FORCE_FULL=false;
+let SP_PATCH_ONLY=false,SP_FORCE_FULL=false,SP_QUEUED=false;
 function renderSchedPanel(){
   const wrap=document.getElementById("schedWrap"),panel=document.getElementById("schedPanel"),A=LAST.adj;
   wrap.hidden=!LAST.items.length;
@@ -1602,7 +1602,7 @@ function renderSchedPanel(){
     ${ovErr?`<div class="sp-err">⚠ ${ovErr}</div>`:""}
     <div class="sp-result" aria-live="polite">${resultHtml}</div>
     <p class="sp-guard">Adjustments are indicative. The T-shirt standard remains the RFP figure; any adjusted schedule still requires a scoping workshop. Any reduction in timeline/effort for economies of scale can be determined during actual planning (deck slide 1, 12-Aug-2026).</p>`;
-  if(focusSel){const f=panel.querySelector(focusSel);if(f){f.focus();if(f.select&&/^(text|number)$/.test(f.type||""))f.select();}}
+  if(focusSel){const f=panel.querySelector(focusSel);if(f){f.focus();if(f.setSelectionRange&&f.type==="text"){const n=f.value.length;try{f.setSelectionRange(n,n);}catch(e){}}}}
 }
 function setStart(id,v){
   const cur=LAST.adj?LAST.adj.starts:{};
@@ -1628,7 +1628,7 @@ schedPanelEl.addEventListener("input",e=>{
 });
 schedPanelEl.addEventListener("change",e=>{
   const t=e.target;
-  if(t.matches("input[data-sp]")||t.id==="spOv"||t.id==="spWhy"){SP_PATCH_ONLY=true;try{recalc();}finally{SP_PATCH_ONLY=false;}saveState();setTimeout(()=>{SP_FORCE_FULL=true;try{renderSchedPanel();}finally{SP_FORCE_FULL=false;}},0);}
+  if(t.matches("input[data-sp]")||t.id==="spOv"||t.id==="spWhy"){SP_PATCH_ONLY=true;try{recalc();}finally{SP_PATCH_ONLY=false;}saveState();if(!SP_QUEUED){SP_QUEUED=true;setTimeout(()=>{SP_QUEUED=false;SP_FORCE_FULL=true;try{renderSchedPanel();}finally{SP_FORCE_FULL=false;}},0);}}
 });
 SIG_FILL.push(c=>{if(!c.sched)c.sched=schedDefault();});
 pickArea.addEventListener("click",e=>{
