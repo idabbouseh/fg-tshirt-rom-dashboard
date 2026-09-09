@@ -974,6 +974,7 @@ const CTY_INDEX=(()=>{
   out.forEach(c=>{c.search=[c.key,c.name,...(COUNTRY_ALIAS[c.name]||[])].join(" | ").toLowerCase();});
   return out;
 })();
+function _ctyMatch(h,q){const n=x=>String(x).toLowerCase().replace(/[–—-]/g," ").replace(/\s+/g," ").trim();const hh=n(h);return n(q).split(" ").filter(Boolean).every(t=>hh.includes(t));}
 const ctyByKey=k=>CTY_INDEX.find(x=>x.key===k);
 function renderCtyChips(){
   const box=document.getElementById("ctyChips");if(!box)return;
@@ -1008,7 +1009,7 @@ function ctySearch(){
   if(!q){ctyHits=[];ctyActive=-1;ctyRender();return;}
   const picked=new Set(state.cty.map(c=>c.key));
   const rank=c=>c.key.toLowerCase().startsWith(q)?0:c.search.split(" | ").some(w=>w.startsWith(q))?1:2;
-  ctyHits=CTY_INDEX.filter(c=>c.search.includes(q)&&!picked.has(c.key)).sort((a,b)=>rank(a)-rank(b)).slice(0,8);
+  ctyHits=CTY_INDEX.filter(c=>_ctyMatch(c.search,q)&&!picked.has(c.key)).sort((a,b)=>rank(a)-rank(b)).slice(0,8);
   ctyActive=ctyHits.length?0:-1;ctyRender();
 }
 function ctyPick(key){
@@ -1568,6 +1569,7 @@ function computeAdj(){
   const basis=override!=null?`Override ${override} wks — ${reason}`:preset==="custom"?"Custom start weeks":preset==="parallel"?"Parallel (T-shirt standard)":SCHED_PRESETS[preset]+" preset";
   return {preset,starts,comps,computed,adjusted,override,ovRaw,reasonOk,reason,basis,differs:comps.length>0&&adjusted!==LAST.wkMax,total:Math.max(adjusted,computed,1)};
 }
+let SP_PATCH_ONLY=false,SP_FORCE_FULL=false;
 function renderSchedPanel(){
   const wrap=document.getElementById("schedWrap"),panel=document.getElementById("schedPanel"),A=LAST.adj;
   wrap.hidden=!LAST.items.length;
@@ -1577,7 +1579,7 @@ function renderSchedPanel(){
   const resultHtml=A.differs?`Indicative schedule (adjusted) <b>~${A.adjusted} wks</b>${A.override!=null?` — adjusted: ${esc(A.reason)}`:` — ${esc(A.basis)}`}`:"Same as T-shirt standard";
   const chipsHtml=Object.entries(SCHED_PRESETS).map(([k,l])=>`<button type="button" class="sp-chip" data-preset="${k}" aria-pressed="${A.preset===k}"${k==="custom"&&A.preset!=="custom"?' disabled title="Edit any start week to switch to Custom"':""}>${l}</button>`).join("");
   const ae=document.activeElement;
-  if(panel.contains(ae)&&ae.tagName==="INPUT"){ /* typing — patch text only so focus is kept */
+  if(!SP_FORCE_FULL&&(SP_PATCH_ONLY||(panel.contains(ae)&&ae.tagName==="INPUT"))){ /* typing or a change event — patch text only so focus is kept */
     const r=panel.querySelector(".sp-result");if(r)r.innerHTML=resultHtml;
     let er=panel.querySelector(".sp-err");
     if(ovErr){if(!er){er=document.createElement("div");er.className="sp-err";panel.querySelector(".sp-ov").after(er);}er.textContent="⚠ "+ovErr;}else if(er)er.remove();
@@ -1595,7 +1597,7 @@ function renderSchedPanel(){
     ${ovErr?`<div class="sp-err">⚠ ${ovErr}</div>`:""}
     <div class="sp-result" aria-live="polite">${resultHtml}</div>
     <p class="sp-guard">Adjustments are indicative. The T-shirt standard remains the RFP figure; any adjusted schedule still requires a scoping workshop. Any reduction in timeline/effort for economies of scale can be determined during actual planning (deck slide 1, 12-Aug-2026).</p>`;
-  if(focusSel){const f=panel.querySelector(focusSel);if(f)f.focus();}
+  if(focusSel){const f=panel.querySelector(focusSel);if(f){f.focus();if(f.select&&/^(text|number)$/.test(f.type||""))f.select();}}
 }
 function setStart(id,v){
   const cur=LAST.adj?LAST.adj.starts:{};
@@ -1621,7 +1623,7 @@ schedPanelEl.addEventListener("input",e=>{
 });
 schedPanelEl.addEventListener("change",e=>{
   const t=e.target;
-  if(t.matches("input[data-sp]")||t.id==="spOv"||t.id==="spWhy"){const _f=document.activeElement,_fid=_f&&_f.id,_fsp=_f&&_f.getAttribute&&_f.getAttribute("data-sp");recalc();saveState();const _g=_fid?document.getElementById(_fid):(_fsp?document.querySelector('input[data-sp="'+_fsp+'"]'):null);if(_g&&_g!==document.activeElement){_g.focus();if(_g.setSelectionRange&&_g.type==="text"){const _n=_g.value.length;_g.setSelectionRange(_n,_n);}}}
+  if(t.matches("input[data-sp]")||t.id==="spOv"||t.id==="spWhy"){SP_PATCH_ONLY=true;try{recalc();}finally{SP_PATCH_ONLY=false;}saveState();setTimeout(()=>{SP_FORCE_FULL=true;try{renderSchedPanel();}finally{SP_FORCE_FULL=false;}},0);}
 });
 SIG_FILL.push(c=>{if(!c.sched)c.sched=schedDefault();});
 pickArea.addEventListener("click",e=>{
