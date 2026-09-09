@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAP Fieldglass · T-Shirt ROM Explorer (2026 Refresh Draft) — v7</title>
+<title>SAP Fieldglass · T-Shirt ROM Explorer (2026 Refresh Draft) — v8</title>
 <style>
 :root{
   --navy:#12232F; --navy-2:#1D2D3E; --ink:#223548; --muted:#5B738B;
@@ -71,6 +71,11 @@ main section.active{display:block}
 .rulecard h3{font-size:.95rem;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
 .rulecard .n{width:24px;height:24px;border-radius:50%;background:var(--blue-soft);color:var(--blue);font-size:.75rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex:none}
 .rulecard p{font-size:.83rem;color:var(--muted)}
+
+/* ---------- what-fits strip (slide 3) ---------- */
+.fits .rulecard{border-top:4px solid var(--line)}
+.fits .rulecard.t-S{border-top-color:var(--s-col)}.fits .rulecard.t-M{border-top-color:var(--m-col)}.fits .rulecard.t-L{border-top-color:var(--l-col)}
+.badge.sm{width:26px;height:26px;font-size:.8rem;border-radius:7px;flex:none}
 
 /* ---------- flip cards ---------- */
 .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:18px 0 8px}
@@ -201,6 +206,39 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
 .cty-res b{color:var(--blue)}
 .cty li.hit{background:var(--blue-soft);border-radius:5px;padding-left:6px;font-weight:600}
 
+/* ---------- countries by name (v8) ---------- */
+.pick-group{position:relative}
+.cty-pick{align-items:flex-start}
+.cty-add{position:relative;flex:1;min-width:240px}
+.cty-add input{font:inherit;font-size:.85rem;padding:7px 11px;border:1px solid var(--line);border-radius:8px;width:100%;background:#fff;color:var(--ink)}
+.cty-add input:focus{outline:2px solid var(--blue);outline-offset:1px}
+.cty-list{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--line);border-radius:9px;box-shadow:0 8px 24px rgba(18,35,47,.16);list-style:none;z-index:30;max-height:260px;overflow:auto;padding:4px}
+.cty-list li{padding:7px 10px;border-radius:6px;font-size:.82rem;cursor:pointer;display:flex;gap:8px;align-items:center}
+.cty-list li.act,.cty-list li:hover{background:var(--blue-soft)}
+.cs{font-size:.66rem;font-weight:800;color:#fff;border-radius:5px;padding:1px 6px}.cs-S{background:var(--s-col)}.cs-M{background:var(--m-col)}.cs-L{background:var(--l-col)}
+.cflag{font-size:.68rem;color:var(--verify);margin-left:auto}
+.cty-chips{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0 8px}
+.cty-chips:empty{display:none}
+.cchip{display:inline-flex;align-items:center;gap:6px;background:var(--blue-soft);border:1px solid #BBD8F8;border-radius:16px;padding:3px 6px 3px 11px;font-size:.8rem;color:var(--ink)}
+.cchip.flag{background:var(--verify-bg);border-color:#EFC9A6}
+.cchip b{font-weight:600}
+.cchip-s{font:inherit;font-size:.74rem;font-weight:700;padding:2px 4px;border:1px solid var(--line);border-radius:6px;background:#fff}
+.cchip-flag{font-size:.66rem;color:var(--verify);font-weight:700}
+.cchip-x{background:none;border:none;color:var(--muted);font-size:1rem;line-height:1;padding:2px 5px;border-radius:50%}
+.cchip-x:hover{background:#fff;color:#C0392B}
+.cty-lock{font-size:.72rem;color:var(--verify);background:var(--verify-bg);border-left:3px solid var(--verify);padding:6px 10px;border-radius:0 6px 6px 0;margin-bottom:6px}
+.qty input.locked{background:#F1F3F5;color:var(--muted)}
+.qbtn:disabled{opacity:.35;cursor:not-allowed}
+.ibtn{width:24px;height:24px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--blue);font-size:.9rem;line-height:1;padding:0;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.ibtn:hover,.ibtn[aria-expanded="true"]{background:var(--blue);color:#fff;border-color:var(--blue)}
+.ibtn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.cty-pop{position:absolute;z-index:40;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(18,35,47,.2);padding:14px 16px}
+.cty-pop h4{font-size:.9rem;color:var(--navy);margin-bottom:4px}
+.cty-pop-sub{font-size:.72rem;color:var(--muted);margin-bottom:8px}
+.cty-pop ul{list-style:none;font-size:.8rem;columns:2;column-gap:18px;margin-bottom:8px}
+.cty-pop li{padding:2px 0;break-inside:avoid}
+.cty-pop-src{font-size:.7rem;color:var(--muted);margin-bottom:10px}
+
 /* ---------- builder v2 ---------- */
 .meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
 @media(max-width:620px){.meta-grid{grid-template-columns:1fr}}
@@ -313,6 +351,21 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
 .rate-t .rtot td{font-weight:700;border-top:2px solid var(--navy);color:var(--navy)}
 .rate-t tr.zeroed td{opacity:.45}
 
+/* ---------- project scenario panel (v8) ---------- */
+.proj-card{margin-bottom:18px;border-top:4px solid var(--gold);scroll-margin-top:120px}
+.proj-card .eyebrow{margin-bottom:2px}
+.proj-card h3.proj-h{font-size:1.1rem;color:var(--navy);text-transform:none;letter-spacing:-.01em;margin-bottom:12px}
+.proj-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.proj-lbl{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;min-width:200px}
+#mCust{font:inherit;font-size:.95rem;padding:9px 12px;border:1px solid var(--line);border-radius:8px;flex:1;min-width:260px;color:var(--ink);background:#fff}
+#mCust:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+.proj-status{font-size:.72rem;font-weight:700;padding:5px 11px;border-radius:14px;white-space:nowrap;border:1px solid var(--line);color:var(--muted);background:#fff}
+.proj-status.saved{background:var(--conf-bg);color:var(--conf);border-color:#B7DDB7}
+.proj-status.changed{background:var(--verify-bg);color:var(--verify);border-color:#EFC9A6}
+.proj-row select{font:inherit;font-size:.82rem;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink);min-width:220px;flex:1;max-width:360px}
+.proj-hint{font-size:.72rem;color:var(--muted);margin-top:2px}
+.scen-btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
 /* ---------- scenarios ---------- */
 .scen-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:12px 16px;margin-bottom:18px}
 .scen-label{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
@@ -325,6 +378,40 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
 .scen-btn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
 .cmp-t td:first-child{font-weight:600}
 .cmp-t td.best{color:var(--l-col);font-weight:700}
+
+/* ---------- adjustable schedule (v8) ---------- */
+.sched-wrap{margin-top:10px;border-top:1px solid #2C3F51;padding-top:6px}
+.sched-toggle{width:100%;text-align:left;background:none;border:none;color:#C6D3DE;font-size:.8rem;font-weight:700;padding:6px 0;display:flex;gap:8px;align-items:center}
+.sched-toggle:hover{color:#fff}
+.sched-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.sched-toggle .tri{display:inline-block;transition:.2s;font-size:.7rem}
+.sched-toggle[aria-expanded="true"] .tri{transform:rotate(90deg)}
+.sched-sum{margin-left:auto;font-weight:400;color:#8CA2B5;font-size:.72rem}
+.sched-panel{padding:6px 0 4px}
+.sp-base{display:flex;justify-content:space-between;font-size:.78rem;color:#C6D3DE;padding:6px 0;border-bottom:1px dashed #2C3F51}
+.sp-base b{color:#fff;font-variant-numeric:tabular-nums}
+.sp-presets{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px}
+.sp-chip{background:none;border:1px solid #33475A;color:#9DB2C4;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:14px}
+.sp-chip[aria-pressed="true"]{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.sp-chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.sp-chip:disabled{opacity:.5;cursor:default}
+table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE;margin-bottom:8px}
+.sp-list th{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:#8CA2B5;text-align:left;padding:3px 4px;font-weight:700}
+.sp-list td{padding:4px;border-top:1px solid #2C3F51;vertical-align:middle}
+.sp-list td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sp-list .qty input{width:46px;background:#fff;color:var(--ink);padding:3px 2px;font-size:.78rem}
+.sp-list .qbtn{width:22px;height:22px;font-size:.85rem}
+.sp-crit{display:inline-block;font-size:.6rem;font-weight:800;background:var(--gold);color:var(--navy);border-radius:4px;padding:1px 5px;margin-left:6px;white-space:nowrap;vertical-align:1px}
+.sp-name{color:#fff}
+.sp-ov{display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:end;margin:8px 0}
+.sp-ov label{font-size:.66rem;font-weight:700;color:#8CA2B5;text-transform:uppercase;letter-spacing:.05em;display:flex;flex-direction:column;gap:3px}
+.sp-ov input{font:inherit;font-size:.8rem;padding:5px 7px;border:1px solid #33475A;border-radius:6px;background:#fff;color:var(--ink);text-transform:none;letter-spacing:normal;font-weight:400;width:100%}
+.sp-err{font-size:.7rem;color:#F5D488;margin:-2px 0 6px}
+.sp-result{font-size:.8rem;color:#C6D3DE;padding:8px 0;border-top:1px solid #2C3F51}
+.sp-result b{color:var(--gold);font-variant-numeric:tabular-nums}
+.sp-guard{font-size:.68rem;color:#8CA2B5;line-height:1.5;margin-top:6px}
+.tot-line.adj b{color:var(--gold)}
+.tot-adj-note{font-size:.7rem;color:#8CA2B5;padding:4px 0 6px;border-bottom:1px solid #2C3F51}
 
 /* ---------- excel export ---------- */
 .xls-btn{width:100%;margin-top:8px;background:var(--navy-2);border:1px solid #33475A;color:#C6D3DE;font-size:.78rem;font-weight:700;padding:9px;border-radius:8px}
@@ -380,7 +467,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
       <span class="sap-mark">SAP</span>
       <div>
         <div class="hdr-title">Fieldglass T-Shirt ROM Explorer</div>
-        <div class="hdr-sub">Contingent &amp; Services Procurement · 2026 refresh draft (v2.0 baseline: Mar 11, 2024) · INTERNAL · v7 (Sep 2026)</div>
+        <div class="hdr-sub">Contingent &amp; Services Procurement · 2026 refresh draft (v2.0 baseline: Mar 11, 2024) · INTERNAL · v8 (Sep 2026)</div>
       </div>
       <div class="hdr-right">
         <button class="rev-toggle" id="revToggle" aria-pressed="false"><span class="dot"></span> Review mode</button>
@@ -406,15 +493,22 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
   <div class="banner">
     <h1>What T-shirt fits your customer?</h1>
     <p>Rough Order of Magnitude estimates for SAP Fieldglass engagements — high-level, indicative and non-binding, assuming strict Fit-to-Standard and SAP Activate methodology. A scoping workshop is required before any binding proposal.</p>
-    <span class="stamp">Draft refresh · July 2026 · pending owner validation</span>
+    <span class="stamp">Draft refresh · v8 Sep 2026 · deck re-checked 12-Aug-2026 · pending owner validation</span>
     <div class="cta-row"><button class="cta-btn" data-goto="builder">Build a combined ROM →</button></div>
   </div>
 
   <div class="eyebrow">How to combine T-shirt ROMs</div>
   <div class="grid3">
-    <div class="rulecard"><h3><span class="n">1</span> Start with the module</h3><p>For a net-new implementation, pick the T-shirt for each module in scope — Contingent, SOW, or Profile Worker (or the ERP Editions). Multiple modules? Add the estimates together.</p></div>
+    <div class="rulecard"><h3><span class="n">1</span> Start with the module</h3><p>For a net-new implementation, pick the T-shirt for each module in scope — Contingent, SOW, or Profile Worker (or the ERP Editions). Multiple modules? Add the estimates together. Any reduction in timeline/effort for economies of scale can be determined during actual planning. <span class="chip updated">Deck slide 1, 12-Aug-2026</span></p></div>
     <div class="rulecard"><h3><span class="n">2</span> Add integrations</h3><p>If SAP-led integration services are in scope, add the specific integration T-shirts (Ariba B&amp;I, SuccessFactors) on top of the base module T-shirt.</p></div>
     <div class="rulecard"><h3><span class="n">3</span> Add regions</h3><p>Base T-shirts assume one region. Additional simultaneous regions add Country Expansion T-shirts. Country Expansion, Integration and MSP Transfer T-shirts also work standalone for existing customers.</p></div>
+  </div>
+
+  <div class="eyebrow" style="margin-top:22px">What T-shirt fits your customer — deck slide 3</div>
+  <div class="grid3 fits" id="fitsStrip">
+    <div class="rulecard t-S"><h3><span class="badge sm">S</span> Small — comprehensive delivery (self-service integration)</h3><p>Fieldglass provides best practices and configuration and is responsible for functional documentation and configuration. <b>Integration configuration and documentation: Partner or Client self-service.</b></p></div>
+    <div class="rulecard t-M"><h3><span class="badge sm">M</span> Medium — comprehensive delivery with integration support</h3><p>Implementation with technical integration support; Fieldglass responsible for functional documentation and configuration. <b>Integrations: Master Data, Invoicing, Workers.</b></p></div>
+    <div class="rulecard t-L"><h3><span class="badge sm">L</span> Large — comprehensive delivery with integration support</h3><p>Implementation with technical integration support; Fieldglass responsible for functional documentation and configuration. <b>Integrations: Master Data, Invoicing, Workers, Purchase Order.</b> <span class="chip updated">Workers wording · deck 12-Aug-2026</span></p></div>
   </div>
 
   <div class="rulecard" style="margin-top:16px">
@@ -448,9 +542,9 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
 
   <div class="mod">
     <div class="mod-head"><h3>Country package categories</h3><span class="tag">Complexity tiers</span></div>
-    <p class="mod-desc">Example country/labor-type placement per tier. Additional configuration can vary depending on the country in scope.</p>
+    <p class="mod-desc">Example country/labor-type placement per tier (deck slide 9, repeated on slides 47–49). Additional configuration can vary depending on the country in scope. In the <b>ROM Builder</b> you can add countries by name — they roll up into the Small / Medium / Large counts. <span class="chip updated">v8</span></p>
     <div class="cty-find"><input id="ctyFind" type="search" placeholder="Look up a country… e.g. Spain" aria-label="Country tier lookup"><div class="cty-res" id="ctyRes" aria-live="polite"></div></div>
-    <div class="rev-note">Source deck lists tier hours as 450 / 680 / 900 on the "Countries &amp; Package Categories" slide but 340 / 520 / 780 on the Country Expansion T-shirt slides (durations match). The T-shirt values are used here — confirm which set is current. Also fixed in this draft: duplicate "Mexico" entry, "Luxemborg" spelling, Türkiye naming; "Japan" appears only in the categories slide, not the Large T-shirt examples.</div>
+    <div class="rev-note">Source deck lists tier hours as 450 / 680 / 900 on the "Countries &amp; Package Categories" slide but 340 / 520 / 780 on the Country Expansion T-shirt slides (durations match). The T-shirt values are used here — confirm which set is current (re-checked in the 12-Aug-2026 deck, slides 9 vs 11: still present). Also fixed in this draft: duplicate "Mexico" entry, "Luxemborg" spelling, Türkiye naming; "Japan" appears only in the categories slide, not the Large T-shirt examples.</div>
     <div class="cty">
       <div class="col s"><h4>Small</h4><div class="hrs">340 hrs · G3 rates · 14 weeks <span class="chip verify">Verify hrs</span></div><ul><li>USA</li><li>Canada</li><li>United Kingdom — white collar</li><li>Ireland</li><li>Czech Republic</li><li>Netherlands — white collar</li><li>Switzerland</li><li>Sweden</li></ul></div>
       <div class="col m"><h4>Medium</h4><div class="hrs">520 hrs · G3 rates · 18 weeks <span class="chip verify">Verify hrs</span></div><ul><li>Germany — white collar</li><li>United Kingdom — blue collar</li><li>Netherlands — blue collar</li><li>Poland</li><li>Austria</li><li>Belgium &amp; Luxembourg</li><li>Hungary</li><li>Portugal</li><li>Spain</li><li>Türkiye</li><li>Australia</li><li>India</li><li>Brazil · Mexico · Argentina</li><li>Colombia · Costa Rica · Chile</li></ul></div>
@@ -480,24 +574,32 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
 <section id="builder">
   <div class="eyebrow">Combine T-shirts</div>
   <h2 class="sec-title">ROM Builder</h2>
-  <p class="sec-lede">Assemble an indicative combined estimate per the combination rules, then <b>generate</b> a detailed, print-ready ROM summary. Prices and hours are additive; the indicative duration is the longest single component (parallel assumption — the T-shirt standard for RFP-speed pricing). For a staffing-based staged timeline, use the <b>Scope Building</b> tab — combined timelines still require a scoping workshop.</p>
-  <div class="scen-bar" role="group" aria-label="Scenario management">
-    <span class="scen-label">Scenarios</span>
-    <select id="scenSel" aria-label="Saved scenarios"><option value="">— none saved —</option></select>
-    <button class="scen-btn" id="scenLoad">Load</button>
-    <button class="scen-btn" id="scenUpdate">Update</button>
-    <button class="scen-btn" id="scenDelete">Delete</button>
-    <input id="scenName" placeholder="New scenario name…" aria-label="New scenario name">
-    <button class="scen-btn primary" id="scenSave">Save current</button>
-    <button class="scen-btn" id="scenCmp" aria-pressed="false">Compare</button>
+  <p class="sec-lede">Assemble an indicative combined estimate per the combination rules, then <b>generate</b> a detailed, print-ready ROM summary. Prices and hours are additive; the indicative duration is the longest single component (parallel assumption — the T-shirt standard for RFP-speed pricing; <b>Adjust schedule</b> in the Combined ROM card lets you offset or override it while the standard stays visible). For a staffing-based staged timeline, use the <b>Scope Building</b> tab — combined timelines still require a scoping workshop.</p>
+  <div class="pick-group proj-card" id="projPanel" role="group" aria-label="Project scenario">
+    <div class="eyebrow">One project = one scenario</div>
+    <h3 class="proj-h">Project scenario</h3>
+    <div class="proj-row">
+      <label class="proj-lbl" for="mCust">Project / opportunity</label>
+      <input id="mCust" placeholder="e.g. Acme Corp — contingent workforce program" autocomplete="off">
+      <span class="proj-status draft" id="projStatus" aria-live="polite">Unsaved draft</span>
+    </div>
+    <div class="proj-row">
+      <label class="proj-lbl" for="scenSel">Open a saved project scenario</label>
+      <select id="scenSel" aria-label="Saved project scenarios"><option value="">— nothing saved yet —</option></select>
+      <button class="scen-btn" id="scenLoad" aria-label="Open the selected project scenario">Open</button>
+      <button class="scen-btn primary" id="scenSave" aria-label="Save the current project scenario">Save</button>
+      <button class="scen-btn" id="scenSaveAs" aria-label="Save the current selections as a new project scenario">Save as…</button>
+      <button class="scen-btn" id="scenDelete" aria-label="Delete the selected project scenario">Delete</button>
+      <button class="scen-btn" id="scenCmp" aria-pressed="false" aria-label="Compare saved project scenarios">Compare</button>
+    </div>
+    <p class="proj-hint">Saving stores the selections, countries, schedule adjustments and engagement details in this browser.</p>
   </div>
   <div id="scenCompareArea" hidden></div>
   <div class="builder">
     <div>
       <div class="pick-group">
-        <h3>Engagement details <span style="text-transform:none;font-weight:400;letter-spacing:normal">(flows into the generated ROM)</span></h3>
+        <h3>Engagement details <span style="text-transform:none;font-weight:400;letter-spacing:normal">(flows into the generated ROM · project name is in the Project scenario card above)</span></h3>
         <div class="meta-grid">
-          <label>Customer / opportunity<input id="mCust" placeholder="e.g. Acme Corp — CW program"></label>
           <label>Requested by<input id="mReqBy" placeholder="AE / CSM / requester"></label>
           <label>Prepared by<input id="mPrep" placeholder="Name / role"></label>
           <label>Customer type<select id="custType"><option value="">— not specified —</option><option value="new">Net-new customer</option><option value="existing">Existing customer</option></select></label>
@@ -537,6 +639,10 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
       <div class="warnbox" id="warnBox"></div>
       <div class="sr-live" id="srLive" aria-live="polite"></div>
       <div id="totBody"><div class="tot-empty">Select components on the left to build an estimate.</div></div>
+      <div class="sched-wrap" id="schedWrap" hidden>
+        <button type="button" class="sched-toggle" id="schedToggle" aria-expanded="false" aria-controls="schedPanel"><span class="tri">▸</span> Adjust schedule <span class="sched-sum" id="schedSum"></span></button>
+        <div class="sched-panel" id="schedPanel" hidden></div>
+      </div>
       <button class="gen-btn" id="genBtn" disabled>Generate detailed ROM ↓</button>
       <button class="xls-btn" id="xlsBtn" disabled>⬇ Export to Excel (.xls)</button>
       <button class="reset-btn" id="resetBtn">Reset selections</button>
@@ -615,9 +721,9 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
 
 <!-- ================= FINDINGS ================= -->
 <section id="findings">
-  <div class="eyebrow">Deck review · July 2026 · v7 update Sep 2026</div>
+  <div class="eyebrow">Deck review · July 2026 · v7 update Sep 2026 · v8 draft refresh Sep 2026</div>
   <h2 class="sec-title">Review Findings Register</h2>
-  <p class="sec-lede">Source: "NEW _ SAPFG T-Shirt ROM_Updated.pptx" (v2.0, Mar 11 2024, 71 slides). Validated against the SAP Fieldglass Connector Library (2026-05-15), FG↔SF EC and FG↔Ariba Business Synopses on help.sap.com, and SAP announcements through July 2026. Amber = internal inconsistency needing the deck owner's call; teal = current-state update applied in this draft; green = settled against source documents (confirmed); grey = informational note. Mark items resolved as you clear them with the deck owner — progress is saved in this browser.</p>
+  <p class="sec-lede">Source: "NEW _ SAPFG T-Shirt ROM_Updated.pptx" (v2.0 baseline Mar 11 2024; canonical SharePoint copy in Fieldglass Avengers last modified 12-Aug-2026, 71 slides, re-checked 2026-09-09). Validated against the SAP Fieldglass Connector Library (2026-05-15), FG↔SF EC and FG↔Ariba Business Synopses on help.sap.com, and SAP announcements through July 2026. Amber = internal inconsistency needing the deck owner's call; teal = current-state update applied in this draft; green = settled against source documents (confirmed); grey = informational note. Mark items resolved as you clear them with the deck owner — progress is saved in this browser.</p>
   <div class="find-bar" id="findBar"></div>
   <div id="findArea"></div>
 </section>
@@ -627,7 +733,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
 <div id="tlTip" role="tooltip" hidden></div>
 <div id="toast" role="status"></div>
 
-<footer><div class="wrap">Indicative, non-binding ROM content for internal SAP use. Interactive refresh draft generated July 2026 — pricing, hours and tiering pending validation by the T-shirt ROM owner before any customer-facing use. Estimates exclude travel &amp; expense.</div></footer>
+<footer><div class="wrap">Indicative, non-binding ROM content for internal SAP use. Interactive refresh draft generated July 2026 · v8 draft refresh September 2026 (canonical deck re-checked 12-Aug-2026) — pricing, hours and tiering pending validation by the T-shirt ROM owner before any customer-facing use. Estimates exclude travel &amp; expense.</div></footer>
 
 <script>
 /* =============== DATA =============== */
@@ -643,20 +749,20 @@ const D={
     {s:"S",usd:225,cad:250,wk:26,hr:650,ph:[2,9,9,4,2],back:["Labor type: Professional Services","Core delivery, governance, FRD, design & config","Invoice integrations implemented",{x:1,t:"SOW Bid & Master SOW"},{x:1,t:"Master data, PO/SES integrations"}]},
     {s:"M",usd:325,cad:350,wk:30,hr:930,ph:[2,10,12,4,2],back:["Labor types: Light Industrial, Utilities, Oil & Gas","SOW Bid & Master SOW use cases","Master data + invoice integrations implemented",{x:1,t:"PO / Service Entry Sheet integrations"}]},
     {s:"L",usd:475,cad:550,wk:36,hr:1400,ph:[2,13,15,4,2],back:["Multiple labor types","SOW Bid & Master SOW use cases","Master data + invoice + PO/SES integrations implemented"]}],
-   mx:{rows:[["Consulting partner on project & program roadmap",1,1,1],["Leading practice processes & configuration",1,1,1],["Labor types","Professional Services","LI / Utilities / O&G","Multiple"],["Use cases: SOW Bid, Master SOW",0,1,1],["Dedicated project & functional delivery consultants",1,1,1],["Project & program governance and maintenance",1,1,1],["Functional requirement documentation & process flows",1,1,1],["Design & configuration of the SAP Fieldglass solution",1,1,1],["Integration configuration (client/partner-led)",0,0,0],["Implementation of Master Data integrations",0,1,1],["Implementation of Invoice integrations",1,1,1],["Implementation of PO & Service Entry Sheet integrations",0,0,1]],note:"Source deck's SOW Medium detail slide lists 'Integration configuration' twice (once included, once excluded) — normalized here to the overview matrix; confirm intent."}},
+   mx:{rows:[["Consulting partner on project & program roadmap",1,1,1],["Leading practice processes & configuration",1,1,1],["Labor types","Professional Services","LI / Utilities / O&G","Multiple"],["Use cases: SOW Bid, Master SOW",0,1,1],["Dedicated project & functional delivery consultants",1,1,1],["Project & program governance and maintenance",1,1,1],["Functional requirement documentation & process flows",1,1,1],["Design & configuration of the SAP Fieldglass solution",1,1,1],["Integration configuration (client/partner-led)",0,0,0],["Implementation of Master Data integrations",0,1,1],["Implementation of Invoice integrations",1,1,1],["Implementation of PO & Service Entry Sheet integrations",0,0,1]]}},
   {id:"pw",name:"Profile Worker Module",tag:"Worker profile mgmt",desc:"Non-transactional worker profile management: create/approve profile workers, onboarding and offboarding.",tiers:[
     {s:"S",usd:90,cad:100,wk:15,hr:260,ph:[1,5,5,2,2],back:["Core delivery, governance, FRD, design & config",{x:1,t:"Master data integrations"},{x:1,t:"Worker data integrations"}]},
     {s:"M",usd:225,cad:250,wk:26,hr:650,ph:[2,8,11,3,2],flags:[{t:"verify",txt:"Detail slide titled 'Small' with USD 255K; overview says Medium USD 225K — confirm"}],back:["Core delivery, governance, FRD, design & config","Master data integrations implemented","Worker data integrations implemented"]}],
    mx:{rows:[["Consulting partner on project & program roadmap",1,1],["Leading practice processes & configuration",1,1],["Dedicated project & functional delivery consultants",1,1],["Project & program governance and maintenance",1,1],["Functional requirement documentation & process flows",1,1],["Design & configuration of the SAP Fieldglass solution",1,1],["Implementation of Master Data integrations",0,1],["Implementation of Worker Data integrations",0,1]],cols:2}},
-  {id:"cerp",name:"Contingent ERP Edition",tag:"ERP-bundled SKU",desc:"Contingent module with comprehensive SAP-led ERP integrations included (master data, invoice, HR/worker data; PO & SES at Medium).",tiers:[
-    {s:"S",usd:400,cad:450,wk:24,hr:1150,ph:[2,8,8,4,2],back:["Fieldglass-led integrations — comprehensive package","Master data + invoice integrations implemented","HR (worker/user data) integrations implemented",{x:1,t:"PO/SES, Plant Maintenance, Contract integrations"}]},
-    {s:"M",usd:500,cad:600,wk:36,hr:1500,ph:[2,16,12,4,2],back:["Everything in Small","PO & Service Entry Sheet integrations implemented",{x:1,t:"Plant Maintenance & Contract integrations"}]}],
-   mx:{rows:[["Consulting partner on project & program roadmap",1,1],["Leading practice processes & configuration",1,1],["Dedicated project & functional delivery consultants",1,1],["Project & program governance and maintenance",1,1],["Functional requirement documentation & process flows",1,1],["Design & configuration of the SAP Fieldglass solution",1,1],["Integrations configuration (SAP Fieldglass-led)",1,1],["Implementation of Master Data integrations",1,1],["Implementation of Invoice integrations",1,1],["Implementation of HR (worker/user data) integrations",1,1],["Implementation of PO & Service Entry Sheet integrations",0,1],["Implementation of Plant Maintenance integrations",0,0],["Implementation of Contract integrations",0,0]],cols:2,note:"'HR Mini' is legacy naming — the current Connector Library (2026-05-15) uses User Upload plus the worker/master-data connectors; wording modernized here."}},
-  {id:"serp",name:"SOW ERP Edition",tag:"ERP-bundled SKU",desc:"SOW module with comprehensive SAP-led ERP integrations; Large adds Plant Maintenance and Ariba Contract integrations.",tiers:[
-    {s:"S",usd:400,cad:450,wk:24,hr:1150,ph:[2,8,8,4,2],back:["Fieldglass-led integrations — comprehensive package","Master data + invoice + HR (worker/user) integrations",{x:1,t:"PO/SES, Plant Maintenance, Contract integrations"}]},
-    {s:"M",usd:500,cad:600,wk:36,hr:1480,ph:[2,16,12,4,2],back:["Everything in Small","PO & Service Entry Sheet integrations implemented",{x:1,t:"Plant Maintenance & Contract integrations"}]},
-    {s:"L",usd:600,cad:700,wk:46,hr:1780,ph:[2,22,15,4,3],flags:[{t:"verify",txt:"Detail slide phase row (13w Explore) sums to 37 wk vs stated 46 — overview phases (22w Explore) used here"}],back:["Everything in Medium","Plant Maintenance integrations implemented","Contract (Ariba Contracts → MSOW/CSOW/SOW) integrations implemented"]}],
-   mx:{rows:[["Consulting partner on project & program roadmap",1,1,1],["Leading practice processes & configuration",1,1,1],["Dedicated project & functional delivery consultants",1,1,1],["Project & program governance and maintenance",1,1,1],["Functional requirement documentation & process flows",1,1,1],["Design & configuration of the SAP Fieldglass solution",1,1,1],["Integrations configuration (SAP Fieldglass-led)",1,1,1],["Implementation of Master Data integrations",1,1,1],["Implementation of Invoice integrations",1,1,1],["Implementation of HR (worker/user data) integrations",1,1,1],["Implementation of PO & Service Entry Sheet integrations",0,1,1],["Implementation of Plant Maintenance integrations",0,0,1],["Implementation of Contract integrations",0,0,1]]}}
+  {id:"cerp",name:"Contingent ERP Edition",tag:"ERP-bundled SKU",desc:"Contingent module with SAP-led ERP integrations included: Master Data and Invoice at Small; Integrations configuration, Worker and Purchase Order & Service Entry Sheet integrations added at Medium (deck 12-Aug-2026, slides 7 / 32–33).",tiers:[
+    {s:"S",usd:400,cad:450,wk:24,hr:1200,ph:[2,8,8,4,2],flags:[{t:"upd",txt:"Hours 1150 → 1200 and Worker integrations excluded at Small — deck 12-Aug-2026, slides 7 / 32"}],back:["Master data + invoice integrations implemented (SAP-led)","Core delivery, governance, FRD, design & config",{x:1,t:"Integrations configuration (partner / client self-service at Small)"},{x:1,t:"Worker integrations"},{x:1,t:"PO/SES, Plant Maintenance, Contract integrations"}]},
+    {s:"M",usd:500,cad:600,wk:36,hr:1650,ph:[2,16,12,4,2],flags:[{t:"upd",txt:"Hours 1500 → 1650 — deck 12-Aug-2026, slides 7 / 33"}],back:["Everything in Small","Integrations configuration (SAP Fieldglass-led)","Worker integrations implemented","PO & Service Entry Sheet integrations implemented",{x:1,t:"Plant Maintenance & Contract integrations"}]}],
+   mx:{rows:[["Consulting partner on project & program roadmap",1,1],["Leading practice processes & configuration",1,1],["Dedicated project & functional delivery consultants",1,1],["Project & program governance and maintenance",1,1],["Functional requirement documentation & process flows",1,1],["Design & configuration of the SAP Fieldglass solution",1,1],["Integrations configuration (SAP Fieldglass-led)",0,1],["Implementation of Master Data integrations",1,1],["Implementation of Invoice integrations",1,1],["Implementation of Worker integrations",0,1],["Implementation of PO & Service Entry Sheet integrations",0,1],["Implementation of Plant Maintenance integrations",0,0],["Implementation of Contract integrations",0,0]],cols:2,note:"Matrix per the 12-Aug-2026 deck (slides 7 / 32–33): the row formerly called 'HR Mini (worker) integrations' is now 'Implementation of Worker integrations' and is excluded at Small; Small also excludes Integrations configuration. In the current Connector Library (2026-05-15) the worker feed maps to User Upload plus the worker/master-data connectors."}},
+  {id:"serp",name:"SOW ERP Edition",tag:"ERP-bundled SKU",desc:"SOW module with SAP-led ERP integrations: Master Data and Invoice at Small; Integrations configuration, Worker and PO & Service Entry Sheet at Medium; Large adds Plant Maintenance and Ariba Contract integrations (deck 12-Aug-2026, slides 8 / 35–37).",tiers:[
+    {s:"S",usd:400,cad:450,wk:24,hr:1200,ph:[2,8,8,4,2],flags:[{t:"upd",txt:"Hours 1150 → 1200 and Worker integrations excluded at Small — deck 12-Aug-2026, slides 8 / 35"}],back:["Master data + invoice integrations implemented (SAP-led)","Core delivery, governance, FRD, design & config",{x:1,t:"Integrations configuration (partner / client self-service at Small)"},{x:1,t:"Worker integrations"},{x:1,t:"PO/SES, Plant Maintenance, Contract integrations"}]},
+    {s:"M",usd:500,cad:600,wk:36,hr:1650,ph:[2,16,12,4,2],flags:[{t:"upd",txt:"Hours 1480 → 1650 — deck 12-Aug-2026, slides 8 / 36"}],back:["Everything in Small","Integrations configuration (SAP Fieldglass-led)","Worker integrations implemented","PO & Service Entry Sheet integrations implemented",{x:1,t:"Plant Maintenance & Contract integrations"}]},
+    {s:"L",usd:600,cad:700,wk:46,hr:2150,ph:[2,22,15,4,3],flags:[{t:"verify",txt:"Detail slide phase row (13w Explore) sums to 37 wk vs stated 46 — overview phases (22w Explore) used here; re-checked 12-Aug-2026 deck (slide 37), still present"},{t:"upd",txt:"Hours 1780 → 2150 — deck 12-Aug-2026, slides 8 / 37; all rows incl. Plant Maintenance and Contract integrations included"}],back:["Everything in Medium","Plant Maintenance integrations implemented","Contract (Ariba Contracts → MSOW/CSOW/SOW) integrations implemented"]}],
+   mx:{rows:[["Consulting partner on project & program roadmap",1,1,1],["Leading practice processes & configuration",1,1,1],["Dedicated project & functional delivery consultants",1,1,1],["Project & program governance and maintenance",1,1,1],["Functional requirement documentation & process flows",1,1,1],["Design & configuration of the SAP Fieldglass solution",1,1,1],["Integrations configuration (SAP Fieldglass-led)",0,1,1],["Implementation of Master Data integrations",1,1,1],["Implementation of Invoice integrations",1,1,1],["Implementation of Worker integrations",0,1,1],["Implementation of PO & Service Entry Sheet integrations",0,1,1],["Implementation of Plant Maintenance integrations",0,0,1],["Implementation of Contract integrations",0,0,1]],note:"Matrix per the 12-Aug-2026 deck (slides 8 / 35–37): 'Implementation of Worker integrations' (formerly 'HR Mini (worker)') excluded at Small, included at Medium and Large; Large includes every row incl. Plant Maintenance and Contract integrations."}}
  ],
  expansion:[
   {id:"ce",name:"Country Expansion",tag:"Existing tenant rollout",desc:"Roll an existing global tenant into additional countries: legally required local deviations from global design (80/20), localized config in test & production, incumbent worker/supplier migration.",tiers:[
@@ -690,14 +796,14 @@ const D={
   {k:"verify",w:"Slide 41",h:"Profile Worker Medium mislabeled",p:"Slide is titled 'Profile Worker – Small T-Shirt' but carries the Medium badge and USD 255K, vs USD 225K on the module overview. Title corrected to Medium; price needs the owner's call."},
   {k:"confirmed",w:"Slides 13 / 61 / 62",h:"SF connector file counts confirmed (Medium up to 5 / Large 10+)",p:"Published deck values had Medium 10+ and Large ≤5 (with the 5-file example of 4 master data + 1 worker download). Confirmed against the Oct-2023 TWM source workbooks: Small up to 2, Medium up to 5 (example: 4 master data + 1 worker download), Large 10+ files/destination connectors; deck slides 61/62 corrected in the 30-Jul-2026 SF refresh v2."},
   {k:"confirmed",w:"Slides 13 / 61",h:"SF Medium includes dedicated consultants (deck ✕ was a copy error)",p:"'Dedicated Integration and Functional Delivery Consultants' was marked excluded at Medium while included at Small and Large. Confirmed against the Oct-2023 TWM source workbooks that Medium includes them; the scope matrix and the Medium scope card now show it included, and deck slides 61/62 were corrected in the 30-Jul-2026 SF refresh v2."},
-  {k:"verify",w:"Slides 8 vs 37",h:"SOW ERP Large phase row doesn't sum to 46 weeks",p:"Detail slide 37 shows Explore 13w (total 37w) against a stated 46-week duration; the overview shows Explore 22w which sums correctly. Overview phasing used here."},
-  {k:"verify",w:"Slides 9 vs 11/47-49",h:"Country tier hours conflict",p:"Categories slide: 450/680/900 hrs. Country Expansion T-shirts: 340/520/780 hrs (durations match at 14/18/22 wks). T-shirt values used — confirm which set reflects current G3 sizing."},
-  {k:"verify",w:"Slide 9",h:"Country list hygiene",p:"Mexico listed twice in Medium; 'Luxemborg' misspelled; Japan appears in Large on the categories slide but not in the Large T-shirt examples; Turkey should be Türkiye per current SAP style. All corrected in this draft."},
-  {k:"verify",w:"Slide 29",h:"SOW Medium lists 'Integration configuration' twice",p:"Once included and once excluded on the same slide. Normalized to the overview matrix — confirm intent."},
+  {k:"verify",w:"Slides 8 vs 37",h:"SOW ERP Large phase row doesn't sum to 46 weeks",p:"Detail slide 37 shows Explore 13w (total 37w) against a stated 46-week duration; the overview shows Explore 22w which sums correctly. Overview phasing used here. Re-checked 12-Aug-2026 deck (slide 37): still present."},
+  {k:"verify",w:"Slides 9 vs 11 (47–49)",h:"Country Expansion hours differ between slide 9 and slide 11",p:"Country Expansion hours differ between deck slide 9 (450/680/900) and slide 11 (340/520/780); durations match at 14/18/22 wks. The builder and the countries-by-name picker use slide 11 (the priced overview) — confirm which set reflects current G3 sizing. Slide 9 also lists Japan under Large (missing from the slide 49 examples), Mexico twice under Medium, and 'Luxemborg'. Re-checked 12-Aug-2026 deck: unchanged."},
+  {k:"verify",w:"Slide 9",h:"Country list hygiene",p:"Mexico listed twice in Medium; 'Luxemborg' misspelled; Japan appears in Large on the categories slide but not in the Large T-shirt examples; Turkey should be Türkiye per current SAP style. All corrected in this draft; still present in the 12-Aug-2026 deck. The v8 countries-by-name picker (COUNTRY_TIERS) de-duplicates Mexico, spells Luxembourg correctly and keeps Japan under Large."},
+  {k:"confirmed",w:"Slide 29",h:"SOW Medium 'Integration configuration' duplicate — fixed in the 12-Aug-2026 deck",p:"The Medium detail slide used to list 'Integration configuration' twice (once included, once excluded). The 12-Aug-2026 deck shows it once, excluded — matching the overview matrix this dashboard always used. Fixed in the 12-Aug-2026 deck; the matrix note was removed in v8."},
   {k:"verify",w:"Slide 58",h:"New-deployment Ariba slide reuses conversion-package scope rows",p:"'Reconfigure existing solution' and 'material PO data conversion' rows don't fit a net-new FG deployment; likely copied from slide 54. Normalized here — confirm intended scope."},
   {k:"upd",w:"Slide 56 + Ariba slides",h:"Ariba Network → SAP Business Network; CIG → managed gateway",p:"Supplier/network references updated to SAP Business Network, and the transport described as SAP Integration Suite, managed gateway for spend management and SAP Business Network — the current names throughout the FG↔Ariba Business Synopsis and B&I integration guide."},
   {k:"upd",w:"Ariba section",h:"Next-gen SAP Ariba qualifier added",p:"Next-gen Ariba is GA on SAP BTP since March 2026 with quarterly releases into 2027 and a committed ≥60% agentic back-port to current-gen. The three Ariba T-shirts assume current-gen B&I — the client's Ariba generation and migration timing is now a scoping variable and is called out in this draft."},
-  {k:"upd",w:"ERP Edition slides",h:"'HR Mini' terminology retired",p:"'HR Mini (worker) integrations' doesn't exist in the current Connector Library (2026-05-15); the HR feed is the User Upload connector plus the worker/master-data connectors. Relabeled 'HR (worker/user data) integrations' with the legacy term noted."},
+  {k:"confirmed",w:"Slides 3 / 7 / 8 / 32–37",h:"'HR Mini' retired — deck now says 'Worker integrations' / 'Workers'",p:"The 12-Aug-2026 deck renamed 'Implementation of HR Mini (worker) integrations' to 'Implementation of Worker integrations' on the ERP Edition overview and detail slides, and slide 3 now reads Small 'Integration configuration and documentation: Partner or Client self-service', Medium 'Integrations: Master Data, Invoicing, Workers', Large '…, Workers, Purchase Order'. The dashboard uses the deck's Worker(s) wording throughout (matrix rows, tier cards, What-fits strip); the Connector Library (2026-05-15) maps the feed to User Upload plus the worker/master-data connectors."},
   {k:"upd",w:"SF slides",h:"SF integration aligned to current 3-scenario model",p:"Current FG↔SF EC integration: (1) master data EC→FG as prerequisite, (2) Position Management → FG job posting, (3) worker FG→EC via Integration Suite iFlows + SF Standard Worker Upload OData API. Added: MDI-based master data option (S/4-only caveat for financial data), IAS/IPS as recommended user provisioning, and the worker source-system flag that resolves SF licensing double-count. Re-validated 30-Jul-2026 (SF refresh v2) against the SAP EC–Fieldglass integration guide 1H 2605 (2026-07-15), the FG↔SF Business Synopsis (2025-10-13), the Connector Library (2026-05-15) and the Oct-2023 TWM source workbooks."},
   {k:"upd",w:"Slide 45",h:"Multi-ERP exclusion reworded",p:"The Ariba/Business Network integration now supports multi-ERP routing via child site system IDs, so 'not supported' framing would be wrong; the exclusion stands as 'custom scoping required' because each additional backend roughly doubles backend-side effort while FG/CPI-side work is largely shared."},
   {k:"upd",w:"Slide 3 + assumptions",h:"Partner-led ≠ Fieldglass-free footnote added",p:"Small tier's 'integration: partner or client self-service' now carries the restricted-activities note (tenant endpoints, Company Configuration, extrinsic fields, mapping spec ownership) per the S/4HANA Implementation Guide — prevents the 'just enable the connector' misread in sales cycles."},
@@ -713,6 +819,10 @@ const D={
   {k:"confirmed",w:"SF · identity",h:"IAS mandatory from Nov-2026 (KBA 3097769)",p:"SAP Cloud Identity Services — Identity Authentication (IAS) becomes mandatory for SuccessFactors login in November 2026 (KBA 3097769). Reinforces the IAS/IPS provisioning assumption; clients still on native SF login need the IAS migration on their side before or alongside the Fieldglass integration."},
   {k:"note",w:"SF · hours",h:"2026 hours re-baseline delivered, pricing pass pending",p:"Grid hours re-baselined 30-Jul-2026 for Bridget Kafes: S 255→275, M 457→492, L 700→752 (+7–8%); durations 17/22/26 wks unchanged. The builder still shows the published deck hours (280/520/810) until the deck owner's pricing pass lands; the difference is grid hours vs published package hours."},
   {k:"note",w:"Scope Building · rates",h:"Placeholder rates vs the Oct-2023 SKU cost build",p:"The Scope Building rate panel uses public-market placeholder proxies. The Oct-2023 SKU cost build used list rates of $300/hr (G3 consultants) and $410/hr (G2 PM/DE), FLCR $153.75 / $213.75 — the official 2026 rate card is pending; treat every $ in that panel as illustrative. No recalibration applied in v7."},
+  {k:"note",w:"Version",h:"v8 — what changed",p:"2026-09-09 · (A) Project scenario: the Scenarios bar became a 'Project scenario' card at the top of the ROM Builder — project / opportunity name first (same field, still drives the generated ROM and the Excel filename), a status chip (Unsaved draft · Saved as … · Changed since save) and Open · Save · Save as… · Delete · Compare; one project = one scenario, and scenarios saved by v7 still open. (B) Indicative schedule: 'Adjust schedule' in the Combined ROM card — presets Parallel / Two waves / Sequential, per-component start-week steppers (Custom) and an override total with a required reason; the T-shirt standard (parallel) stays visible everywhere and the adjusted figure appears only when it differs, flowing into the one-pager (second duration tile, offset timeline bars), the Excel Summary (adjusted wks + basis), scenario metrics and the compare table; Scope Building is unchanged. (C) Countries by name: typeahead over the deck's country table (slide 9 — Mexico de-duplicated, Luxembourg spelled correctly, Japan kept under Large) plus ~60 other countries that default to Medium with a confirm-size flag; picked countries roll up into the Small / Medium / Large counts (steppers lock while picks exist), ⓘ example-country popovers per size, and the countries are listed in the one-pager, the Excel Summary and the scoping warnings. (D) Content refresh from the canonical deck (SharePoint, modified 12-Aug-2026): ERP Edition hours (Contingent S 1200 / M 1650; SOW S 1200 / M 1650 / L 2150), 'Worker integrations' wording with Integrations configuration and Worker excluded at Small, slide-3 'Workers' tier wording as a new Overview strip, the slide-1 economies-of-scale sentence, SOW Medium duplicate row resolved, SF slides 13 / 60–62 still pre-refresh (dashboard ahead of the deck), the slide 9 vs 11 country-hours verify item and the working-file notes."},
+  {k:"upd",w:"Slides 7 / 8 / 32–37",h:"ERP Edition hours raised in the 12-Aug-2026 deck",p:"Contingent ERP Edition: Small 1150 → 1200 h, Medium 1500 → 1650 h. SOW ERP Edition: Small 1150 → 1200 h, Medium 1480 → 1650 h, Large 1780 → 2150 h. Prices (400/450 · 500/600 · 600/700 K), durations (24 / 36 / 46 wks) and phase mixes unchanged. Scope matrix per the pptx cells: Small = Master Data + Invoice integrations only (Integrations configuration and Worker integrations excluded); Medium adds Integrations configuration, Worker and PO & SES; SOW ERP Large includes every row incl. Plant Maintenance and Contract integrations. Applied to const D in v8 (deck 12-Aug-2026, slides 7, 8, 32, 33, 35, 36, 37)."},
+  {k:"note",w:"Slides 13 / 60–62",h:"SF refresh v2 not yet merged into the canonical deck",p:"SF refresh v2 (30-Jul-2026) not yet merged into the canonical deck as of 12-Aug-2026 — slides 13 and 60–62 still carry the pre-refresh text ('Success Factors', 'Transfer to BTP', Medium 10+ / Large up-to-5 swap, Medium consultants ✕). The dashboard is ahead of the deck and keeps the corrected SF content; owner merge pending (Reeshema Downey / Bridget Kafes)."},
+  {k:"note",w:"SharePoint · working files",h:"ERP working extract and Deal Success Center library copy",p:"ERP-edition working extract 'Integration T Shirts/CW & SOW ERP/NEW _ SAPFG T-Shirt ROM_Updated_ERP.pptx' (Bridget Kafes, 12-Aug-2026, 7 slides) carries the same ERP Edition slides as the canonical deck — no additional data. The DSC-library copy '/teams/AllanWeissArsenal/…/B_T-Shirt ROM Presentations/Fieldglass/Fieldglass T-Shirt ROM.pptx' (22-Jul-2026, 75 slides) adds a Note-to-SAEs slide, an approver table (Tyler Stokes, Yaro Chaian, Feb-2024) and a v2.0 change log, but no newer pricing — treat it as the Deal Success Center library copy."},
   {k:"note",w:"Version",h:"v7 — what changed",p:"2026-09-08 · (1) Configuration Manager role provisioning removed from the FG-performed activities list in the Overview delivery-model note and in the partner-led footnote finding (Lauren Herm, 2026-07-16). (2) SuccessFactors synced with the corrected deck (SF refresh v2, 30-Jul-2026): BTP-handover wording normalized to 'Handover to SAP Integration Suite (Cloud Integration)'; Medium = up to 5 files/destination connectors (example: 4 master data + 1 worker download) and includes dedicated FG + SF consultants, Large = 10+; connector-set labels un-transposed (Medium 'P2R with WD OR WD & Master Data — 02A / 02B', Large 'P2R, WD & Master Data'); the two SF verify items converted to confirmed; new entries on dual worker-replication paths, MDI with Integration Center → SFTP fallback, IAS/IPS, the SourceOfRecord flag, Basic Auth retirement (KBA 3156202) and IAS mandatory Nov-2026 (KBA 3097769); hours re-baseline noted, published hours and prices unchanged. (3) Scope Building rate panel carries the Oct-2023 SKU list-rate note — placeholder proxies, no recalibration."}
  ]
 };
@@ -825,9 +935,10 @@ const ROLES=[["de","Delivery Executive"],["pm","Project Manager"],["ic","Integra
 const RATE_TIERS={T2:185,T3:235,T4:295,G2:75,G3:95,G4:120}; /* placeholder USD/hr from public GSA & market proxies — replace with the official rate card */
 const MIX_DEFAULT={de:7,pm:22,sc:9,fc:40,ic:22}; /* % of ROM hours, derived from the Verizon & IBM ROM role-hour grids */
 const state={cur:"USD",cont:0,staff:{de:1,pm:1,ic:1,sc:1,fc:1},stagger:"auto",custType:"",
-  mix:{...MIX_DEFAULT},parked:{},
+  mix:{...MIX_DEFAULT},parked:{},cty:[],sched:{preset:"parallel",starts:{},override:null,reason:""},
   rates:{de:{tier:"G3",rate:95},pm:{tier:"G3",rate:95},ic:{tier:"G3",rate:95},sc:{tier:"G3",rate:95},fc:{tier:"G3",rate:95}}};
 let LAST={items:[],usd:0,cad:0,hr:0,wkMax:0,n:0,ctyN:0,noHr:false,warns:[]};
+const SIG_FILL=[]; /* v8: fillers that normalise v7-shaped saved states (missing keys) before comparison — registered by the countries and schedule blocks */
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmtUSD=n=>"$"+Math.round(n).toLocaleString("en-US")+"K";
 const fmtCAD=n=>"C$"+Math.round(n).toLocaleString("en-US")+"K";
@@ -841,9 +952,125 @@ function pickRow(m){
   return `<div class="pick"><input type="checkbox" id="ck-${m.id}" data-id="${m.id}"><label for="ck-${m.id}">${m.name}</label><select id="sz-${m.id}" data-id="${m.id}" aria-label="Size for ${m.name}">${opts}</select><span class="pp" id="pp-${m.id}"></span></div>`;
 }
 function ceRows(){
-  return CE.tiers.map(t=>`<div class="pick"><label for="ceq-${t.s}">Country Expansion — ${SIZE_NAME[t.s]} countries<span class="sub" id="ceSub-${t.s}"></span></label><span class="qty"><button type="button" class="qbtn" data-ce="${t.s}" data-d="-1" aria-label="Remove one ${SIZE_NAME[t.s]} country">−</button><input id="ceq-${t.s}" type="number" min="0" max="20" value="0" inputmode="numeric" aria-label="Number of ${SIZE_NAME[t.s]} countries"><button type="button" class="qbtn" data-ce="${t.s}" data-d="1" aria-label="Add one ${SIZE_NAME[t.s]} country">+</button></span><span class="pp" id="pp-ce${t.s}"></span></div>`).join("");
+  const picker=`<div class="pick cty-pick"><label for="ctyAdd">Add countries by name<span class="sub">Searches the deck's country table (slide 9) plus ~60 more countries; picks roll up into the size counts below.</span></label><div class="cty-add"><input id="ctyAdd" type="text" placeholder="e.g. Germany, Norway, UK…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="ctyList" aria-autocomplete="list" aria-label="Add a country by name"><ul id="ctyList" class="cty-list" role="listbox" hidden></ul></div></div><div class="cty-chips" id="ctyChips" aria-live="polite"></div><p class="cty-lock" id="ctyLock" hidden>Counts come from the picked countries — remove them to edit manually.</p>`;
+  return picker+CE.tiers.map(t=>`<div class="pick"><label for="ceq-${t.s}">Country Expansion — ${SIZE_NAME[t.s]} countries<span class="sub" id="ceSub-${t.s}"></span></label><button type="button" class="ibtn" data-info="${t.s}" aria-expanded="false" aria-controls="ctyPop" aria-label="Example ${SIZE_NAME[t.s]} countries">ⓘ</button><span class="qty"><button type="button" class="qbtn" data-ce="${t.s}" data-d="-1" aria-label="Remove one ${SIZE_NAME[t.s]} country">−</button><input id="ceq-${t.s}" type="number" min="0" max="20" value="0" inputmode="numeric" aria-label="Number of ${SIZE_NAME[t.s]} countries"><button type="button" class="qbtn" data-ce="${t.s}" data-d="1" aria-label="Add one ${SIZE_NAME[t.s]} country">+</button></span><span class="pp" id="pp-ce${t.s}"></span></div>`).join("")+`<div id="ctyPop" class="cty-pop" role="dialog" aria-labelledby="ctyPopH" tabindex="-1" hidden></div>`;
 }
 pickArea.innerHTML=groups.map(g=>`<div class="pick-group"><h3>${g.h}</h3>${g.items.map(m=>m.id==="ce"?ceRows():pickRow(m)).join("")}</div>`).join("");
+
+/* ---- countries by name (v8) — authoritative source: deck slide 9 "Countries & Package Categories" (unchanged in the 12-Aug-2026 deck; slides 47–49 repeat it as examples).
+   Deck typos fixed: Mexico listed twice (de-duplicated), "Luxemborg" → Luxembourg; Turkey shown as Türkiye (alias "Turkey" searchable). Hours per size follow slide 11 (priced overview), not slide 9. */
+const COUNTRY_TIERS={
+  S:[["USA",""],["Canada",""],["United Kingdom","white collar"],["Ireland",""],["Czech Republic",""],["Netherlands","white collar"],["Switzerland",""],["Sweden",""]],
+  M:[["Germany","white collar"],["United Kingdom","blue collar"],["Netherlands","blue collar"],["Poland",""],["Austria",""],["Belgium & Luxembourg",""],["Hungary",""],["Portugal",""],["Spain",""],["Türkiye",""],["Australia",""],["Mexico",""],["Brazil",""],["Argentina",""],["Colombia",""],["Costa Rica",""],["Chile",""],["India",""]],
+  L:[["Germany","blue collar"],["France",""],["Italy",""],["UAE",""],["Japan",""]]
+};
+const COUNTRY_ALIAS={"USA":["United States","US","America","U.S."],"United Kingdom":["UK","Great Britain","Britain","England","Scotland","Wales"],"UAE":["United Arab Emirates","Emirates","Dubai","Abu Dhabi"],"Türkiye":["Turkey","Turkiye"],"Czech Republic":["Czechia"],"Netherlands":["Holland"],"Belgium & Luxembourg":["Belgium","Luxembourg"],"Germany":["Deutschland"],"South Korea":["Korea","Republic of Korea"],"Hong Kong":["HK"],"New Zealand":["NZ"],"South Africa":["RSA"]};
+/* every other country defaults to Medium with a confirm-size flag */
+const COUNTRY_OTHER=["Norway","Denmark","Finland","Iceland","Estonia","Latvia","Lithuania","Slovakia","Slovenia","Croatia","Romania","Bulgaria","Greece","Serbia","Ukraine","Cyprus","Malta","Israel","Saudi Arabia","Qatar","Kuwait","Bahrain","Oman","Jordan","Egypt","Morocco","Tunisia","South Africa","Nigeria","Kenya","Ghana","China","Hong Kong","Taiwan","South Korea","Singapore","Malaysia","Thailand","Vietnam","Philippines","Indonesia","New Zealand","Pakistan","Bangladesh","Sri Lanka","Nepal","Kazakhstan","Georgia","Armenia","Azerbaijan","Peru","Ecuador","Uruguay","Paraguay","Bolivia","Panama","Guatemala","Honduras","El Salvador","Dominican Republic","Puerto Rico","Jamaica","Trinidad & Tobago"];
+const CTY_INDEX=(()=>{
+  const out=[];
+  ["S","M","L"].forEach(s=>COUNTRY_TIERS[s].forEach(([name,lt])=>out.push({key:lt?`${name} – ${lt}`:name,name,lt,s,deck:true})));
+  COUNTRY_OTHER.forEach(name=>{if(!out.some(c=>c.name===name))out.push({key:name,name,lt:"",s:"M",deck:false});});
+  out.forEach(c=>{c.search=[c.key,c.name,...(COUNTRY_ALIAS[c.name]||[])].join(" | ").toLowerCase();});
+  return out;
+})();
+const ctyByKey=k=>CTY_INDEX.find(x=>x.key===k);
+function renderCtyChips(){
+  const box=document.getElementById("ctyChips");if(!box)return;
+  box.innerHTML=state.cty.map((c,i)=>`<span class="cchip${c.deck?"":" flag"}" data-i="${i}"><b>${esc(c.key)}</b><select class="cchip-s" data-i="${i}" aria-label="Size for ${esc(c.key)}">${["S","M","L"].map(s=>`<option value="${s}"${s===c.s?" selected":""}>${s}</option>`).join("")}</select>${c.deck?"":`<span class="cchip-flag" title="Not in the deck's country table (slide 9) — confirm size with the FG solutioning lead">⚠ confirm size</span>`}<button type="button" class="cchip-x" data-i="${i}" aria-label="Remove ${esc(c.key)}">×</button></span>`).join("");
+  const lock=state.cty.length>0;
+  document.getElementById("ctyLock").hidden=!lock;
+  CE.tiers.forEach(t=>{const inp=document.getElementById("ceq-"+t.s);inp.readOnly=lock;inp.classList.toggle("locked",lock);inp.setAttribute("aria-readonly",String(lock));});
+  document.querySelectorAll(".qbtn[data-ce]").forEach(b=>b.disabled=lock);
+}
+/* chips -> stepper counts (runs at the top of recalc, before the counts are read) */
+function syncCtyCounts(){
+  if(!state.cty.length)return;
+  CE.tiers.forEach(t=>{document.getElementById("ceq-"+t.s).value=state.cty.filter(c=>c.s===t.s).length;});
+}
+function ctyUnlisted(){return state.cty.filter(c=>!c.deck);}
+function ctyAsmLines(){const u=ctyUnlisted();return u.length?[`Country size for ${u.map(c=>c.key).join(", ")} is not in the deck's country table (slide 9) — shown as picked (default Medium); confirm with the FG solutioning lead before customer use`]:[];}
+function ctyDocBlock(){
+  if(!state.cty.length)return "";
+  const li=state.cty.map(c=>`<li>${esc(c.key)} · ${SIZE_NAME[c.s]}${c.deck?"":" <i>(not in the deck's country table — size to confirm)</i>"}</li>`).join("");
+  return `<h3>Countries in scope</h3><ul class="rd-2col">${li}</ul><p class="rd-fine">Sizes per deck slide 9 “Countries &amp; Package Categories” (labor type where the deck distinguishes it); sizing depends on average complexity per country.</p>`;
+}
+/* typeahead */
+const ctyAdd=document.getElementById("ctyAdd"),ctyList=document.getElementById("ctyList");
+let ctyHits=[],ctyActive=-1;
+function ctyRender(){
+  ctyList.innerHTML=ctyHits.map((c,i)=>`<li role="option" id="ctyOpt${i}" aria-selected="${i===ctyActive}" class="${i===ctyActive?"act":""}" data-key="${esc(c.key)}"><b>${esc(c.key)}</b><span class="cs cs-${c.s}">${c.s}</span>${c.deck?"":'<span class="cflag">not in deck table · default M</span>'}</li>`).join("");
+  const open=ctyHits.length>0;ctyList.hidden=!open;ctyAdd.setAttribute("aria-expanded",String(open));
+  if(ctyActive>=0)ctyAdd.setAttribute("aria-activedescendant","ctyOpt"+ctyActive);else ctyAdd.removeAttribute("aria-activedescendant");
+}
+function ctySearch(){
+  const q=ctyAdd.value.trim().toLowerCase();
+  if(!q){ctyHits=[];ctyActive=-1;ctyRender();return;}
+  const picked=new Set(state.cty.map(c=>c.key));
+  const rank=c=>c.key.toLowerCase().startsWith(q)?0:c.search.split(" | ").some(w=>w.startsWith(q))?1:2;
+  ctyHits=CTY_INDEX.filter(c=>c.search.includes(q)&&!picked.has(c.key)).sort((a,b)=>rank(a)-rank(b)).slice(0,8);
+  ctyActive=ctyHits.length?0:-1;ctyRender();
+}
+function ctyPick(key){
+  const c=ctyByKey(key);if(!c)return;
+  if(state.cty.some(x=>x.key===key)){toast(`${esc(c.key)} is already in scope`);return;}
+  state.cty=[...state.cty,{key:c.key,name:c.name,lt:c.lt,s:c.s,deck:c.deck}];
+  ctyAdd.value="";ctyHits=[];ctyActive=-1;ctyRender();
+  renderCtyChips();recalc();saveState();
+  toast(`${esc(c.key)} added as ${SIZE_NAME[c.s]}${c.deck?"":" — not in the deck's country table, confirm size"}`);
+}
+ctyAdd.addEventListener("input",ctySearch);
+ctyAdd.addEventListener("focus",ctySearch);
+ctyAdd.addEventListener("keydown",e=>{
+  if(e.key==="ArrowDown"){if(ctyHits.length){ctyActive=(ctyActive+1)%ctyHits.length;ctyRender();}e.preventDefault();}
+  else if(e.key==="ArrowUp"){if(ctyHits.length){ctyActive=(ctyActive-1+ctyHits.length)%ctyHits.length;ctyRender();}e.preventDefault();}
+  else if(e.key==="Enter"){e.preventDefault();if(ctyActive>=0&&ctyHits[ctyActive])ctyPick(ctyHits[ctyActive].key);}
+  else if(e.key==="Escape"){ctyHits=[];ctyActive=-1;ctyRender();}
+});
+ctyList.addEventListener("mousedown",e=>{const li=e.target.closest("li[data-key]");if(li){e.preventDefault();ctyPick(li.dataset.key);}});
+document.addEventListener("click",e=>{if(ctyHits.length&&!e.target.closest(".cty-add")){ctyHits=[];ctyActive=-1;ctyRender();}});
+/* chips */
+document.getElementById("ctyChips").addEventListener("change",e=>{
+  const s=e.target.closest(".cchip-s");if(!s)return;
+  const i=+s.dataset.i;state.cty=state.cty.map((c,k)=>k===i?{...c,s:s.value}:c);
+  renderCtyChips();recalc();saveState();
+});
+document.getElementById("ctyChips").addEventListener("click",e=>{
+  const b=e.target.closest(".cchip-x");if(!b)return;
+  const i=+b.dataset.i,nm=state.cty[i]?state.cty[i].key:"";
+  state.cty=state.cty.filter((c,k)=>k!==i);
+  renderCtyChips();recalc();saveState();toast(`${esc(nm)} removed`);
+});
+/* ⓘ popover — one at a time, Esc / outside click closes, focus returns to the button */
+const ctyPop=document.getElementById("ctyPop");let ctyPopBtn=null;
+const CTY_SLIDE9_HRS={S:450,M:680,L:900};
+function openCtyPop(btn){
+  const s=btn.dataset.info,t=CE.tiers.find(x=>x.s===s);
+  ctyPop.innerHTML=`<h4 id="ctyPopH">Example countries — ${SIZE_NAME[s]}</h4><p class="cty-pop-sub">${t.hr} h · ${t.wk} wks per country (priced overview, slide 11; slide 9 states ${CTY_SLIDE9_HRS[s]} h — verify) · sizing depends on average complexity per country</p><ul>${COUNTRY_TIERS[s].map(([n,l])=>`<li>${esc(n)}${l?` — ${l}`:""}</li>`).join("")}</ul><p class="cty-pop-src">Source: deck slide 9 “Countries &amp; Package Categories”, repeated as examples on slides 47–49 (12-Aug-2026 deck). Any other country defaults to Medium — confirm the size with the FG solutioning lead.</p><button type="button" class="scen-btn" id="ctyPopClose">Close</button>`;
+  const grp=btn.closest(".pick-group");
+  document.querySelectorAll(".ibtn").forEach(b=>b.setAttribute("aria-expanded","false"));
+  ctyPop.hidden=false;
+  /* place it to the LEFT of the ⓘ (over the labels) so the other rows' ⓘ / steppers stay clickable; fall back to below the row when there is no room */
+  let w=Math.min(400,btn.offsetLeft-16);
+  if(w>=240){ctyPop.style.width=w+"px";ctyPop.style.top=(btn.offsetTop-4)+"px";ctyPop.style.left=(btn.offsetLeft-w-8)+"px";}
+  else{w=Math.min(400,grp.clientWidth-16);ctyPop.style.width=w+"px";ctyPop.style.top=(btn.offsetTop+btn.offsetHeight+6)+"px";ctyPop.style.left="8px";}
+  btn.setAttribute("aria-expanded","true");ctyPopBtn=btn;
+  document.getElementById("ctyPopClose").focus();
+}
+function closeCtyPop(refocus){
+  if(ctyPop.hidden)return;
+  ctyPop.hidden=true;
+  if(ctyPopBtn){ctyPopBtn.setAttribute("aria-expanded","false");if(refocus)ctyPopBtn.focus();}
+  ctyPopBtn=null;
+}
+pickArea.addEventListener("click",e=>{
+  const b=e.target.closest(".ibtn");
+  if(b){if(ctyPopBtn===b)closeCtyPop(true);else openCtyPop(b);return;}
+  if(e.target.closest("#ctyPopClose"))closeCtyPop(true);
+});
+document.addEventListener("click",e=>{if(!ctyPop.hidden&&!e.target.closest("#ctyPop")&&!e.target.closest(".ibtn"))closeCtyPop(false);});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!ctyPop.hidden){closeCtyPop(true);e.preventDefault();}});
+SIG_FILL.push(c=>{if(!c.cty)c.cty=[];});
 
 /* ---- staffing & stagger (Scope Building tab — internal planning aid) ---- */
 const staffArea=document.getElementById("staffArea");
@@ -1040,9 +1267,12 @@ function buildState(){
   LAND_IDS.forEach(id=>s.land[id]=document.getElementById(id).value);
   s.live={};LIVE_IDS.forEach(id=>s.live[id]=document.getElementById(id).checked);
   s.parked=JSON.parse(JSON.stringify(state.parked));
+  s.cty=state.cty.map(c=>({key:c.key,name:c.name,lt:c.lt,s:c.s,deck:!!c.deck}));
+  s.sched={preset:state.sched.preset,starts:{...state.sched.starts},override:state.sched.override,reason:state.sched.reason};
+  s.proj={open:openScenName(),sig:openSig};
   return s;
 }
-function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(buildState()));}catch(e){/* private mode / storage blocked — selections just won't persist */}}
+function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(buildState()));}catch(e){/* private mode / storage blocked — selections just won't persist */}try{updateProjStatus();}catch(e2){}}
 function applyState(s){
   if(!s)return;
   state.cur=s.cur==="CAD"?"CAD":"USD";
@@ -1065,11 +1295,15 @@ function applyState(s){
   if(s.mix)ROLES.forEach(([id])=>{if(Number.isFinite(+s.mix[id])){state.mix[id]=Math.max(0,Math.min(100,+s.mix[id]));document.getElementById("mx-"+id).value=state.mix[id];}});
   if(s.rates)ROLES.forEach(([id])=>{const r=s.rates[id];if(r){if(RATE_TIERS[r.tier]!=null){state.rates[id].tier=r.tier;document.getElementById("rt-"+id).value=r.tier;}if(Number.isFinite(+r.rate)){state.rates[id].rate=Math.max(0,+r.rate);document.getElementById("rr-"+id).value=state.rates[id].rate;}}});
   state.parked=(s.parked&&typeof s.parked==="object")?JSON.parse(JSON.stringify(s.parked)):{};
+  state.cty=Array.isArray(s.cty)?s.cty.filter(c=>c&&c.key&&["S","M","L"].includes(c.s)).map(c=>{const ix=ctyByKey(String(c.key));return {key:String(c.key),name:String(c.name||(ix?ix.name:c.key)),lt:String(c.lt||(ix?ix.lt:"")),s:c.s,deck:ix?ix.deck:!!c.deck};}):[];
+  renderCtyChips();
+  {const q=(s.sched&&typeof s.sched==="object")?s.sched:{};const st={};if(q.starts&&typeof q.starts==="object")Object.entries(q.starts).forEach(([k,v])=>{if(Number.isFinite(+v))st[k]=Math.min(SCHED_MAX_START,Math.max(0,Math.round(+v)));});
+   state.sched={preset:SCHED_PRESETS[q.preset]?q.preset:"parallel",starts:st,override:(q.override!=null&&Number.isFinite(+q.override)&&+q.override>=1)?Math.round(+q.override):null,reason:typeof q.reason==="string"?q.reason:""};}
   applyCustFilter();
   syncStaff();staffBaseline={...state.staff};syncCurBtns();
   contR.value=state.cont;document.getElementById("contV").textContent=state.cont+"%";
 }
-function loadState(){try{const s=JSON.parse(localStorage.getItem(LS_KEY)||"null");if(s)applyState(s);}catch(e){}}
+function loadState(){try{const s=JSON.parse(localStorage.getItem(LS_KEY)||"null");if(s){applyState(s);restoreOpenScen(s.proj);}}catch(e){}}
 
 /* ---- combination-rule validation ---- */
 function calcWarns(){
@@ -1094,12 +1328,15 @@ function calcWarns(){
   if(state.custType==="existing"&&lc&&lc.value&&lc.value!=="keep")w.push(`Tenant consolidation (${CONSOL_LABEL[lc.value]}) has no T-shirt — custom scoping required, including an integration-inventory review across tenants.`);
   const ceAny=CE.tiers.some(t=>+document.getElementById("ceq-"+t.s).value>0);
   if(state.custType==="new"&&ceAny&&!baseAny)w.push("Country Expansion for a net-new customer only makes sense alongside a base module implementation — add a module T-shirt or mark the customer as Existing.");
+  const unl=ctyUnlisted();
+  if(unl.length)w.push(`${unl.map(c=>c.key).join(", ")} ${unl.length>1?"are":"is"} not in the deck's country table (slide 9) — sized Medium by default; confirm the size with the FG solutioning lead.`);
   return w;
 }
 
 /* ---- recalc ---- */
 function recalc(){
   applyCustFilter(); /* re-evaluate greying on every state change (uncheck, reset, add-to-builder, qty) */
+  syncCtyCounts(); /* v8: picked countries drive the S/M/L counts */
   let usd=0,cad=0,hr=0,wkMax=0,n=0,noHr=false;const items=[];
   ALL.forEach(m=>{
     const ck=document.getElementById("ck-"+m.id),sel=document.getElementById("sz-"+m.id),pp=document.getElementById("pp-"+m.id);
@@ -1124,9 +1361,10 @@ function recalc(){
       items.push({mid:"ce",size:SIZE_NAME[t.s],name:"Country Expansion",tier:`${SIZE_NAME[t.s]} × ${q}`,usd:q*t.usd,cad:q*t.cad,hr:q*t.hr,wk:t.wk,ph:t.ph,back:t.back,flags:t.flags,qty:q});
     }
   });
-  LAST={items,usd,cad,hr,wkMax,n:n+ctyN,ctyN,noHr,warns:calcWarns()};
+  LAST={items,usd,cad,hr,wkMax,n:n+ctyN,ctyN,noHr,cty:state.cty.slice(),warns:calcWarns()};
+  LAST.adj=computeAdj();
   LAST.sched=buildSchedule();
-  renderTotals();renderScope();updateRateCalc();
+  renderTotals();renderSchedPanel();renderScope();updateRateCalc();
   document.getElementById("warnBox").innerHTML=LAST.warns.map(w=>`<div class="w">⚠ ${w}</div>`).join("");
   document.getElementById("genBtn").disabled=!items.length;
   document.getElementById("xlsBtn").disabled=!items.length;
@@ -1258,7 +1496,7 @@ function renderScope(){
 }
 /* stale-doc tracking + debounced screen-reader summary */
 let genSig=null,srT;
-function sigOf(){return JSON.stringify([LAST.items.map(it=>[it.name,it.tier,it.usd,it.hr]),state.cont,META_IDS.map(id=>document.getElementById(id).value),state.custType,LAND_IDS.map(id=>document.getElementById(id).value),LIVE_IDS.map(liveOn)]);}
+function sigOf(){return JSON.stringify([LAST.items.map(it=>[it.name,it.tier,it.usd,it.hr]),state.cont,META_IDS.map(id=>document.getElementById(id).value),state.custType,LAND_IDS.map(id=>document.getElementById(id).value),LIVE_IDS.map(liveOn),state.cty.map(c=>c.key+c.s),LAST.adj?LAST.adj.adjusted:null,LAST.adj?LAST.adj.basis:""]);}
 function staleCheck(){
   const ro=document.getElementById("romOutput"),note=ro.querySelector(".stale-note");
   if(!note)return;
@@ -1270,7 +1508,7 @@ function announce(){
   srT=setTimeout(()=>{
     const el=document.getElementById("srLive");
     if(!LAST.items.length){el.textContent="No components selected.";return;}
-    el.textContent=`Estimate updated: ${fmtUSD(LAST.usd)} USD, ${LAST.hr.toLocaleString("en-US")} hours, about ${LAST.wkMax} weeks, ${LAST.n} components${LAST.warns.length?`, ${LAST.warns.length} scoping warning${LAST.warns.length>1?"s":""}`:""}.`;
+    el.textContent=`Estimate updated: ${fmtUSD(LAST.usd)} USD, ${LAST.hr.toLocaleString("en-US")} hours, about ${LAST.wkMax} weeks${LAST.adj&&LAST.adj.differs?`, adjusted schedule ~${LAST.adj.adjusted} weeks`:""}, ${LAST.n} components${LAST.warns.length?`, ${LAST.warns.length} scoping warning${LAST.warns.length>1?"s":""}`:""}.`;
   },700);
 }
 function renderTotals(){
@@ -1283,8 +1521,9 @@ function renderTotals(){
     <div class="tot-line"><span>Estimated price (${other}${c>0?`, incl. ${c}% cont.`:""})</span><b>${state.cur==="USD"?fmtCAD(pc):fmtUSD(pu)}</b></div>`;
   if(c>0)html+=`<div class="tot-line"><span>Base price excl. contingency</span><b>${state.cur==="USD"?fmtUSD(LAST.usd):fmtCAD(LAST.cad)}</b></div>`;
   html+=`<div class="tot-line"><span>Estimated hours${c>0?" (excl. cont.)":""}${LAST.noHr?" *":""}</span><b>${LAST.hr.toLocaleString("en-US")}</b></div>
-    <div class="tot-line"><span>Indicative duration (parallel workstreams)</span><b>~${LAST.wkMax} wks</b></div>
-    <div class="tot-line"><span>Components selected</span><b>${LAST.n}</b></div>`;
+    <div class="tot-line"><span>Indicative duration (parallel workstreams)</span><b>~${LAST.wkMax} wks</b></div>`;
+  if(LAST.adj&&LAST.adj.differs)html+=`<div class="tot-line adj"><span>Indicative schedule (adjusted)</span><b>~${LAST.adj.adjusted} wks</b></div><div class="tot-adj-note">${LAST.adj.override!=null?"adjusted: "+esc(LAST.adj.reason):esc(LAST.adj.basis)} · T-shirt standard stays ~${LAST.wkMax} wks</div>`;
+  html+=`<div class="tot-line"><span>Components selected</span><b>${LAST.n}</b></div>`;
   if(LAST.ctyN)html+=`<div class="tot-line"><span>Countries in scope</span><b>${LAST.ctyN}</b></div>`;
   if(LAST.noHr)html+='<p class="tot-note">* Ariba B&amp;I packages publish no hour figure and are excluded from the hour total.</p>';
   box.innerHTML=html;
@@ -1292,6 +1531,99 @@ function renderTotals(){
 
 /* ---- builder events ---- */
 pickArea.addEventListener("change",()=>{recalc();saveState();});
+
+/* ---- adjustable indicative schedule (v8) — the T-shirt standard (parallel, LAST.wkMax) never moves;
+   adjusted = override ?? max(start_i + wk_i); the adjusted figure is shown only when it differs from the standard. ---- */
+const SCHED_PRESETS={parallel:"Parallel",waves:"Two waves",seq:"Sequential",custom:"Custom"};
+const SIZE_LETTER={Small:"S",Medium:"M",Large:"L"};
+const SCHED_MAX_START=260; /* weeks — derived starts (Sequential chains) can exceed a year, so the cap is 5 years, not 52 */
+function schedDefault(){return {preset:"parallel",starts:{},override:null,reason:""};}
+function schedComps(){
+  return LAST.items.map(it=>{const sl=it.mid==="ce"?SIZE_LETTER[it.size]:null;return {id:sl?"ce"+sl:it.mid,name:it.name,tier:it.tier,wk:it.wk,ph:it.ph,qty:it.qty,kind:(D.modules.some(m=>m.id===it.mid)||it.mid==="msp")?"base":it.mid==="ce"?"cty":"int"};});
+}
+function presetStarts(preset,comps){
+  const st={};
+  if(preset==="waves"){
+    const base=comps.filter(c=>c.kind==="base");
+    const lead=base.length?base.reduce((a,b)=>b.wk>a.wk?b:a):null;
+    const gate=lead?lead.ph[0]+lead.ph[1]:0;
+    comps.forEach(c=>st[c.id]=c.kind==="base"?0:gate);
+  }else if(preset==="seq"){let t=0;comps.forEach(c=>{st[c.id]=t;t+=c.wk;});}
+  else if(preset==="custom"){comps.forEach(c=>{const v=+state.sched.starts[c.id];st[c.id]=Number.isFinite(v)?Math.min(SCHED_MAX_START,Math.max(0,Math.round(v))):0;});}
+  else comps.forEach(c=>st[c.id]=0);
+  return st;
+}
+function computeAdj(){
+  const comps=schedComps(),S=state.sched;
+  const preset=SCHED_PRESETS[S.preset]?S.preset:"parallel";
+  const starts=presetStarts(preset,comps);
+  comps.forEach(c=>{c.start=starts[c.id];c.end=c.start+c.wk;});
+  const computed=comps.length?Math.max(...comps.map(c=>c.end)):0;
+  const crit=comps.length?comps.reduce((a,b)=>b.end>a.end?b:a):null;
+  comps.forEach(c=>{c.critical=!!crit&&c.id===crit.id;});
+  const reason=(S.reason||"").trim(),reasonOk=reason.length>=8;
+  const ovRaw=(S.override!=null&&Number.isFinite(+S.override)&&+S.override>=1)?Math.round(+S.override):null;
+  const override=(ovRaw!=null&&reasonOk)?ovRaw:null;
+  const adjusted=override!=null?override:computed;
+  const basis=override!=null?`Override ${override} wks — ${reason}`:preset==="custom"?"Custom start weeks":preset==="parallel"?"Parallel (T-shirt standard)":SCHED_PRESETS[preset]+" preset";
+  return {preset,starts,comps,computed,adjusted,override,ovRaw,reasonOk,reason,basis,differs:comps.length>0&&adjusted!==LAST.wkMax,total:Math.max(adjusted,computed,1)};
+}
+function renderSchedPanel(){
+  const wrap=document.getElementById("schedWrap"),panel=document.getElementById("schedPanel"),A=LAST.adj;
+  wrap.hidden=!LAST.items.length;
+  document.getElementById("schedSum").textContent=!LAST.items.length?"":A.differs?`adjusted ~${A.adjusted} wks`:"same as standard";
+  if(!LAST.items.length){panel.innerHTML="";return;}
+  const ovErr=(A.ovRaw!=null&&!A.reasonOk)?"Add a reason (at least 8 characters) to apply the override.":"";
+  const resultHtml=A.differs?`Indicative schedule (adjusted) <b>~${A.adjusted} wks</b>${A.override!=null?` — adjusted: ${esc(A.reason)}`:` — ${esc(A.basis)}`}`:"Same as T-shirt standard";
+  const chipsHtml=Object.entries(SCHED_PRESETS).map(([k,l])=>`<button type="button" class="sp-chip" data-preset="${k}" aria-pressed="${A.preset===k}"${k==="custom"&&A.preset!=="custom"?' disabled title="Edit any start week to switch to Custom"':""}>${l}</button>`).join("");
+  const ae=document.activeElement;
+  if(panel.contains(ae)&&ae.tagName==="INPUT"){ /* typing — patch text only so focus is kept */
+    const r=panel.querySelector(".sp-result");if(r)r.innerHTML=resultHtml;
+    let er=panel.querySelector(".sp-err");
+    if(ovErr){if(!er){er=document.createElement("div");er.className="sp-err";panel.querySelector(".sp-ov").after(er);}er.textContent="⚠ "+ovErr;}else if(er)er.remove();
+    panel.querySelectorAll(".sp-crit").forEach(x=>x.remove());
+    A.comps.forEach(c=>{if(c.critical){const inp=panel.querySelector(`input[data-sp="${c.id}"]`);const td=inp?inp.closest("tr").querySelector("td"):null;if(td)td.insertAdjacentHTML("beforeend",'<span class="sp-crit">critical path</span>');}});
+    panel.querySelectorAll(".sp-chip").forEach(b=>{b.setAttribute("aria-pressed",String(b.dataset.preset===A.preset));b.disabled=b.dataset.preset==="custom"&&A.preset!=="custom";});
+    return;
+  }
+  const focusSel=panel.contains(ae)?(ae.id?"#"+ae.id:ae.dataset.preset?`.sp-chip[data-preset="${ae.dataset.preset}"]`:ae.dataset.sp?`${ae.tagName.toLowerCase()}[data-sp="${ae.dataset.sp}"]${ae.dataset.d?`[data-d="${ae.dataset.d}"]`:""}`:null):null;
+  panel.innerHTML=`
+    <div class="sp-base"><span>T-shirt duration (parallel, RFP standard)</span><b>~${LAST.wkMax} wks</b></div>
+    <div class="sp-presets" role="group" aria-label="Schedule preset">${chipsHtml}</div>
+    <table class="sp-list"><thead><tr><th>Component</th><th>Size</th><th>Wks</th><th>Starts wk</th></tr></thead><tbody>${A.comps.map(c=>`<tr><td><span class="sp-name">${esc(c.name)}</span>${c.critical?'<span class="sp-crit">critical path</span>':""}</td><td>${esc(c.tier)}</td><td class="n">${c.wk}</td><td><span class="qty"><button type="button" class="qbtn" data-sp="${c.id}" data-d="-1" aria-label="Start ${esc(c.name)} one week earlier">−</button><input type="number" min="0" max="${SCHED_MAX_START}" value="${c.start}" data-sp="${c.id}" inputmode="numeric" aria-label="Start week for ${esc(c.name)}"><button type="button" class="qbtn" data-sp="${c.id}" data-d="1" aria-label="Start ${esc(c.name)} one week later">+</button></span></td></tr>`).join("")}</tbody></table>
+    <div class="sp-ov"><label>Override total (weeks)<input type="number" id="spOv" min="1" max="200" value="${A.ovRaw!=null?A.ovRaw:""}" placeholder="—" aria-label="Override total weeks"></label><label>Reason (required, min 8 chars)<input type="text" id="spWhy" value="${esc(A.reason)}" placeholder="e.g. phased cutover per customer" aria-label="Override reason"></label></div>
+    ${ovErr?`<div class="sp-err">⚠ ${ovErr}</div>`:""}
+    <div class="sp-result" aria-live="polite">${resultHtml}</div>
+    <p class="sp-guard">Adjustments are indicative. The T-shirt standard remains the RFP figure; any adjusted schedule still requires a scoping workshop. Any reduction in timeline/effort for economies of scale can be determined during actual planning (deck slide 1, 12-Aug-2026).</p>`;
+  if(focusSel){const f=panel.querySelector(focusSel);if(f)f.focus();}
+}
+function setStart(id,v){
+  const cur=LAST.adj?LAST.adj.starts:{};
+  const starts={...cur,[id]:Math.min(SCHED_MAX_START,Math.max(0,Math.round(+v||0)))};
+  state.sched={...state.sched,preset:"custom",starts};
+}
+document.getElementById("schedToggle").addEventListener("click",()=>{
+  const p=document.getElementById("schedPanel"),b=document.getElementById("schedToggle");
+  p.hidden=!p.hidden;b.setAttribute("aria-expanded",String(!p.hidden));
+});
+const schedPanelEl=document.getElementById("schedPanel");
+schedPanelEl.addEventListener("click",e=>{
+  const chip=e.target.closest(".sp-chip");
+  if(chip&&!chip.disabled){state.sched={...state.sched,preset:chip.dataset.preset};recalc();saveState();return;}
+  const b=e.target.closest(".qbtn[data-sp]");
+  if(b){const inp=schedPanelEl.querySelector(`input[data-sp="${b.dataset.sp}"]`);setStart(b.dataset.sp,(+inp.value||0)+(+b.dataset.d));recalc();saveState();}
+});
+schedPanelEl.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.matches("input[data-sp]")){setStart(t.dataset.sp,t.value);recalc();}
+  else if(t.id==="spOv"){state.sched={...state.sched,override:t.value===""?null:+t.value};recalc();}
+  else if(t.id==="spWhy"){state.sched={...state.sched,reason:t.value};recalc();}
+});
+schedPanelEl.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.matches("input[data-sp]")||t.id==="spOv"||t.id==="spWhy"){const _f=document.activeElement,_fid=_f&&_f.id,_fsp=_f&&_f.getAttribute&&_f.getAttribute("data-sp");recalc();saveState();const _g=_fid?document.getElementById(_fid):(_fsp?document.querySelector('input[data-sp="'+_fsp+'"]'):null);if(_g&&_g!==document.activeElement){_g.focus();if(_g.setSelectionRange&&_g.type==="text"){const _n=_g.value.length;_g.setSelectionRange(_n,_n);}}}
+});
+SIG_FILL.push(c=>{if(!c.sched)c.sched=schedDefault();});
 pickArea.addEventListener("click",e=>{
   const b=e.target.closest(".qbtn");if(!b)return;
   const inp=document.getElementById("ceq-"+b.dataset.ce);
@@ -1305,8 +1637,10 @@ document.querySelectorAll(".cur-toggle button").forEach(b=>b.addEventListener("c
 const contR=document.getElementById("contR");
 contR.addEventListener("input",()=>{state.cont=+contR.value;document.getElementById("contV").textContent=state.cont+"%";recalc();saveState();});
 META_IDS.forEach(id=>document.getElementById(id).addEventListener("input",()=>{saveState();staleCheck();}));
+document.getElementById("mCust").addEventListener("keydown",e=>{if(e.key==="Enter")e.preventDefault();});
 document.getElementById("resetBtn").addEventListener("click",()=>{
   ALL.forEach(m=>{document.getElementById("ck-"+m.id).checked=false;document.getElementById("sz-"+m.id).value=0;});
+  state.cty=[];renderCtyChips();state.sched=schedDefault();
   CE.tiers.forEach(t=>document.getElementById("ceq-"+t.s).value=0);
   state.cont=0;contR.value=0;document.getElementById("contV").textContent="0%";
   document.getElementById("romOutput").innerHTML="";
@@ -1347,12 +1681,13 @@ function generate(){
   const g=id=>document.getElementById(id).value.trim();
   const meta={cust:g("mCust"),reqBy:g("mReqBy"),prep:g("mPrep"),date:g("mDate"),ref:g("mRef"),notes:g("mNotes")};
   const dateStr=(meta.date?new Date(meta.date+"T00:00:00"):new Date()).toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
-  const c=state.cont;
+  const c=state.cont,A=LAST.adj,totW=A.differs?A.total:LAST.wkMax;
   const cu=Math.round(LAST.usd*(1+c/100)),cc=Math.round(LAST.cad*(1+c/100)),ch=Math.round(LAST.hr*(1+c/100));
   const rows=LAST.items.map(it=>`<tr><td>${it.name}</td><td>${it.tier}</td><td>${fmtUSD(it.usd)}</td><td>${fmtCAD(it.cad)}</td><td>${it.hr!=null?it.hr.toLocaleString("en-US"):"n/p"}</td><td>${it.wk} wks</td></tr>`).join("");
   let totRows=`<tr class="tot"><td>Combined total</td><td>${LAST.n} comp.</td><td>${fmtUSD(LAST.usd)}</td><td>${fmtCAD(LAST.cad)}</td><td>${LAST.hr.toLocaleString("en-US")}${LAST.noHr?" *":""}</td><td>~${LAST.wkMax} wks</td></tr>`;
   if(c>0)totRows+=`<tr class="cont"><td>Incl. contingency</td><td>+${c}%</td><td>${fmtUSD(cu)}</td><td>${fmtCAD(cc)}</td><td>${ch.toLocaleString("en-US")}</td><td></td></tr>`;
-  const tl=LAST.items.map(it=>{
+  const tl=LAST.items.map((it,ix)=>{
+    const cs=A.comps[ix]||{start:0,end:it.wk};
     const wtot=it.ph.reduce((a,b)=>a+b,0);
     let acc=0;
     const segs=it.ph.map((w,i)=>{
@@ -1360,11 +1695,11 @@ function generate(){
       const b=Math.round(acc/wtot*it.wk);
       return `<span class="${PH_CLS[i]}" style="width:${(w/wtot*100).toFixed(1)}%" data-tip="${it.name} · ${PH_NAMES[i]} · wk ${a}–${b}"></span>`;
     }).join("");
-    return `<div class="tl-row"><span class="tl-name" title="${it.name} — ${it.tier}">${it.name}${it.qty>1?` ×${it.qty}`:""}</span><div class="tl-track"><div class="tl-bar" style="width:${(it.wk/LAST.wkMax*100).toFixed(1)}%" data-tip="${it.name} — ${it.tier} · ${it.wk} wks">${segs}</div></div><span class="tl-wk">${it.wk}w</span></div>`;
+    return `<div class="tl-row"><span class="tl-name" title="${it.name} — ${it.tier}">${it.name}${it.qty>1?` ×${it.qty}`:""}</span><div class="tl-track"><div class="tl-bar" style="margin-left:${(cs.start/totW*100).toFixed(1)}%;width:${(it.wk/totW*100).toFixed(1)}%" data-tip="${it.name} — ${it.tier} · ${it.wk} wks${A.differs?` · wk ${cs.start}–${cs.end}`:""}">${segs}</div></div><span class="tl-wk">${A.differs?`wk ${cs.start}–${cs.end}`:it.wk+"w"}</span></div>`;
   }).join("");
   const comps=LAST.items.map(it=>`<div class="rd-comp"><div class="rd-comp-h"><h4>${it.name} — ${it.tier}</h4><span>${fmtUSD(it.usd)} / ${fmtCAD(it.cad)} · ${it.hr!=null?it.hr.toLocaleString("en-US")+" h":"hours n/p"} · ${it.wk} wks${it.qty>1?" per country":""}</span></div>${phaseBar(it.ph,it.name+" — "+it.tier)}<div class="rd-scope">${backList(it.back)}</div>${(it.flags||[]).filter(f=>f.t==='verify').map(f=>`<div class="rd-note"><b>Verify before customer use:</b> ${f.txt}</div>`).join("")}</div>`).join("");
   const warns=LAST.warns.map(w=>`<li>${w}</li>`).join("");
-  const asm=listFrom("#assumptions .list-card:not(.excl) li").map(t=>`<li>${t}</li>`).join("");
+  const asm=[...listFrom("#assumptions .list-card:not(.excl) li"),...ctyAsmLines()].map(t=>`<li>${t}</li>`).join("");
   const exc=listFrom("#assumptions .list-card.excl li").map(t=>`<li>${t}</li>`).join("");
   const nFlags=LAST.items.reduce((a,it)=>a+((it.flags||[]).filter(f=>f.t==='verify').length),0);
   document.getElementById("romOutput").innerHTML=`
@@ -1388,15 +1723,17 @@ function generate(){
       <div class="c"><span>Price (CAD)${c>0?` incl. ${c}% cont.`:""}</span><b>${fmtCAD(c>0?cc:LAST.cad)}</b></div>
       <div class="c"><span>Effort (hours)${c>0?` incl. ${c}% cont.`:""}${LAST.noHr?" *":""}</span><b>${(c>0?ch:LAST.hr).toLocaleString("en-US")}</b></div>
       <div class="c"><span>Duration (parallel)</span><b>~${LAST.wkMax} wks</b></div>
+      ${A.differs?`<div class="c"><span>Indicative schedule (adjusted)</span><b>~${A.adjusted} wks</b></div>`:""}
       <div class="c"><span>Components</span><b>${LAST.n}</b></div>
     </div>
     ${c>0?`<p class="rd-fine">Base estimate ${fmtUSD(LAST.usd)} / ${fmtCAD(LAST.cad)} / ${LAST.hr.toLocaleString("en-US")} h, uplifted by the ${c}% contingency allowance selected in the builder.</p>`:""}
     <h3>Component breakdown</h3>
     <div class="tbl-scroll"><table class="mx rd-table"><thead><tr><th>Component</th><th>Tier</th><th>USD</th><th>CAD</th><th>Hours</th><th>Duration</th></tr></thead><tbody>${rows}${totRows}</tbody></table></div>
     ${LAST.noHr?'<p class="rd-fine">* Ariba B&amp;I packages publish price/duration only; their hours are not included in the total.</p>':""}
-    <h3>Indicative timeline (parallel workstreams)</h3>
+    ${ctyDocBlock()}
+    <h3>Indicative timeline (${A.differs?"adjusted schedule":"parallel workstreams"})</h3>
     <div class="tl">${tl}</div>
-    <p class="rd-fine">Bars show each component's published duration and SAP Activate phase mix (Prepare / Explore / Realize / Deploy / Run), drawn against the longest component (~${LAST.wkMax} weeks). Actual sequencing and dependencies require a scoping workshop.</p>
+    <p class="rd-fine">Bars show each component's published duration and SAP Activate phase mix (Prepare / Explore / Realize / Deploy / Run), ${A.differs?`offset by their start week over the adjusted schedule (~${A.adjusted} weeks; basis: ${esc(A.basis)}). The T-shirt standard — parallel workstreams, ~${LAST.wkMax} weeks — remains the RFP figure; the adjustment is indicative`:`drawn against the longest component (~${LAST.wkMax} weeks)`}. Actual sequencing and dependencies require a scoping workshop.</p>
     <h3>Component scope detail</h3>
     ${comps}
     ${warns?`<h3>Scoping watch-outs</h3><ul class="rd-warn">${warns}</ul>`:""}
@@ -1422,6 +1759,7 @@ document.querySelectorAll(".addbtn").forEach(b=>{
     const m=[...D.modules,...D.expansion,...D.integrations].find(x=>x.id===b.dataset.mod);
     const i=+b.dataset.tier,t=m.tiers[i];
     if(m.id==="ce"){
+      if(state.cty.length){toast("Counts come from the picked countries — add the country by name in the ROM Builder",{label:"Open builder",goto:"builder"});return;}
       const inp=document.getElementById("ceq-"+t.s);
       inp.value=Math.min(20,(+inp.value||0)+1);
     }else{
@@ -1545,9 +1883,12 @@ function exportExcel(){
     ...(c>0?[xRow(["Price incl. contingency (USD)",[cu,"curK"]]),xRow(["Price incl. contingency (CAD)",[cc,"cadK"]]),xRow(["Hours incl. contingency",[chh,"n0"]])]:[]),
     xRow(["Estimated hours"+(LAST.noHr?" (Ariba pkgs publish no hours)":""),[LAST.hr,"n0"]]),
     xRow(["Indicative duration — parallel (T-shirt standard), wks",LAST.wkMax]),
+    xRow(["Indicative schedule — adjusted, wks",LAST.adj.adjusted]),
+    xRow(["Adjustment basis",LAST.adj.differs?LAST.adj.basis:"Parallel (T-shirt standard) — same as standard"]),
     xRow(["Staged duration — INTERNAL (Scope Building), wks",S.totalWk]),
     xRow(["Components",LAST.n]),
     ...(LAST.ctyN?[xRow(["Countries in scope",LAST.ctyN])]:[]),
+    ...(state.cty.length?[xRow([]),xRow([["Countries","h"],["Size","h"],["Basis","h"]]),...state.cty.map(c=>xRow([c.key,SIZE_NAME[c.s],c.deck?"deck slide 9 — Countries & Package Categories":"not in the deck's country table — confirm size with the FG solutioning lead"]))]:[]),
     ...(LAST.warns.length?[xRow([]),xRow([["Scoping watch-outs","h"]]),...LAST.warns.map(w=>xRow([w]))]:[])
   ];
   const comp=[
@@ -1609,7 +1950,7 @@ function exportExcel(){
   ];
   const asm=[
     xRow([["Key assumptions","h"]]),
-    ...listFrom("#assumptions .list-card:not(.excl) li").map(t=>xRow([t])),
+    ...[...listFrom("#assumptions .list-card:not(.excl) li"),...ctyAsmLines()].map(t=>xRow([t])),
     xRow([]),
     xRow([["Exclusions — custom scoping required","h"]]),
     ...listFrom("#assumptions .list-card.excl li").map(t=>xRow([t]))
@@ -1654,6 +1995,7 @@ function exportExcel(){
       xRow(["Price (CAD)",...cols.map(cx=>[cx.m.cad||0,"cadK"])]),
       xRow(["Hours",...cols.map(cx=>[cx.m.hr||0,"n0"])]),
       xRow(["T-shirt duration — parallel (wks)",...cols.map(cx=>cx.m.par!=null?cx.m.par:cx.m.wk||0)]),
+      xRow(["Indicative schedule — adjusted (wks)",...cols.map(cx=>cx.m.adj!=null?cx.m.adj:"—")]),
       xRow(["Staged duration — internal (wks)",...cols.map(cx=>cx.m.wk||0)]),
       xRow(["Components",...cols.map(cx=>cx.m.n||0)]),
       xRow(["Countries",...cols.map(cx=>cx.m.cty||0)]),
@@ -1690,35 +2032,67 @@ document.getElementById("xlsBtn").addEventListener("click",exportExcel);
 const LS_SCEN="fgROM26.scenarios";
 let scenarios=[];try{scenarios=JSON.parse(localStorage.getItem(LS_SCEN)||"[]")||[];}catch(e){}
 function saveScens(){try{localStorage.setItem(LS_SCEN,JSON.stringify(scenarios));}catch(e){}}
-function currentMetrics(){return {usd:LAST.usd,cad:LAST.cad,hr:LAST.hr,wk:LAST.sched.totalWk,par:LAST.wkMax,n:LAST.n,cty:LAST.ctyN,warns:LAST.warns.length,fc:state.staff.fc,ic:state.staff.ic,cont:state.cont};}
+function currentMetrics(){return {usd:LAST.usd,cad:LAST.cad,hr:LAST.hr,wk:LAST.sched.totalWk,par:LAST.wkMax,adj:LAST.adj?LAST.adj.adjusted:LAST.wkMax,n:LAST.n,cty:LAST.ctyN,warns:LAST.warns.length,fc:state.staff.fc,ic:state.staff.ic,cont:state.cont};}
+/* one project = one scenario: openScen = index of the scenario currently open (null = unsaved draft) */
+let openScen=null,openSig=null; /* openSig = signature of the live state right after Open/Save, so v7-shaped scenarios compare correctly */
+function stateSig(s){const c={...s};delete c.proj;SIG_FILL.forEach(f=>f(c));return JSON.stringify(c);}
+function scenState(){const st=buildState();delete st.proj;return st;}
+function markOpenSig(){openSig=stateSig(buildState());}
+function openScenName(){try{return (openScen!=null&&scenarios[openScen])?scenarios[openScen].name:null;}catch(e){return null;}}
+function restoreOpenScen(p){openScen=null;openSig=null;if(p&&p.open!=null){const i=scenarios.findIndex(x=>x.name===p.open);if(i>=0){openScen=i;openSig=typeof p.sig==="string"?p.sig:null;}}}
+function updateProjStatus(){
+  const el=document.getElementById("projStatus");if(!el)return;
+  let cls="draft",txt="Unsaved draft";
+  if(openScen!=null&&scenarios[openScen]){
+    const sc=scenarios[openScen];
+    const cur=stateSig(buildState());
+    if(cur===(openSig!=null?openSig:stateSig(sc.state))){
+      const t=new Date(sc.saved),age=Date.now()-t.getTime();
+      cls="saved";txt=`Saved as “${sc.name}” · ${age<60000?"just now":"at "+t.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}`;
+    }else{cls="changed";txt=`Changed since save · “${sc.name}”`;}
+  }
+  el.textContent=txt;el.className="proj-status "+cls;
+}
+setInterval(()=>{try{updateProjStatus();}catch(e){}},30000);
 function refreshScenSel(sel){
   const el=document.getElementById("scenSel");
-  el.innerHTML='<option value="">'+(scenarios.length?"— select a scenario —":"— none saved —")+"</option>"+scenarios.map((s,i)=>`<option value="${i}">${esc(s.name)}</option>`).join("");
+  el.innerHTML='<option value="">'+(scenarios.length?"— select a saved project scenario —":"— nothing saved yet —")+"</option>"+scenarios.map((s,i)=>`<option value="${i}">${esc(s.name)}</option>`).join("");
   if(sel!=null)el.value=String(sel);
 }
-function selScen(){const v=document.getElementById("scenSel").value;if(v===""){toast("Select a saved scenario first");return null;}return +v;}
+function selScen(){const v=document.getElementById("scenSel").value;if(v===""){toast("Select a saved project scenario first");return null;}return +v;}
+function stampScen(i){scenarios[i]={...scenarios[i],saved:new Date().toISOString(),state:scenState(),metrics:currentMetrics()};markOpenSig();}
+function saveScenAs(){
+  const cust=document.getElementById("mCust").value.trim();
+  const def=cust||`Scenario ${scenarios.length+1}`;
+  const raw=prompt("Save project scenario as",def);
+  if(raw==null)return;
+  const nm=raw.trim()||def;
+  const existing=scenarios.findIndex(s=>s.name===nm);
+  if(existing>=0){
+    if(!confirm(`Replace the saved project scenario “${nm}” with the current selections?`))return;
+    stampScen(existing);openScen=existing;
+  }else{
+    scenarios.push({name:nm,saved:new Date().toISOString(),state:scenState(),metrics:currentMetrics()});openScen=scenarios.length-1;markOpenSig();
+  }
+  saveScens();refreshScenSel(openScen);renderCompare();saveState();toast(`Project scenario “${esc(nm)}” saved`);
+}
 document.getElementById("scenSave").addEventListener("click",()=>{
-  const nameEl=document.getElementById("scenName");
-  const name=nameEl.value.trim()||`Scenario ${scenarios.length+1}`;
-  scenarios.push({name,saved:new Date().toISOString(),state:buildState(),metrics:currentMetrics()});
-  saveScens();refreshScenSel(scenarios.length-1);nameEl.value="";
-  renderCompare();toast(`Scenario “${esc(name)}” saved`);
+  if(openScen==null||!scenarios[openScen]){saveScenAs();return;}
+  stampScen(openScen);saveScens();refreshScenSel(openScen);renderCompare();saveState();toast(`Project scenario “${esc(scenarios[openScen].name)}” saved`);
 });
+document.getElementById("scenSaveAs").addEventListener("click",saveScenAs);
 document.getElementById("scenLoad").addEventListener("click",()=>{
   const i=selScen();if(i==null)return;
-  applyState(scenarios[i].state);recalc();saveState();
-  toast(`Scenario “${esc(scenarios[i].name)}” loaded`);
-});
-document.getElementById("scenUpdate").addEventListener("click",()=>{
-  const i=selScen();if(i==null)return;
-  scenarios[i]={...scenarios[i],saved:new Date().toISOString(),state:buildState(),metrics:currentMetrics()};
-  saveScens();renderCompare();toast(`Scenario “${esc(scenarios[i].name)}” updated to current selections`);
+  applyState(scenarios[i].state);openScen=i;recalc();markOpenSig();saveState();
+  toast(`Project scenario “${esc(scenarios[i].name)}” opened`);
 });
 document.getElementById("scenDelete").addEventListener("click",()=>{
   const i=selScen();if(i==null)return;
   const nm=scenarios[i].name;
-  if(!confirm(`Delete scenario “${nm}”?`))return;
-  scenarios.splice(i,1);saveScens();refreshScenSel();renderCompare();toast(`Scenario “${esc(nm)}” deleted`);
+  if(!confirm(`Delete project scenario “${nm}”?`))return;
+  scenarios.splice(i,1);
+  if(openScen===i){openScen=null;openSig=null;}else if(openScen!=null&&openScen>i)openScen--;
+  saveScens();refreshScenSel(openScen);renderCompare();saveState();toast(`Project scenario “${esc(nm)}” deleted`);
 });
 document.getElementById("scenCmp").addEventListener("click",()=>{
   const area=document.getElementById("scenCompareArea");
@@ -1729,7 +2103,7 @@ document.getElementById("scenCmp").addEventListener("click",()=>{
 function renderCompare(){
   const area=document.getElementById("scenCompareArea");
   if(area.hidden)return;
-  if(!scenarios.length){area.innerHTML='<div class="mod" style="margin-bottom:18px"><p class="mod-desc">No saved scenarios yet — make selections and click <b>Save current</b>.</p></div>';return;}
+  if(!scenarios.length){area.innerHTML='<div class="mod" style="margin-bottom:18px"><p class="mod-desc">No saved project scenarios yet — make selections and click <b>Save</b>.</p></div>';return;}
   const cols=[{name:"Current (unsaved)",m:currentMetrics()},...scenarios.slice(-4).map(s=>({name:s.name,m:s.metrics}))];
   const contOf=m=>+(m.cont||0);
   const minUsd=Math.min(...cols.map(cx=>cx.m.usd*(1+contOf(cx.m)/100)));
@@ -1741,6 +2115,7 @@ function renderCompare(){
     ["Price (CAD)",m=>fmtCAD(m.cad)],
     ["Hours",m=>(m.hr||0).toLocaleString("en-US")],
     ["T-shirt duration (parallel)",m=>"~"+(m.par!=null?m.par:m.wk)+" wks"],
+    ["Indicative schedule (adjusted)",m=>m.adj!=null?"~"+m.adj+" wks":"—"],
     ["Staged duration (internal)",m=>"~"+(m.wk||0)+" wks",m=>(m.wk||0)===minWk],
     ["Components",m=>m.n||0],
     ["Countries",m=>m.cty||0],
@@ -1750,7 +2125,7 @@ function renderCompare(){
   area.innerHTML=`<div class="mod" style="margin-bottom:18px"><div class="mod-head"><h3>Scenario comparison</h3><span class="tag">${cols.length} shown</span></div>
     <div class="tbl-scroll"><table class="mx cmp-t"><thead><tr><th>Metric</th>${cols.map(cx=>`<th>${esc(cx.name)}</th>`).join("")}</tr></thead>
     <tbody>${rows.map(([label,f,best])=>`<tr><td>${label}</td>${cols.map(cx=>`<td${best&&best(cx.m)?' class="best"':""}>${f(cx.m)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
-    <p class="rd-fine">Metrics are stamped when a scenario is saved or updated — Load one to make it current. Lowest total price and shortest staged duration are highlighted. Shows up to the 4 most recent saved scenarios; the staged duration is the internal Scope Building figure, not the RFP number.</p></div>`;
+    <p class="rd-fine">Metrics are stamped when a project scenario is saved — Open one to make it current. Lowest total price and shortest staged duration are highlighted. Shows up to the 4 most recent saved scenarios; the staged duration is the internal Scope Building figure, not the RFP number.</p></div>`;
 }
 
 /* =============== INIT =============== */
@@ -1762,8 +2137,9 @@ contR.value=state.cont;document.getElementById("contV").textContent=state.cont+"
 syncStaff();
 staffBaseline={...state.staff};
 applyCustFilter();
-refreshScenSel();
+refreshScenSel(openScen);
 recalc();
+updateProjStatus();
 </script>
 </body>
 </html>
