@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAP Fieldglass · T-Shirt ROM Explorer (2026 Refresh Draft) — v10</title>
+<title>SAP Fieldglass · T-Shirt ROM Explorer (2026 Refresh Draft) — v11</title>
 <style>
 :root{
   --navy:#12232F; --navy-2:#1D2D3E; --ink:#223548; --muted:#5B738B;
@@ -48,15 +48,18 @@ nav button:focus-visible,.rev-toggle:focus-visible{outline:2px solid var(--gold)
 .chip.confirmed{background:var(--conf-bg);color:var(--conf);border:1px solid #B7DDB7}
 .chip.note{background:var(--note-bg);color:var(--note);border:1px solid #CBD3DA}
 body.review .chip{display:inline-block}
+/* v11: amber pricing-basis notes (prices held at v2.0) are review-mode only */
+.price-banner,.tot-basis,.rd-basis,.pchip{display:none}
+body.review .price-banner{display:block} body.review .tot-basis{display:block} body.review .rd-basis{display:block} body.review .pchip{display:inline-block}
 .rev-note{display:none;background:var(--verify-bg);border-left:3px solid var(--verify);color:#6E3B10;font-size:.78rem;padding:8px 12px;border-radius:0 8px 8px 0;margin-top:10px}
 .rev-note.upd{background:var(--upd-bg);border-left-color:var(--upd);color:#0A4C55}
 .rev-note.confirmed{background:var(--conf-bg);border-left-color:var(--conf);color:#0F4D0F}
 .rev-note.note{background:var(--note-bg);border-left-color:var(--note);color:var(--ink)}
 body.review .rev-note{display:block}
 
-/* ---------- v10: prices held at v2.0 (repricing in progress) ---------- */
+/* ---------- v10: prices held at v2.0 (repricing in progress) · v11: shown only while body.review is on ---------- */
 .price-banner{background:var(--verify-bg);color:var(--verify);border:1px solid #EFC9A6;border-left:4px solid var(--verify);border-radius:8px;padding:9px 14px;font-size:.8rem;font-weight:600;line-height:1.45;margin:6px 0 18px;max-width:900px}
-.pchip{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--verify);background:var(--verify-bg);border:1px solid #EFC9A6;border-radius:8px;padding:1px 6px;margin-left:6px;vertical-align:middle;line-height:1.4}
+.pchip{font-size:.58rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--verify);background:var(--verify-bg);border:1px solid #EFC9A6;border-radius:8px;padding:1px 6px;margin-left:6px;vertical-align:middle;line-height:1.4}
 .tot-basis{font-size:.7rem;color:#F5D488;padding:5px 0 6px;border-bottom:1px solid #2C3F51}
 .rd-basis{background:var(--verify-bg);border-left:3px solid var(--verify);color:#6E3B10;padding:6px 10px;border-radius:0 6px 6px 0;margin-top:10px}
 
@@ -289,6 +292,11 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:.72rem;col
 #romOutput.stale .rom-doc{opacity:.6}
 .rom-doc:focus{outline:none}
 .rom-actions{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+/* v11: Scope Building toolbar (Generate + Export, same look as the builder's buttons) */
+.scope-actions{margin:-8px 0 22px;padding:14px 16px;background:var(--navy);border-radius:var(--radius);gap:12px}
+.scope-actions .gen-btn,.scope-actions .xls-btn{width:auto;margin:0;padding:10px 18px}
+.scope-actions .tot-note{flex-basis:100%;margin:0}
+@media(max-width:640px){.scope-actions .gen-btn,.scope-actions .xls-btn{width:100%}}
 .print-btn{background:var(--navy);color:#fff;border:none;font-weight:700;font-size:.82rem;padding:10px 16px;border-radius:8px}
 .print-btn:hover{background:var(--navy-2)}
 .gen-stamp{font-size:.72rem;color:var(--muted)}
@@ -476,7 +484,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
       <span class="sap-mark">SAP</span>
       <div>
         <div class="hdr-title">Fieldglass T-Shirt ROM Explorer</div>
-        <div class="hdr-sub">Contingent &amp; Services Procurement · 2026 refresh draft · synced to deck Version 1 (2-Sep-2026) · prices held at v2.0 (Mar-2024) · INTERNAL · v10 (Sep 2026)</div>
+        <div class="hdr-sub">Contingent &amp; Services Procurement · 2026 refresh draft · synced to deck Version 1 (2-Sep-2026) · prices held at v2.0 (Mar-2024) · INTERNAL · v11 (Sep 2026)</div>
       </div>
       <div class="hdr-right">
         <button class="rev-toggle" id="revToggle" aria-pressed="false"><span class="dot"></span> Review mode</button>
@@ -502,7 +510,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
   <div class="banner">
     <h1>What T-shirt fits your customer?</h1>
     <p>Rough Order of Magnitude estimates for SAP Fieldglass engagements — high-level, indicative and non-binding, assuming strict Fit-to-Standard and SAP Activate methodology. A scoping workshop is required before any binding proposal.</p>
-    <span class="stamp">Draft refresh · v10 Sep 2026 · synced to deck Version 1 (2-Sep-2026) · prices held at v2.0 pending repricing</span>
+    <span class="stamp">Draft refresh · v11 Sep 2026 · synced to deck Version 1 (2-Sep-2026) · prices held at v2.0 pending repricing</span>
     <div class="cta-row"><button class="cta-btn" data-goto="builder">Build a combined ROM →</button></div>
   </div>
 
@@ -531,7 +539,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
     <div id="glanceArea"></div>
   </div>
 
-  <div class="rev-note upd"><b>Review mode is on.</b> Teal chips mark content updated to current state (source-validated against help.sap.com, the Connector Library dated 2026-05-15, and SAP announcements through July 2026). Amber chips mark internal inconsistencies in the source deck that need the deck owner's call. Full register under <b>Review Findings</b>.</div>
+  <div class="rev-note upd"><b>Review mode is on.</b> Teal chips mark content updated to current state (source-validated against help.sap.com, the Connector Library dated 2026-05-15, and SAP announcements through July 2026). Amber chips mark internal inconsistencies in the source deck that need the deck owner's call. Full register under <b>Review Findings</b>. Amber pricing-basis notes (prices held at v2.0 pending the deck-v1 repricing) are shown only while review mode is on.</div>
 </section>
 
 <!-- ================= MODULES ================= -->
@@ -671,6 +679,11 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
   <div class="eyebrow">Internal planning aid · not part of the T-shirt ROM</div>
   <h2 class="sec-title">Scope Building</h2>
   <p class="sec-lede">Model a realistic, staged delivery timeline for the components currently selected in the <b>ROM Builder</b>, driven by team size and real Fieldglass delivery dependencies: each Functional Consultant works one engagement at a time; integration workstreams start only once a requirements foundation exists (~mid-Explore of the lead module), their final build &amp; SIT depend on the FC-configured test environment, and everything aligns to a <b>joint go-live</b> — mirroring how delivered FG programs are planned. Hover any bar segment for details. T-shirts stay high-level for RFP pricing — treat this view as internal planning only. Rates in this tab are on the 2023 SKU basis · 2026 rate card pending — internal only, never part of the T-shirt ROM.</p>
+  <div class="rom-actions scope-actions" id="scopeActions">
+    <button class="gen-btn" id="scopeGenBtn" disabled aria-describedby="scopeActionsHint">Generate detailed ROM ↓</button>
+    <button class="xls-btn" id="scopeXlsBtn" disabled aria-describedby="scopeActionsHint">⬇ Export to Excel (.xls)</button>
+    <p class="tot-note" id="scopeActionsHint">Uses the components selected in the ROM Builder. The workbook carries the internal sheets — Staffing, Role-Week Grid, Gantt, Timeline — internal use only; the one-pager stays T-shirt-level.</p>
+  </div>
   <div class="builder">
     <div><div id="staffArea"></div><div id="rateArea"></div></div>
     <div class="totals" id="schedBox">
@@ -735,7 +748,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
 
 <!-- ================= FINDINGS ================= -->
 <section id="findings">
-  <div class="eyebrow">Deck review · July 2026 · v7 update Sep 2026 · v8 draft refresh Sep 2026 · v9 update Sep 2026 · v10 deck-v1 sync Sep 2026</div>
+  <div class="eyebrow">Deck review · July 2026 · v7 update Sep 2026 · v8 draft refresh Sep 2026 · v9 update Sep 2026 · v10 deck-v1 sync Sep 2026 · v11 Sep 2026</div>
   <h2 class="sec-title">Review Findings Register</h2>
   <p class="sec-lede">Source: "SAPFG T-Shirt ROM_Updated 93.26.pptx" — deck Version 1 (slide 2: "Version 1 · 9/2/2026"), received from Yaro Chaian 10-Sep-2026, 70 slides, every price XXX. Supersedes the v2.0 (Mar-11-2024) canonical last modified 12-Aug-2026 (71 slides). Validated against the SAP Fieldglass Connector Library (2026-05-15), FG↔SF EC and FG↔Ariba Business Synopses on help.sap.com, and SAP announcements through July 2026. Amber = internal inconsistency needing the deck owner's call; teal = current-state update applied in this draft; green = settled against source documents (confirmed); grey = informational note. Mark items resolved as you clear them with the deck owner — progress is saved in this browser.</p>
   <div class="find-bar" id="findBar"></div>
@@ -747,7 +760,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
 <div id="tlTip" role="tooltip" hidden></div>
 <div id="toast" role="status"></div>
 
-<footer><div class="wrap">Indicative, non-binding ROM content for internal SAP use. Interactive refresh draft generated July 2026 · v10 deck-v1 sync September 2026 (deck Version 1, 2-Sep-2026; prices held at v2.0) — hours, durations and tiering per deck v1; pricing pending the T-shirt owners' repricing. Estimates exclude travel &amp; expense.</div></footer>
+<footer><div class="wrap">Indicative, non-binding ROM content for internal SAP use. Interactive refresh draft generated July 2026 · v10 deck-v1 sync September 2026 (deck Version 1, 2-Sep-2026; prices held at v2.0) — hours, durations and tiering per deck v1; pricing pending the T-shirt owners' repricing. v11 (11-Sep-2026): Scope Building export toolbar; pricing notes review-mode only. Estimates exclude travel &amp; expense.</div></footer>
 
 <script>
 /* =============== DATA =============== */
@@ -850,6 +863,7 @@ const D={
   {k:"note",w:"Slide 1",h:"Economies-of-scale sentence removed from deck v1",p:"2026-09-10 · The sentence about reductions for scale being determined during actual planning — added to the deck on 12-Aug-2026 and to the v8 Overview rule card and the Adjust-schedule guardrail — is no longer on slide 1 of deck Version 1 (2-Sep-2026). Removed from the Overview and from the schedule guardrail in v10; the combination rules themselves are unchanged."},
   {k:"note",w:"Deck hygiene",h:"Nine deck-internal issues sent back to Yaro Chaian",p:"2026-09-10 · (1) Slide 5: SOW Medium phase row sums to 30 against a stated 32 weeks (detail slide 28 sums to 32). (2) Slide 36: SOW ERP Large detail phases sum to 37 against 46 (overview slide 8 is right). (3) Brazil: Medium on slide 9, Large on slide 48. (4) Slide 9: Mexico twice; 'Luxemborg' / 'Luxemburg'; Turkey → Türkiye. (5) Slide 31: 'CAD: XXXX'. (6) Slide 28: 'Integration configuration' listed twice. (7) Slide 10 vs 11: Large user roles 1 vs 2. (8) Slide 60: ✕ on dedicated consultants at SF Medium. (9) SF overview slide removed → no SF hours in the deck; the Jul-2026 re-baseline is still unmerged."},
   {k:"note",w:"Numbering",h:"Deck v1 slide numbering shifted by −1 after old slide 13",p:"2026-09-10 · Deck v1 deleted the SuccessFactors overview (old slide 13), so old slides 14–71 are now 13–70 (70 slides in total). Findings added in v10 cite deck v1 numbering and say so; older findings keep the 12-Aug-2026 numbering they were written against (old 37 = v1 36, old 29 = v1 28, old 41 = v1 40, old 60–62 = v1 59–61)."},
+  {k:"note",w:"Version",h:"v11 — what changed",p:"2026-09-11 · (1) Scope Building gained its own Generate detailed ROM / Export to Excel toolbar (same one-pager and 8-sheet workbook as the ROM Builder, incl. the internal Staffing / Role-Week Grid / Gantt / Timeline sheets). (2) The amber pricing-basis notes (section strips, totals line, v2.0 price chips, one-pager box + assumption) now show only in Review mode; the Excel Summary 'Pricing basis' row and the hero stamp stay. (3) Decision (Abe, 2026-09-11): the Excel Summary 'Pricing basis' row and Assumptions bullet stay in the workbook (data, not UI notes); the hero stamp and header subtitle stay as text; the findings register entries stay."},
   {k:"note",w:"Version",h:"v10 — what changed",p:"2026-09-10 · (1) Synced to deck Version 1 (2-Sep-2026, Yaro Chaian): hours, durations and phase splits per the build spec, country tiers (Sweden M, India L), scope matrices (Integrations configuration included at M / L on Contingent and SOW; ERP Editions include integrations configuration and HR Mini at Small; MSP fit-gap and design changes Medium-only; rate-change-matrix row dropped), 'HR Mini (worker) integrations' naming restored, SF scope text modernised, Ariba 'SAE: Standalone' chips. (2) Prices held at v2.0 (Mar-2024) behind the 'repricing in progress' banner — on the four T-shirt / builder tabs, the ROM totals, the one-pager and the Excel Summary / Assumptions; every price cell carries a 'v2.0 price' chip. (3) Brazil flagged (slide 9 Medium vs slide 48 Large). (4) Findings register updated: country hours reconciled → confirmed, HR Mini → updated, SOW Medium duplicate → verify again, cont S price conflict → note, plus the deck-v1 entries above. (5) Saved state carries deckV 'v1-2026-09-02'; Compare recomputes every scenario against the current data and labels scenarios saved before the re-baseline; v9 scenarios still open (Sweden / India on the new tier). (6) Decision (Abe, 2026-09-10): build v10 now, prices wait for Yaro."},
   {k:"note",w:"Version",h:"v9 — what changed",p:"2026-09-09 · (1) Scope Building rate defaults now follow the Oct-2023 SKU cost build (2023 SKU basis · 2026 rate card pending): G3 = $300/hr for the Integration, Solution and Functional Consultants, G2 = $410/hr for the Project Manager and Delivery Executive — PM / DE default to G2 instead of G3; T2 / T3 / T4 / G4 stay in the tier dropdown as labelled public proxies; the panel note quotes the fully loaded cost rates $153.75 / $213.75. (2) Saved-state migration: builder state and scenarios now carry ratesV 2; v7/v8-shaped state (G3 $95 proxies, no ratesV) opens on the new defaults instead of resurrecting the old rates — scenarios saved by v7 and v8 still open, and the project-status chip compares against the migrated state. (3) Bridget's split unchanged: no rates in the ROM totals, the one-pager or the Excel Summary — rates live only in Scope Building and the Excel 'Staffing (internal)' sheet, all marked internal. (4) Decision (Abe, 2026-09-09): the live public site is this INTERNAL build with Scope Building included — no customer-safe swap."},
   {k:"note",w:"Version",h:"v8 — what changed",p:"2026-09-09 · (A) Project scenario: the Scenarios bar became a 'Project scenario' card at the top of the ROM Builder — project / opportunity name first (same field, still drives the generated ROM and the Excel filename), a status chip (Unsaved draft · Saved as … · Changed since save) and Open · Save · Save as… · Delete · Compare; one project = one scenario, and scenarios saved by v7 still open. (B) Indicative schedule: 'Adjust schedule' in the Combined ROM card — presets Parallel / Two waves / Sequential, per-component start-week steppers (Custom) and an override total with a required reason; the T-shirt standard (parallel) stays visible everywhere and the adjusted figure appears only when it differs, flowing into the one-pager (second duration tile, offset timeline bars), the Excel Summary (adjusted wks + basis), scenario metrics and the compare table; Scope Building is unchanged. (C) Countries by name: typeahead over the deck's country table (slide 9 — Mexico de-duplicated, Luxembourg spelled correctly, Japan kept under Large) plus ~60 other countries that default to Medium with a confirm-size flag; picked countries roll up into the Small / Medium / Large counts (steppers lock while picks exist), ⓘ example-country popovers per size, and the countries are listed in the one-pager, the Excel Summary and the scoping warnings. (D) Content refresh from the canonical deck (SharePoint, modified 12-Aug-2026): ERP Edition hours (Contingent S 1200 / M 1650; SOW S 1200 / M 1650 / L 2150), 'Worker integrations' wording with Integrations configuration and Worker excluded at Small, slide-3 'Workers' tier wording as a new Overview strip, the slide-1 economies-of-scale sentence, SOW Medium duplicate row resolved, SF slides 13 / 60–62 still pre-refresh (dashboard ahead of the deck), the slide 9 vs 11 country-hours verify item and the working-file notes. (E) 2026-09-09 later: removing the last picked country restores the manual Small / Medium / Large counts (snapshot taken when the first chip is added, kept with the saved scenario) — a Germany detour in the demo returns Acme to $800K."},
@@ -1423,6 +1437,8 @@ function recalc(){
   document.getElementById("warnBox").innerHTML=LAST.warns.map(w=>`<div class="w">⚠ ${w}</div>`).join("");
   document.getElementById("genBtn").disabled=!items.length;
   document.getElementById("xlsBtn").disabled=!items.length;
+  document.getElementById("scopeGenBtn").disabled=!items.length;
+  document.getElementById("scopeXlsBtn").disabled=!items.length;
   staleCheck();announce();renderCompare();
 }
 
@@ -1758,7 +1774,7 @@ function generate(){
   }).join("");
   const comps=LAST.items.map(it=>`<div class="rd-comp"><div class="rd-comp-h"><h4>${it.name} — ${it.tier}</h4><span>${fmtUSD(it.usd)} / ${fmtCAD(it.cad)} · ${it.hr!=null?it.hr.toLocaleString("en-US")+" h":"hours n/p"} · ${it.wk} wks${it.qty>1?" per country":""}</span></div>${phaseBar(it.ph,it.name+" — "+it.tier)}<div class="rd-scope">${backList(it.back)}</div>${(it.flags||[]).filter(f=>f.t==='verify').map(f=>`<div class="rd-note"><b>Verify before customer use:</b> ${f.txt}</div>`).join("")}</div>`).join("");
   const warns=LAST.warns.map(w=>`<li>${w}</li>`).join("");
-  const asm=[...listFrom("#assumptions .list-card:not(.excl) li"),...priceAsmLines(),...ctyAsmLines()].map(t=>`<li>${t}</li>`).join("");
+  const asm=[...listFrom("#assumptions .list-card:not(.excl) li").map(t=>`<li>${t}</li>`),...priceAsmLines().map(t=>`<li class="rd-basis">${t}</li>`),...ctyAsmLines().map(t=>`<li>${t}</li>`)].join("");
   const exc=listFrom("#assumptions .list-card.excl li").map(t=>`<li>${t}</li>`).join("");
   const nFlags=LAST.items.reduce((a,it)=>a+((it.flags||[]).filter(f=>f.t==='verify').length),0);
   document.getElementById("romOutput").innerHTML=`
@@ -2088,6 +2104,13 @@ ${xSheet("Assumptions",asm,[540])}
   toast("Excel workbook downloaded — Excel may show a one-time format prompt; choose Yes to open.");
 }
 document.getElementById("xlsBtn").addEventListener("click",exportExcel);
+/* v11: Scope Building toolbar — same workbook / one-pager as the ROM Builder buttons */
+document.getElementById("scopeXlsBtn").addEventListener("click",exportExcel);
+document.getElementById("scopeGenBtn").addEventListener("click",()=>{
+  if(!LAST.items.length)return;
+  showSec("builder");generate();
+  setTimeout(()=>{const o=document.getElementById("romOutput");if(o&&o.firstElementChild)o.scrollIntoView({behavior:"smooth",block:"start"});},350);
+});
 
 /* =============== SCENARIOS =============== */
 const LS_SCEN="fgROM26.scenarios";
