@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAP Fieldglass · T-Shirt ROM Explorer (2026 Refresh Draft) — v11</title>
+<title>SAP Fieldglass · T-Shirt ROM Explorer (2026 Refresh Draft) — v12</title>
 <style>
 :root{
   --navy:#12232F; --navy-2:#1D2D3E; --ink:#223548; --muted:#5B738B;
   --bg:#F5F6F7; --card:#FFFFFF; --line:#D9DEE3;
   --blue:#0070F2; --blue-soft:#EAF3FF;
   --gold:#F0AB00;
+  --ph-dep:#FFD500; --ph-dep-ink:#1B2A38; --ph-run:#2E9E5B; /* v12: Deploy strong yellow (dark ink), Run green — Explore keeps the gold accent */
   --s-col:#E76500; --s-soft:#FFF3E8;
   --m-col:#0070F2; --m-soft:#EAF3FF;
   --l-col:#188918; --l-soft:#EDF8ED;
@@ -110,7 +111,7 @@ main section.active{display:block}
 .meta b{color:var(--ink);font-variant-numeric:tabular-nums}
 .phasebar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin-top:auto}
 .phasebar span{display:block;height:100%}
-.ph-prep{background:#8296A9}.ph-exp{background:#F0AB00}.ph-real{background:#0070F2}.ph-dep{background:#188918}.ph-run{background:#C6D3DE}
+.ph-prep{background:#8296A9}.ph-exp{background:#F0AB00}.ph-real{background:#0070F2}.ph-dep{background:var(--ph-dep);color:var(--ph-dep-ink)}.ph-run{background:var(--ph-run);color:#fff}
 .ph-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:.66rem;color:var(--muted);margin-top:7px}
 .ph-legend i{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:4px}
 .flip-hint{font-size:.68rem;color:var(--blue);margin-top:9px;font-weight:600;background:none;border:none;padding:0;cursor:pointer;font-family:inherit;text-align:left}
@@ -157,6 +158,9 @@ th.cS{color:var(--s-col)}th.cM{color:var(--m-col)}th.cL{color:var(--l-col)}
 .pick-group h3{font-size:.85rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px}
 .pick{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px dashed #EDF0F2;flex-wrap:wrap}
 .pick:last-child{border:none}
+/* v12: Net-new picker — group hint under the heading; hidden rows / hint really hide */
+.pick-hint{font-size:.76rem;color:var(--muted);margin:-4px 0 10px;line-height:1.45}
+.pick[hidden],.pick-hint[hidden]{display:none!important}
 .pick input[type=checkbox]{width:17px;height:17px;accent-color:var(--blue)}
 .pick label{font-size:.87rem;flex:1;min-width:180px}
 .pick select{font:inherit;font-size:.8rem;padding:5px 8px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
@@ -484,7 +488,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
       <span class="sap-mark">SAP</span>
       <div>
         <div class="hdr-title">Fieldglass T-Shirt ROM Explorer</div>
-        <div class="hdr-sub">Contingent &amp; Services Procurement · 2026 refresh draft · synced to deck Version 1 (2-Sep-2026) · prices held at v2.0 (Mar-2024) · INTERNAL · v11 (Sep 2026)</div>
+        <div class="hdr-sub">Contingent &amp; Services Procurement · 2026 refresh draft · synced to deck Version 1 (2-Sep-2026) · prices held at v2.0 (Mar-2024) · INTERNAL · v12 (Sep 2026)</div>
       </div>
       <div class="hdr-right">
         <button class="rev-toggle" id="revToggle" aria-pressed="false"><span class="dot"></span> Review mode</button>
@@ -510,7 +514,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
   <div class="banner">
     <h1>What T-shirt fits your customer?</h1>
     <p>Rough Order of Magnitude estimates for SAP Fieldglass engagements — high-level, indicative and non-binding, assuming strict Fit-to-Standard and SAP Activate methodology. A scoping workshop is required before any binding proposal.</p>
-    <span class="stamp">Draft refresh · v11 Sep 2026 · synced to deck Version 1 (2-Sep-2026) · prices held at v2.0 pending repricing</span>
+    <span class="stamp">Draft refresh · v12 Sep 2026 · synced to deck Version 1 (2-Sep-2026) · prices held at v2.0 pending repricing</span>
     <div class="cta-row"><button class="cta-btn" data-goto="builder">Build a combined ROM →</button></div>
   </div>
 
@@ -748,7 +752,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
 
 <!-- ================= FINDINGS ================= -->
 <section id="findings">
-  <div class="eyebrow">Deck review · July 2026 · v7 update Sep 2026 · v8 draft refresh Sep 2026 · v9 update Sep 2026 · v10 deck-v1 sync Sep 2026 · v11 Sep 2026</div>
+  <div class="eyebrow">Deck review · July 2026 · v7 update Sep 2026 · v8 draft refresh Sep 2026 · v9 update Sep 2026 · v10 deck-v1 sync Sep 2026 · v11 Sep 2026 · v12 Sep 2026</div>
   <h2 class="sec-title">Review Findings Register</h2>
   <p class="sec-lede">Source: "SAPFG T-Shirt ROM_Updated 93.26.pptx" — deck Version 1 (slide 2: "Version 1 · 9/2/2026"), received from Yaro Chaian 10-Sep-2026, 70 slides, every price XXX. Supersedes the v2.0 (Mar-11-2024) canonical last modified 12-Aug-2026 (71 slides). Validated against the SAP Fieldglass Connector Library (2026-05-15), FG↔SF EC and FG↔Ariba Business Synopses on help.sap.com, and SAP announcements through July 2026. Amber = internal inconsistency needing the deck owner's call; teal = current-state update applied in this draft; green = settled against source documents (confirmed); grey = informational note. Mark items resolved as you clear them with the deck owner — progress is saved in this browser.</p>
   <div class="find-bar" id="findBar"></div>
@@ -760,7 +764,7 @@ table.sp-list{width:100%;border-collapse:collapse;font-size:.74rem;color:#C6D3DE
 <div id="tlTip" role="tooltip" hidden></div>
 <div id="toast" role="status"></div>
 
-<footer><div class="wrap">Indicative, non-binding ROM content for internal SAP use. Interactive refresh draft generated July 2026 · v10 deck-v1 sync September 2026 (deck Version 1, 2-Sep-2026; prices held at v2.0) — hours, durations and tiering per deck v1; pricing pending the T-shirt owners' repricing. v11 (11-Sep-2026): Scope Building export toolbar; pricing notes review-mode only. Estimates exclude travel &amp; expense.</div></footer>
+<footer><div class="wrap">Indicative, non-binding ROM content for internal SAP use. Interactive refresh draft generated July 2026 · v10 deck-v1 sync September 2026 (deck Version 1, 2-Sep-2026; prices held at v2.0) — hours, durations and tiering per deck v1; pricing pending the T-shirt owners' repricing. v11 (11-Sep-2026): Scope Building export toolbar; pricing notes review-mode only. v12 (15-Sep-2026): phase colours, millions formatting, net-new picker. Estimates exclude travel &amp; expense.</div></footer>
 
 <script>
 /* =============== DATA =============== */
@@ -863,6 +867,7 @@ const D={
   {k:"note",w:"Slide 1",h:"Economies-of-scale sentence removed from deck v1",p:"2026-09-10 · The sentence about reductions for scale being determined during actual planning — added to the deck on 12-Aug-2026 and to the v8 Overview rule card and the Adjust-schedule guardrail — is no longer on slide 1 of deck Version 1 (2-Sep-2026). Removed from the Overview and from the schedule guardrail in v10; the combination rules themselves are unchanged."},
   {k:"note",w:"Deck hygiene",h:"Nine deck-internal issues sent back to Yaro Chaian",p:"2026-09-10 · (1) Slide 5: SOW Medium phase row sums to 30 against a stated 32 weeks (detail slide 28 sums to 32). (2) Slide 36: SOW ERP Large detail phases sum to 37 against 46 (overview slide 8 is right). (3) Brazil: Medium on slide 9, Large on slide 48. (4) Slide 9: Mexico twice; 'Luxemborg' / 'Luxemburg'; Turkey → Türkiye. (5) Slide 31: 'CAD: XXXX'. (6) Slide 28: 'Integration configuration' listed twice. (7) Slide 10 vs 11: Large user roles 1 vs 2. (8) Slide 60: ✕ on dedicated consultants at SF Medium. (9) SF overview slide removed → no SF hours in the deck; the Jul-2026 re-baseline is still unmerged."},
   {k:"note",w:"Numbering",h:"Deck v1 slide numbering shifted by −1 after old slide 13",p:"2026-09-10 · Deck v1 deleted the SuccessFactors overview (old slide 13), so old slides 14–71 are now 13–70 (70 slides in total). Findings added in v10 cite deck v1 numbering and say so; older findings keep the 12-Aug-2026 numbering they were written against (old 37 = v1 36, old 29 = v1 28, old 41 = v1 40, old 60–62 = v1 59–61)."},
+  {k:"note",w:"Version",h:"v12 — what changed",p:"2026-09-15 · (1) Deploy phase bars now strong yellow, Run green (cards, one-pager, Scope Building lanes, Excel Gantt). (2) Prices ≥ $1M display in millions ($1.725M) — stored values unchanged. (3) Net-new customers see 'Additional regions at go-live' (Country Expansion only); MSP Transfer and the standalone Ariba packages are existing-customer T-shirts and hide (parked if selected), per deck slide 1. (4) Standalone S/4HANA integration card unchanged — v13 after the owner materials are read. Decision (Abe, 2026-09-15)."},
   {k:"note",w:"Version",h:"v11 — what changed",p:"2026-09-11 · (1) Scope Building gained its own Generate detailed ROM / Export to Excel toolbar (same one-pager and 8-sheet workbook as the ROM Builder, incl. the internal Staffing / Role-Week Grid / Gantt / Timeline sheets). (2) The amber pricing-basis notes (section strips, totals line, v2.0 price chips, one-pager box + assumption) now show only in Review mode; the Excel Summary 'Pricing basis' row and the hero stamp stay. (3) Decision (Abe, 2026-09-11): the Excel Summary 'Pricing basis' row and Assumptions bullet stay in the workbook (data, not UI notes); the hero stamp and header subtitle stay as text; the findings register entries stay."},
   {k:"note",w:"Version",h:"v10 — what changed",p:"2026-09-10 · (1) Synced to deck Version 1 (2-Sep-2026, Yaro Chaian): hours, durations and phase splits per the build spec, country tiers (Sweden M, India L), scope matrices (Integrations configuration included at M / L on Contingent and SOW; ERP Editions include integrations configuration and HR Mini at Small; MSP fit-gap and design changes Medium-only; rate-change-matrix row dropped), 'HR Mini (worker) integrations' naming restored, SF scope text modernised, Ariba 'SAE: Standalone' chips. (2) Prices held at v2.0 (Mar-2024) behind the 'repricing in progress' banner — on the four T-shirt / builder tabs, the ROM totals, the one-pager and the Excel Summary / Assumptions; every price cell carries a 'v2.0 price' chip. (3) Brazil flagged (slide 9 Medium vs slide 48 Large). (4) Findings register updated: country hours reconciled → confirmed, HR Mini → updated, SOW Medium duplicate → verify again, cont S price conflict → note, plus the deck-v1 entries above. (5) Saved state carries deckV 'v1-2026-09-02'; Compare recomputes every scenario against the current data and labels scenarios saved before the re-baseline; v9 scenarios still open (Sweden / India on the new tier). (6) Decision (Abe, 2026-09-10): build v10 now, prices wait for Yaro."},
   {k:"note",w:"Version",h:"v9 — what changed",p:"2026-09-09 · (1) Scope Building rate defaults now follow the Oct-2023 SKU cost build (2023 SKU basis · 2026 rate card pending): G3 = $300/hr for the Integration, Solution and Functional Consultants, G2 = $410/hr for the Project Manager and Delivery Executive — PM / DE default to G2 instead of G3; T2 / T3 / T4 / G4 stay in the tier dropdown as labelled public proxies; the panel note quotes the fully loaded cost rates $153.75 / $213.75. (2) Saved-state migration: builder state and scenarios now carry ratesV 2; v7/v8-shaped state (G3 $95 proxies, no ratesV) opens on the new defaults instead of resurrecting the old rates — scenarios saved by v7 and v8 still open, and the project-status chip compares against the migrated state. (3) Bridget's split unchanged: no rates in the ROM totals, the one-pager or the Excel Summary — rates live only in Scope Building and the Excel 'Staffing (internal)' sheet, all marked internal. (4) Decision (Abe, 2026-09-09): the live public site is this INTERNAL build with Scope Building included — no customer-safe swap."},
@@ -876,7 +881,15 @@ const D={
 
 /* =============== RENDER HELPERS =============== */
 const PH_CLS=["ph-prep","ph-exp","ph-real","ph-dep","ph-run"];
-function money(n){return "$"+n+"K";}
+/* v12: display-only money formatter — values stay in K; >= 1000 K reads in millions with up to three decimals, trailing zeros trimmed,
+   half-up at the third decimal (1725 -> $1.725M, 1950 -> C$1.95M, 2000 -> $2M, 1000 -> $1M, 1234.5 -> $1.235M); < 1000 K unchanged ($675K) */
+function fmtMoney(n,prefix){
+  const k=Math.round(+n||0);
+  if(Math.abs(k)<1000)return prefix+k.toLocaleString("en-US")+"K";
+  const a=Math.abs(k),whole=Math.floor(a/1000),frac=a%1000;
+  return (k<0?"-":"")+prefix+whole.toLocaleString("en-US")+(frac?"."+String(frac).padStart(3,"0").replace(/0+$/,""):"")+"M";
+}
+function money(n){return fmtMoney(n,"$");}
 function phaseBar(ph,ctx){const tot=ph.reduce((a,b)=>a+b,0);let acc=0;return `<div class="phasebar">${ph.map((w,i)=>{const a=acc;acc+=w;return `<span class="${PH_CLS[i]}" style="width:${(w/tot*100).toFixed(1)}%" data-tip="${ctx?ctx+" · ":""}${PH_NAMES[i]} · ${w}w (wk ${a}–${acc} of engagement)"></span>`;}).join("")}</div><div class="ph-legend">${ph.map((w,i)=>`<span><i class="${PH_CLS[i]}"></i>${PH_NAMES[i]} ${w}w</span>`).join("")}</div>`;}
 function backList(items){return "<ul>"+items.map(it=>typeof it==="string"?`<li>${it}</li>`:`<li class="${it.x?'ex':'val'}">${it.t}</li>`).join("")+"</ul>";}
 const FLAG_LABEL={verify:"Verify",upd:"Updated",confirmed:"Confirmed",note:"Note"};
@@ -990,11 +1003,13 @@ const state={cur:"USD",cont:0,staff:{de:1,pm:1,ic:1,sc:1,fc:1},stagger:"auto",cu
 let LAST={items:[],usd:0,cad:0,hr:0,wkMax:0,n:0,ctyN:0,noHr:false,warns:[]};
 const SIG_FILL=[]; /* v8: fillers that normalise v7-shaped saved states (missing keys) before comparison — registered by the countries and schedule blocks */
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const fmtUSD=n=>"$"+Math.round(n).toLocaleString("en-US")+"K";
-const fmtCAD=n=>"C$"+Math.round(n).toLocaleString("en-US")+"K";
+const fmtUSD=n=>fmtMoney(n,"$");
+const fmtCAD=n=>fmtMoney(n,"C$");
 const fmtCur=(u,c)=>state.cur==="USD"?fmtUSD(u):fmtCAD(c);
 
-const groups=[{h:"Base modules (net-new)",items:D.modules},{h:"Expansion & transfer (existing customers)",items:D.expansion},{h:"Integration packages (SAP-led)",items:D.integrations}];
+const groups=[{h:"Base modules (net-new)",items:D.modules},{id:"exp",h:"Expansion & transfer (existing customers)",hNew:"Additional regions at go-live",hint:"Base T-shirts assume one region. Add the countries implemented at the same time as the base module (deck slide 1).",items:D.expansion},{h:"Integration packages (SAP-led)",items:D.integrations}];
+const PG_EXP=groups[1]; /* v12: re-titled for Net-new customers (Country Expansion only) */
+const NA_NEW=["ar1","ar2","msp"]; /* v12: existing-customer T-shirts — hidden and parked while Customer type is Net-new */
 const pickArea=document.getElementById("pickArea");
 function optLabel(t){return `${t.s==="—"?"Fixed":SIZE_NAME[t.s]} — ${fmtCur(t.usd,t.cad)} · ${t.wk}w${t.hr?` · ${t.hr}h`:""}`;}
 function pickRow(m){
@@ -1005,7 +1020,7 @@ function ceRows(){
   const picker=`<div class="pick cty-pick"><label for="ctyAdd">Add countries by name<span class="sub">Searches the deck's country table (slide 9) plus ~60 more countries; picks roll up into the size counts below.</span></label><div class="cty-add"><input id="ctyAdd" type="text" placeholder="e.g. Germany, Norway, UK…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="ctyList" aria-autocomplete="list" aria-label="Add a country by name"><ul id="ctyList" class="cty-list" role="listbox" hidden></ul></div></div><div class="cty-chips" id="ctyChips" aria-live="polite"></div><p class="cty-lock" id="ctyLock" hidden>Counts come from the picked countries — remove them to edit manually.</p>`;
   return picker+CE.tiers.map(t=>`<div class="pick"><label for="ceq-${t.s}">Country Expansion — ${SIZE_NAME[t.s]} countries<span class="sub" id="ceSub-${t.s}"></span></label><button type="button" class="ibtn" data-info="${t.s}" aria-expanded="false" aria-controls="ctyPop" aria-label="Example ${SIZE_NAME[t.s]} countries">ⓘ</button><span class="qty"><button type="button" class="qbtn" data-ce="${t.s}" data-d="-1" aria-label="Remove one ${SIZE_NAME[t.s]} country">−</button><input id="ceq-${t.s}" type="number" min="0" max="20" value="0" inputmode="numeric" aria-label="Number of ${SIZE_NAME[t.s]} countries"><button type="button" class="qbtn" data-ce="${t.s}" data-d="1" aria-label="Add one ${SIZE_NAME[t.s]} country">+</button></span><span class="pp" id="pp-ce${t.s}"></span></div>`).join("")+`<div id="ctyPop" class="cty-pop" role="dialog" aria-labelledby="ctyPopH" tabindex="-1" hidden></div>`;
 }
-pickArea.innerHTML=groups.map(g=>`<div class="pick-group"><h3>${g.h}</h3>${g.items.map(m=>m.id==="ce"?ceRows():pickRow(m)).join("")}</div>`).join("");
+pickArea.innerHTML=groups.map(g=>`<div class="pick-group"${g.id?` id="pg-${g.id}"`:""}><h3${g.id?` id="pgh-${g.id}"`:""}>${g.h}</h3>${g.hint?`<p class="pick-hint" id="pghint-${g.id}" hidden>${g.hint}</p>`:""}${g.items.map(m=>m.id==="ce"?ceRows():pickRow(m)).join("")}</div>`).join("");
 
 /* ---- countries by name (v8) — authoritative source: deck Version 1 (2-Sep-2026) slide 9 "Countries & Package Categories" (slides 46–48 repeat it as examples).
    v10: Sweden Small → Medium, India Medium → Large (slide 9 + examples agree); Brazil stays Medium with a per-country flag (COUNTRY_FLAGS — slide 48 lists it under Large).
@@ -1167,7 +1182,7 @@ function unparkMix(id){
   delete state.parked[id];
 }
 function parkedNoteText(){
-  return Object.entries(state.parked).filter(([,rec])=>Object.keys(rec).length).map(([rid,rec])=>{
+  return Object.entries(state.parked).filter(([rid,rec])=>ROLES.some(([i])=>i===rid)&&Object.keys(rec).length).map(([rid,rec])=>{
     const rn=ROLES.find(([i])=>i===rid)[1];
     const to=Object.entries(rec).map(([tid,amt])=>`${amt}% → ${ROLES.find(([i])=>i===tid)[1]}`).join(", ");
     return `${rn}: ${to}`;
@@ -1290,20 +1305,32 @@ function updateConsolMeter(){
 }
 function applyCustFilter(){
   const ct=state.custType;
-  const naNew=["ar1","ar2","msp"];
   const anyLive=LIVE_IDS.some(liveOn);
+  /* v12: Net-new -> "Additional regions at go-live" (Country Expansion only); MSP Transfer + standalone Ariba rows hide and any selection is parked in state.parked (restored on switch back) */
+  const pgh=document.getElementById("pgh-exp"),pgn=document.getElementById("pghint-exp");
+  if(pgh)pgh.textContent=ct==="new"?PG_EXP.hNew:PG_EXP.h;
+  if(pgn)pgn.hidden=ct!=="new";
   ALL.forEach(m=>{
     const ck=document.getElementById("ck-"+m.id),sel=document.getElementById("sz-"+m.id);
+    const row=ck.closest(".pick");
+    if(NA_NEW.includes(m.id)){
+      if(ct==="new"){
+        if(ck.checked){state.parked[m.id]={pkg:1,sz:+sel.value||0};ck.checked=false;}
+        row.hidden=true;ck.disabled=true;sel.disabled=true;row.classList.remove("na");row.title="";
+        return;
+      }
+      const p=state.parked[m.id];
+      if(p&&p.pkg){ck.checked=true;if(Number.isInteger(+p.sz)&&+p.sz>=0&&+p.sz<m.tiers.length)sel.value=+p.sz;delete state.parked[m.id];}
+      row.hidden=false;
+    }
     let na=false,why="";
-    if(ct==="new"&&naNew.includes(m.id)){na=true;why="Aimed at existing customers — greyed for a net-new customer";}
-    else if(ct==="existing"){
+    if(ct==="existing"){
       if(m.id==="ar3"){na=true;why="Applies to a net-new FG deployment — for an existing tenant use the standalone Ariba package";}
       else if(liveModuleIds().includes(m.id)){na=true;why="Marked live today — re-implementing a live module isn't a T-shirt scenario";}
       else if((m.id==="cerp"||m.id==="serp")&&anyLive){na=true;why="ERP Editions bundle net-new tenant setup — with modules already live, use the module T-shirt + integration packages instead";}
     }
     const dim=na&&!ck.checked;
     ck.disabled=dim;sel.disabled=dim;
-    const row=ck.closest(".pick");
     row.classList.toggle("na",dim);
     row.title=dim?why:"";
   });
@@ -1391,7 +1418,7 @@ function calcWarns(){
     if(expansion.length&&LIVE_IDS.some(liveOn))w.push(`Module expansion onto the existing tenant (${expansion.map(m=>m.name).join(", ")}) — tenant setup/governance already exists, so scoping may trim the T-shirt; confirm with the deck owner.`);
     if((on("cerp")||on("serp"))&&LIVE_IDS.some(liveOn))w.push("ERP Editions bundle net-new tenant setup — with modules already live, prefer module T-shirt + integration packages; confirm in scoping.");
   }
-  if(state.custType==="new"&&(on("ar1")||on("ar2")||on("msp")))w.push("Customer type is Net-new, but existing-customer packages are selected (standalone Ariba B&I / MSP Transfer) — confirm intent.");
+  if(state.custType==="new"&&NA_NEW.some(id=>state.parked[id]&&state.parked[id].pkg))w.push("MSP Transfer / standalone Ariba packages are existing-customer T-shirts — parked while Customer type is Net-new.");
   const lc=document.getElementById("landConsol");
   if(state.custType==="existing"&&lc&&lc.value&&lc.value!=="keep")w.push(`Tenant consolidation (${CONSOL_LABEL[lc.value]}) has no T-shirt — custom scoping required, including an integration-inventory review across tenants.`);
   const ceAny=CE.tiers.some(t=>+document.getElementById("ceq-"+t.s).value>0);
@@ -1843,6 +1870,7 @@ document.querySelectorAll(".addbtn").forEach(b=>{
       document.getElementById("sz-"+m.id).value=i;
     }
     recalc();saveState();
+    if(state.parked[m.id]&&state.parked[m.id].pkg){toast(`${m.name} is an existing-customer T-shirt — parked while Customer type is Net-new`,{label:"Open builder",goto:"builder"});return;}
     toast(`${m.name} — ${SIZE_NAME[t.s]||"Fixed scope"}${m.id==="ce"?" country":""} added to ROM Builder`,{label:"Open builder",goto:"builder"});
   });
 });
@@ -1914,7 +1942,8 @@ renderFindings();
 
 /* =============== EXCEL EXPORT (SpreadsheetML — no external libraries) =============== */
 function xmlEsc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
-function xCell(v,st){if(v==null||v===""){return `<Cell${st?` ss:StyleID="${st}"`:""}/>`;}const num=typeof v==="number"&&isFinite(v);return `<Cell${st?` ss:StyleID="${st}"`:""}><Data ss:Type="${num?"Number":"String"}">${num?v:xmlEsc(v)}</Data></Cell>`;}
+const XL_M={curK:"curM",cadK:"cadM",tK:"tM",tC:"tCM"}; /* v12: exact millions (1000, 2000, ...) use the plain-"M" twin — the conditional K/M format would show "$2.M" */
+function xCell(v,st){if(v==null||v===""){return `<Cell${st?` ss:StyleID="${st}"`:""}/>`;}const num=typeof v==="number"&&isFinite(v);const sid=(num&&XL_M[st]&&v>=1000&&v%1000===0)?XL_M[st]:st;return `<Cell${sid?` ss:StyleID="${sid}"`:""}><Data ss:Type="${num?"Number":"String"}">${num?v:xmlEsc(v)}</Data></Cell>`;}
 function xRow(cells){return `<Row>${cells.map(c=>Array.isArray(c)?xCell(c[0],c[1]):xCell(c)).join("")}</Row>`;}
 function xSheet(name,rows,widths){return `<Worksheet ss:Name="${xmlEsc(name)}"><Table>${(widths||[]).map(w=>`<Column ss:Width="${w}"/>`).join("")}${rows.join("")}</Table></Worksheet>`;}
 function exportExcel(){
@@ -1994,7 +2023,7 @@ function exportExcel(){
   /* Gantt sheet — one column per week, phase-colored cells (ADP/Verizon timeline style) */
   const PH_XL=["pP","pE","pR","pD","pN"];
   const ganttRows=[
-    xRow([["INTERNAL staged schedule (Scope Building) — colors = SAP Activate phases: Prepare (grey) / Explore (gold) / Realize (blue) / Deploy (green) / Run (light)","h"]]),
+    xRow([["INTERNAL staged schedule (Scope Building) — colors = SAP Activate phases: Prepare (grey) / Explore (gold) / Realize (blue) / Deploy (yellow) / Run (green)","h"]]),
     xRow([["Engagement","h"],["Lane","h"],...Array.from({length:S.totalWk},(_,w)=>[w+1,"wh"])])
   ];
   S.tasks.forEach(t=>{
@@ -2084,7 +2113,7 @@ function exportExcel(){
   const xml=`<?xml version="1.0"?>
 <?mso-application progid="Excel.Sheet"?>
 <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
-<Styles><Style ss:ID="h"><Font ss:Bold="1" ss:Color="#12232F"/><Interior ss:Color="#EAF3FF" ss:Pattern="Solid"/></Style><Style ss:ID="b"><Font ss:Bold="1"/></Style><Style ss:ID="t"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders></Style><Style ss:ID="wh"><Font ss:Size="7" ss:Color="#5B738B"/></Style><Style ss:ID="curK"><NumberFormat ss:Format="&quot;$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="cadK"><NumberFormat ss:Format="&quot;C$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="cur0"><NumberFormat ss:Format="&quot;$&quot;#,##0"/></Style><Style ss:ID="n0"><NumberFormat ss:Format="#,##0"/></Style><Style ss:ID="n1"><NumberFormat ss:Format="#,##0.0"/></Style><Style ss:ID="tK"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="&quot;$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="tC"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="&quot;C$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="tn"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="#,##0"/></Style><Style ss:ID="tS"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="&quot;$&quot;#,##0"/></Style><Style ss:ID="t1"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="#,##0.0"/></Style><Style ss:ID="pP"><Interior ss:Color="#8296A9" ss:Pattern="Solid"/></Style><Style ss:ID="pE"><Interior ss:Color="#F0AB00" ss:Pattern="Solid"/></Style><Style ss:ID="pR"><Interior ss:Color="#0070F2" ss:Pattern="Solid"/></Style><Style ss:ID="pD"><Interior ss:Color="#188918" ss:Pattern="Solid"/></Style><Style ss:ID="pN"><Interior ss:Color="#C6D3DE" ss:Pattern="Solid"/></Style><Style ss:ID="gl"><Font ss:Bold="1" ss:Color="#B3520A"/><Interior ss:Color="#F0AB00" ss:Pattern="Solid"/></Style></Styles>
+<Styles><Style ss:ID="h"><Font ss:Bold="1" ss:Color="#12232F"/><Interior ss:Color="#EAF3FF" ss:Pattern="Solid"/></Style><Style ss:ID="b"><Font ss:Bold="1"/></Style><Style ss:ID="t"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders></Style><Style ss:ID="wh"><Font ss:Size="7" ss:Color="#5B738B"/></Style><Style ss:ID="curK"><NumberFormat ss:Format="[&gt;=1000]&quot;$&quot;#,##0.###,&quot;M&quot;;&quot;$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="cadK"><NumberFormat ss:Format="[&gt;=1000]&quot;C$&quot;#,##0.###,&quot;M&quot;;&quot;C$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="cur0"><NumberFormat ss:Format="&quot;$&quot;#,##0"/></Style><Style ss:ID="n0"><NumberFormat ss:Format="#,##0"/></Style><Style ss:ID="n1"><NumberFormat ss:Format="#,##0.0"/></Style><Style ss:ID="tK"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="[&gt;=1000]&quot;$&quot;#,##0.###,&quot;M&quot;;&quot;$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="tC"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="[&gt;=1000]&quot;C$&quot;#,##0.###,&quot;M&quot;;&quot;C$&quot;#,##0&quot;K&quot;"/></Style><Style ss:ID="curM"><NumberFormat ss:Format="&quot;$&quot;#,##0,&quot;M&quot;"/></Style><Style ss:ID="cadM"><NumberFormat ss:Format="&quot;C$&quot;#,##0,&quot;M&quot;"/></Style><Style ss:ID="tM"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="&quot;$&quot;#,##0,&quot;M&quot;"/></Style><Style ss:ID="tCM"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="&quot;C$&quot;#,##0,&quot;M&quot;"/></Style><Style ss:ID="tn"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="#,##0"/></Style><Style ss:ID="tS"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="&quot;$&quot;#,##0"/></Style><Style ss:ID="t1"><Font ss:Bold="1"/><Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/></Borders><NumberFormat ss:Format="#,##0.0"/></Style><Style ss:ID="pP"><Interior ss:Color="#8296A9" ss:Pattern="Solid"/></Style><Style ss:ID="pE"><Interior ss:Color="#F0AB00" ss:Pattern="Solid"/></Style><Style ss:ID="pR"><Interior ss:Color="#0070F2" ss:Pattern="Solid"/></Style><Style ss:ID="pD"><Font ss:Color="#1B2A38"/><Interior ss:Color="#FFD500" ss:Pattern="Solid"/></Style><Style ss:ID="pN"><Font ss:Color="#FFFFFF"/><Interior ss:Color="#2E9E5B" ss:Pattern="Solid"/></Style><Style ss:ID="gl"><Font ss:Bold="1" ss:Color="#B3520A"/><Interior ss:Color="#F0AB00" ss:Pattern="Solid"/></Style></Styles>
 ${xSheet("Summary",summary,[300,240])}
 ${xSheet("Components",comp,[250,120,80,80,80,120])}
 ${xSheet("Gantt (internal)",ganttRows,[240,36,...Array.from({length:Math.max(1,S.totalWk)},()=>14)])}
